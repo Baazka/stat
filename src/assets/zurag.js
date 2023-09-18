@@ -9,14 +9,7 @@ import clendarIcon from "./zurag/icons/06.png";
 import letterIcon from "./zurag/icons/05.png";
 import saveIcon from "./zurag/icons/22.png";
 import deleteIcon from "./zurag/icons/delete.png";
-import menuIcon1 from "./zurag/icons/menu1.png";
-import menuIcon1W from "./zurag/icons/menu1W.png";
-import menuIcon2 from "./zurag/icons/menu2.png";
-import menuIcon2W from "./zurag/icons/menu2W.png";
-import menuIcon3 from "./zurag/icons/menu3.png";
-import menuIcon3W from "./zurag/icons/menu3W.png";
-import menuIcon4 from "./zurag/icons/menu4.png";
-import menuIcon4W from "./zurag/icons/menu4W.png";
+import batlah from "./zurag/icons/batlah.png";
 import DownArrowW from "./zurag/icons/downArrowW.png";
 import Checked from "./zurag/icons/CHECKED.svg";
 import Uncheck from "./zurag/icons/UNCHECK.svg";
@@ -78,17 +71,14 @@ import green_check from "./zurag/icons/green_check.svg";
 import commentIcon from "./zurag/icons/commentIcon.svg";
 import SEDEV_TSENHER from "./zurag/icons/SEDEV_TSENHER.svg";
 import SEDEV_TSAGAAN from "./zurag/icons/SEDEV_TSAGAAN.svg";
+import Statictic1 from "./zurag/icons/Statictic1.png";
+import Statictic2 from "./zurag/icons/Statictic2.png";
 export {
+  Statictic1,
+  Statictic2,
   bottomArrow,
+  batlah,
   sum,
-  menuIcon1,
-  menuIcon2,
-  menuIcon3,
-  menuIcon4,
-  menuIcon1W,
-  menuIcon2W,
-  menuIcon3W,
-  menuIcon4W,
   DownArrowW,
   letterIcon,
   searchIcon,
