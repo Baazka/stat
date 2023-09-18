@@ -33,7 +33,7 @@ function Login(props: any) {
           systemid: 6,
         },
       })
-        .then(function (response) {
+        .then(function(response) {
           if (
             response?.data?.USER_ID !== 0 &&
             response?.data?.USER_ID !== null &&
@@ -58,7 +58,7 @@ function Login(props: any) {
               method: "GET",
               data: {},
             })
-              .then(function (response) {
+              .then(function(response) {
                 if (localStorage.getItem("userDetails") !== undefined)
                   localStorage.removeItem("userDetails");
                 localStorage.setItem(
@@ -76,12 +76,12 @@ function Login(props: any) {
                   navigate("/web/Home/Act_huviar");
                 } else navigate("/web/Home/Audit");
               })
-              .catch(function (error) {
+              .catch(function(error) {
                 alert("Aмжилтгүй");
               });
           } else alert("Хэрэглэгчийн нэвтрэх нэр, нууц үг буруу байна!!!");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           alert("Aмжилтгүй");
         });
     }
