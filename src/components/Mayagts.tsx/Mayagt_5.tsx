@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useNavigate,
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Title from "../Title";
 import "../../pages/Home.css";
 import Comment from "../comment";
@@ -27,13 +23,10 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
   FilterFn,
-  SortingFn,
   ColumnDef,
   flexRender,
-  FilterFns,
 } from "@tanstack/react-table";
 import DataRequest from "../../functions/make_Request";
 import {
@@ -1187,10 +1180,6 @@ function Mayagt_5(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m5, any>[]>(

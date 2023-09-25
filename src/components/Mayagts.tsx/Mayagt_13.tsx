@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  useNavigate,
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Title from "../Title";
 import { excel } from "../../assets/zurag";
 import "../../pages/Home.css";
@@ -26,20 +22,13 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
   FilterFn,
-  SortingFn,
   ColumnDef,
   flexRender,
-  FilterFns,
 } from "@tanstack/react-table";
 
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from "@tanstack/match-sorter-utils";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -118,12 +107,7 @@ function Mayagt_13() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
-
   const columns = React.useMemo<ColumnDef<Stat_m13, any>[]>(
     () => [
       {
@@ -493,14 +477,6 @@ function Mayagt_13() {
       </div>
     );
   }
-
-  React.useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === "fullName") {
-      if (table.getState().sorting[0]?.id !== "fullName") {
-        table.setSorting([{ id: "fullName", desc: false }]);
-      }
-    }
-  }, [table.getState().columnFilters[0]?.id]);
 
   return (
     <>

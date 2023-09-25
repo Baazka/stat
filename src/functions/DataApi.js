@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-const axios = require("axios");
+import axios from "axios";
 
 export async function DataRequest(param) {
   return await axios({

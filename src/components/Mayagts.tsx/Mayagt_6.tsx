@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useNavigate,
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Title from "../Title";
 import { excel } from "../../assets/zurag";
 import "../../pages/Home.css";
@@ -26,20 +22,13 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
   FilterFn,
-  SortingFn,
   ColumnDef,
   flexRender,
-  FilterFns,
 } from "@tanstack/react-table";
 
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from "@tanstack/match-sorter-utils";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -1072,8 +1061,6 @@ function Excel() {
   );
 }
 
-const now = new Date();
-
 type Stat_m6 = {
   AUDIT_ON: number;
   AUDIT_TOROL: string;
@@ -1103,10 +1090,6 @@ function Mayagt_6() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m6, any>[]>(
@@ -1759,63 +1742,6 @@ function Filter({
 
       <div className="h-4" />
     </>
-  );
-}
-
-// A debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <div className=" overflow-hidden flex border rounded-md">
-      <input
-        type="text"
-        value={value || ""}
-        className=" text-sm "
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder="Хайх утгаа оруулна уу..."
-        style={{
-          width: "200px",
-        }}
-      />
-
-      <button className="flex items-center px-2.5 border-l bg-blue-500 rounded-md">
-        <svg
-          className="h-4 w-4 text-grey-dark"
-          fill="currentColor"
-          color="white"
-          enableBackground=""
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-        </svg>
-      </button>
-    </div>
   );
 }
 

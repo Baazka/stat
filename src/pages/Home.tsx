@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import writeXlsxFile from "write-excel-file";
+
 import Stat_URl from "../Stat_URL";
 import {
   addIcon,
@@ -27,7 +28,7 @@ import {
   ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-
+import { Period, Department } from "../components/library";
 // import RightMenu from "../components/RightMenu";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import "./Home.css";
@@ -781,7 +782,7 @@ function Home() {
     Audit: {
       PERIOD_ID: 4,
       DEPARTMENT_ID: 999,
-      BUDGET_TYPE_ID: 999,
+      DOCUMENT_ID: 999,
       PARENT_BUDGET_ID: 999,
       TYPE: 0,
     },
@@ -835,41 +836,20 @@ function Home() {
         />
         <div className="justify-start flex mb-4 mt-4">
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <select
-              className="border rounded text-sm focus:outline-none py-1 h-7"
-              onChange={(text) => {
-                let any = setFilter;
-              }}
-            >
-              <option key={"Багаар"} value={0}>
-                {"Аудитын жил"}
-              </option>
-              <option key={"Батлах 1"} value={1}>
-                {"Батлах 1"}
-              </option>
-            </select>
+            <Period
+              title="Аудит жил"
+              data={filter}
+              setData={(value: any) => setFilter(value)}
+            />
           </div>
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <select
-              className="border rounded text-sm focus:outline-none py-1 h-7"
-              onChange={(text) => {
-                let any = setFilter;
-              }}
-            >
-              <option key={"Багаар"} value={0}>
-                {"Аудит хийх нэгж"}
-              </option>
-              <option key={"Батлах 1"} value={1}>
-                {"Батлах 1"}
-              </option>
-              <option key={"Батлах 2"} value={2}>
-                {"Батлах 2"}
-              </option>
-              <option key={"Батлах 3"} value={3}>
-                {"Батлах 3"}
-              </option>
-            </select>
+            <Department
+              data={filter}
+              setData={(value: any) => setFilter(value)}
+              title="Аудит хийх нэгж нэр"
+            />
           </div>
+
           <DebouncedInput
             value={globalFilter ?? ""}
             onChange={(value) => setGlobalFilter(String(value))}

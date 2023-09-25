@@ -1,7 +1,6 @@
 import React from "react";
 import URL from "../Stat_URL";
-const axios = require("axios");
-
+import axios from "axios";
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);

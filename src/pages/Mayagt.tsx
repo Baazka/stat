@@ -13,6 +13,7 @@ import Mayagt_12 from "../components/Mayagts.tsx/Mayagt_12";
 import Mayagt_13 from "../components/Mayagts.tsx/Mayagt_13";
 import Mayagt_14 from "../components/Mayagts.tsx/Mayagt_14";
 import Mayagt_15 from "../components/Mayagts.tsx/Mayagt_15";
+import CM_1A from "../components/S_News.tsx/CM_1A";
 
 function Mayagt() {
   // @ts-ignore
@@ -53,6 +54,8 @@ function Mayagt() {
         <Mayagt_14 />
       ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 15" ? (
         <Mayagt_15 />
+      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАБСМ 1 А" ? (
+        <CM_1A />
       ) : null}
     </div>
   );

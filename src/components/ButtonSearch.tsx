@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import { printIcon } from "../assets/zurag";
 function Select() {
-  const [filter, setFilter] = useState({
-    Audit: {
-      PERIOD_ID: 4,
-      DEPARTMENT_ID: 999,
-      BUDGET_TYPE_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
-    },
-  });
   const [globalFilter, setGlobalFilter] = React.useState("");
   return (
     <div className="flex justify-between h-8">

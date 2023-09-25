@@ -26,13 +26,10 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
   FilterFn,
-  SortingFn,
   ColumnDef,
   flexRender,
-  FilterFns,
 } from "@tanstack/react-table";
 
 import {
@@ -1034,7 +1031,6 @@ function Excel() {
     </div>
   );
 }
-const now = new Date();
 
 type Stat_m9 = {
   AUDIT_ON: string;
@@ -1061,10 +1057,6 @@ function Mayagt_9() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m9, any>[]>(
@@ -1373,13 +1365,13 @@ function Mayagt_9() {
   //   );
   // }
 
-  React.useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === "fullName") {
-      if (table.getState().sorting[0]?.id !== "fullName") {
-        table.setSorting([{ id: "fullName", desc: false }]);
-      }
-    }
-  }, [table.getState().columnFilters[0]?.id]);
+  // React.useEffect(() => {
+  //   if (table.getState().columnFilters[0]?.id === "fullName") {
+  //     if (table.getState().sorting[0]?.id !== "fullName") {
+  //       table.setSorting([{ id: "fullName", desc: false }]);
+  //     }
+  //   }
+  // }, [table.getState().columnFilters[0]?.id]);
 
   return (
     <>
@@ -1584,62 +1576,4 @@ function Filter({
     </>
   );
 }
-
-// A debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <div className=" overflow-hidden flex border rounded-md">
-      <input
-        type="text"
-        value={value || ""}
-        className=" text-sm "
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder="Хайх утгаа оруулна уу..."
-        style={{
-          width: "200px",
-        }}
-      />
-
-      <button className="flex items-center px-2.5 border-l bg-blue-500 rounded-md">
-        <svg
-          className="h-4 w-4 text-grey-dark"
-          fill="currentColor"
-          color="white"
-          enableBackground=""
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-        </svg>
-      </button>
-    </div>
-  );
-}
-
 export default Mayagt_9;

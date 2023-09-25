@@ -978,7 +978,6 @@ function Excel() {
     </div>
   );
 }
-const now = new Date();
 
 type Stat_m14 = {
   TORIIN_AUDIT_BAI: string;
@@ -997,12 +996,7 @@ function Mayagt_14() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
-
   const columns = React.useMemo<ColumnDef<Stat_m14, any>[]>(
     () => [
       {
@@ -1354,15 +1348,6 @@ function Mayagt_14() {
       </div>
     );
   }
-
-  React.useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === "fullName") {
-      if (table.getState().sorting[0]?.id !== "fullName") {
-        table.setSorting([{ id: "fullName", desc: false }]);
-      }
-    }
-  }, [table.getState().columnFilters[0]?.id]);
-
   return (
     <>
       <div
