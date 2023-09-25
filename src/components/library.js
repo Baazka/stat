@@ -23,7 +23,11 @@ function Period(props) {
       >
         <option value={999}>Бүгд</option>
         {data?.map((nation, index) => (
-          <option key={nation.PERIOD_LABEL} value={nation.ID}>
+          <option
+            className="font-semibold"
+            key={nation.PERIOD_LABEL}
+            value={nation.ID}
+          >
             {nation.PERIOD_LABEL}
           </option>
         ))}
@@ -57,6 +61,7 @@ function Department(props) {
         <option value={999}>Аудит хийх нэгж</option>
         {data?.map((nation, index) => (
           <option
+            className="font-semibold"
             key={nation.DEPARTMENT_SHORT_NAME}
             value={nation.DEPARTMENT_ID}
           >
@@ -128,7 +133,11 @@ function Document(param) {
       >
         <option value={999}>Сонгоно уу</option>
         {data?.map((nation, index) => (
-          <option key={nation.DOCUMENT_SHORT_NAME} value={nation.ID}>
+          <option
+            className="font-semibold"
+            key={nation.DOCUMENT_SHORT_NAME}
+            value={nation.ID}
+          >
             {nation.DOCUMENT_NAME}
           </option>
         ))}

@@ -145,12 +145,12 @@ function Burtgel() {
                     </label>
                   </div>
                   <div className="w-6/12">
-                    <Employee
+                    {/* <Employee
                       data={data}
                       setData={(value: any) => {
                         loadData(value);
                       }}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
