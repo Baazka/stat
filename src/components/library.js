@@ -12,6 +12,7 @@ function Period(props) {
     }
     fetchData();
   }, [props]);
+
   let listItems;
   if (data !== undefined) {
     listItems = (
@@ -41,14 +42,7 @@ function Period(props) {
 
 function Department(props) {
   const [data, loadData] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      let listItems = await axios(Stat_URL + "refDepartment");
-      if (listItems.data !== undefined && listItems.data.length > 0)
-        loadData(listItems.data);
-    }
-    fetchData();
-  }, [props]);
+ 
   let listItems;
   if (data !== undefined) {
     listItems = (
