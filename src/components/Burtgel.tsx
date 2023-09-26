@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 import { saveIcon, deleteIcon } from "../assets/zurag";
@@ -28,7 +28,6 @@ import {
 } from "@tanstack/match-sorter-utils";
 import DataRequest from "../functions/make_Request";
 import Stat_Url from "../Stat_URL";
-import ButtonSearch from "../components/ButtonSearch"
 import axios from "axios";
 
 declare module "@tanstack/table-core" {
@@ -83,94 +82,59 @@ type Stat_m5 = {
   HULEEGDEJ_BUI_UR_OGOOJ: string;
 };
 
-
-
-function Burtgel(props:any) {
+function Burtgel(props: any) {
   const mayagtData = props.mayagtData;
   const userDetils = props.userDetils;
   const [tsonkh, setTsonkh] = useState(0);
+  const [songogdson, setSongogdson] = useState(0);
   const [data, loadData] = useState({
-          Audit:{
-          ID:null,
-          PERIOD_ID:1,
-          DEPARTMENT_ID:101,
-          DOCUMENT_ID:1,
-          CONFIRM_DATE:""
-      },
-      Team:[
-          // {
-          // "ID":null,
-          // "STAT_AUDIT_ID":null,
-          // "AUDITOR_ID":55,
-          // "ROLE_ID":1,
-          // "IS_ACTIVE":1        
-          // }
-      ],
-      CREATED_BY:1
-  }
-  );
-  const[drop,setDrop] = useState({
-    drop1:[],
-    drop2:[],
-    drop3:[],
-  }
-  )
-
-  const [checker, setChecker] = useState(false);
-  const [shalgagdagch, setShalgagdagch] = useState(null);
-  
+    Audit: {
+      ID: null,
+      PERIOD_ID: 1,
+      DEPARTMENT_ID: 101,
+      DOCUMENT_ID: 1,
+      CONFIRM_DATE: "",
+    },
+    Team: [
+      // {
+      // "ID":null,
+      // "STAT_AUDIT_ID":null,
+      // "AUDITOR_ID":55,
+      // "ROLE_ID":1,
+      // "IS_ACTIVE":1
+      // }
+    ],
+    CREATED_BY: 1,
+  });
+  const [drop, setDrop] = useState({
+    drop1: [],
+    drop2: [],
+    drop3: [],
+  });
   useEffect(() => {
     async function fetchData() {
       let listItems = await axios(Stat_Url + "refDepartment");
-      if (listItems.data !== undefined && listItems.data.length > 0){
-        let temp = drop
-        temp.drop1 = listItems.data
-        setDrop({...temp});
+      if (listItems.data !== undefined && listItems.data.length > 0) {
+        let temp = drop;
+        temp.drop1 = listItems.data;
+        setDrop({ ...temp });
       }
       let refPeriod = await axios(Stat_Url + "refPeriod");
-      if (refPeriod.data !== undefined && refPeriod.data.length > 0){
-        let temp = drop
-        temp.drop2 = refPeriod.data
-        setDrop({...temp});
+      if (refPeriod.data !== undefined && refPeriod.data.length > 0) {
+        let temp = drop;
+        temp.drop2 = refPeriod.data;
+        setDrop({ ...temp });
       }
       let refDocument = await axios(Stat_Url + "refDocument?DocType=1");
-      if (refDocument.data !== undefined && refDocument.data.length > 0){
-        let temp = drop
-        temp.drop3 = refDocument.data
-        setDrop({...temp});
+      if (refDocument.data !== undefined && refDocument.data.length > 0) {
+        let temp = drop;
+        temp.drop3 = refDocument.data;
+        setDrop({ ...temp });
       }
-      
     }
     fetchData();
   }, [props]);
 
-  
-  async function saveData() {
-    DataRequest({
-      url: Stat_Url + "getBM1/" + mayagtData?.MAYGTIIN_DUGAAR + "/" + 1,
-      method: "GET",
-      // data: {
-      //   FAS_AUDIT_ID: props.data.ID,
-      //   DOCUMENT_ID: props.data.listID,
-      //   CREATED_BY: userDetils?.USER_ID,
-      //   CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
-      //   IS_ACTIVE: 1,
-      // },
-    })
-      .then(function (response) {
-        console.log(response, "response");
-        if (response?.data.message === "failed" || response === undefined) {
-          alert("Өгөгдөл авчирхад алдаа гарлаа!");
-          //setloaderSpinner(0);
-        } else {
-          setData(response?.data);
-        }
-      })
-      .catch(function (error) {
-        alert("Aмжилтгүй");
-      });
-  }
-  
   return (
     <div
       style={{
@@ -189,15 +153,14 @@ function Burtgel(props:any) {
       >
         <Title title={"ХУВААРЬ"} widthS={"5rem"} widthL={"5rem"} />
       </div>
-       <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
-          <div className="space-y-4">
-            <p className="text-white text-center  pt-2">ХУВААРИЙН БҮРТГЭЛ</p>
-          </div>
+      <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
+        <div className="space-y-4">
+          <p className="text-white text-center  pt-2">ХУВААРИЙН БҮРТГЭЛ</p>
         </div>
-    
+      </div>
+
       <div className="ml-32 w-10/12 ">
-       {tsonkh === 1 ? <Employee setTsonkh={setTsonkh}  />:null}
-     
+        {tsonkh === 1 ? <Employee setTsonkh={setTsonkh} /> : null}
 
         <div
           style={{
@@ -215,13 +178,13 @@ function Burtgel(props:any) {
                     </label>
                   </div>
                   <div className="w-6/12 ">
-                  <select
+                    <select
                       className="border rounded text-sm focus:outline-none py-0.5 w-28 "
-                     onChange={(value)=>{
-                      let temp = data
-                      temp.Audit.PERIOD_ID = value.target.value;
-                      loadData({...temp})
-                     }}
+                      onChange={(value) => {
+                        let temp = data;
+                        temp.Audit.PERIOD_ID = value.target.value;
+                        loadData({ ...temp });
+                      }}
                     >
                       <option value={999}>Бүгд</option>
                       {drop.drop2.map((nation, index) => (
@@ -234,7 +197,6 @@ function Burtgel(props:any) {
                         </option>
                       ))}
                     </select>
-                    
                   </div>
                 </div>
                 <div className="flex space-x-40 space-x-reverse">
@@ -248,7 +210,7 @@ function Burtgel(props:any) {
                       type="date"
                       className="inputRoundedMetting"
                       onChange={(e) => {
-                        let temp = data
+                        let temp = data;
                         temp.Audit.CONFIRM_DATE = e.target.value;
                         loadData({
                           ...temp,
@@ -269,14 +231,13 @@ function Burtgel(props:any) {
                     </label>
                   </div>
                   <div className="w-6/12">
-                  <select
+                    <select
                       className="border rounded text-sm focus:outline-none py-0.5 w-28 "
-                     onChange={(value)=>{
-                     
-                      let temp = data
-                      temp.Audit.DEPARTMENT_ID = value.target.value;
-                      loadData({...temp})
-                     }}
+                      onChange={(value) => {
+                        let temp = data;
+                        temp.Audit.DEPARTMENT_ID = value.target.value;
+                        loadData({ ...temp });
+                      }}
                     >
                       <option value={999}>Бүгд</option>
                       {drop.drop1.map((nation, index) => (
@@ -298,13 +259,13 @@ function Burtgel(props:any) {
                     </label>
                   </div>
                   <div className="w-6/12">
-                  <select
+                    <select
                       className="border rounded text-sm focus:outline-none py-0.5 w-28 "
-                     onChange={(value)=>{
-                      let temp = data
-                      temp.Audit.DOCUMENT_ID = value.target.value;
-                      loadData({...temp})
-                     }}
+                      onChange={(value) => {
+                        let temp = data;
+                        temp.Audit.DOCUMENT_ID = value.target.value;
+                        loadData({ ...temp });
+                      }}
                     >
                       <option value={999}>Бүгд</option>
                       {drop.drop3.map((nation, index) => (
@@ -320,61 +281,61 @@ function Burtgel(props:any) {
                   </div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
-                <div className="flex flex-row " style={{ padding: "0.1rem" }}>
-              <div style={{ width: "35%" }}>
-                <label>Багийн гишүүд:</label>{" "}
-              </div>
-              <div style={{ width: "60%", display: "flex" }}>
-                <div
-                  style={{
-                    minHeight: "100px",
-                    border: "2px solid gray",
-                    width: "270px",
-                  }}
-                >
-                  {data.Team.map((value, index) =>
-                    value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
-                      <div className="flex flex-row">
-                        <span>{value.USER_CODE + " " + value.USER_NAME}</span>
-                        <img
-                          src={deleteIcon}
-                          width="20px"
-                          className="ml-1 cursor-pointer"
-                          onClick={() => {
-                            let temp = data;
-                            temp.Team[index].IS_ACTIVE = 0;
-                            // temp.Team = temp.Team.filter(
-                            //   (a, ind) => ind != index
-                            // );
-                            loadData({ ...temp });
-                          }}
-                        />
-                      </div>
-                    ) : null
-                  )}
-                </div>
-                <div>
-                  
-                    <button type="button" onClick={() => setTsonkh(1)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                  <div className="flex flex-row " style={{ padding: "0.1rem" }}>
+                    <div style={{ width: "35%" }}>
+                      <label>Багийн гишүүд:</label>{" "}
+                    </div>
+                    <div style={{ width: "60%", display: "flex" }}>
+                      <div
+                        style={{
+                          minHeight: "100px",
+                          border: "2px solid gray",
+                          width: "270px",
+                        }}
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                        />
-                      </svg>
-                    </button>
-                  
-                </div>
-              </div>
-            </div>
+                        {data.Team.map((value, index) =>
+                          value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
+                            <div className="flex flex-row">
+                              <span>
+                                {value.USER_CODE + " " + value.USER_NAME}
+                              </span>
+                              <img
+                                src={deleteIcon}
+                                width="20px"
+                                className="ml-1 cursor-pointer"
+                                onClick={() => {
+                                  let temp = data;
+                                  temp.Team[index].IS_ACTIVE = 0;
+                                  // temp.Team = temp.Team.filter(
+                                  //   (a, ind) => ind != index
+                                  // );
+                                  loadData({ ...temp });
+                                }}
+                              />
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                      <div>
+                        <button type="button" onClick={() => setTsonkh(1)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
                   <div className="w-6/12">
@@ -409,8 +370,8 @@ function Burtgel(props:any) {
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <button className="md:items-end rounded mr-28 ml-10 mt-20">
-            <SaveButton saveToDB = {()=>console.log(data,"savedata")} />
+          <button className="md:items-end rounded mr-28 mt-10">
+            <SaveButton saveToDB={() => console.log(data, "savedata")} />
           </button>
         </div>
       </div>
@@ -418,9 +379,7 @@ function Burtgel(props:any) {
   );
 }
 
-
-
-function Employee(props:any) {
+function Employee(props: any) {
   //@ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -429,6 +388,30 @@ function Employee(props:any) {
   const [globalFilter, setGlobalFilter] = React.useState("");
   const columns = React.useMemo(
     () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <div className="px-1">
+            <IndeterminateCheckbox
+              {...{
+                checked: row.getIsSelected(),
+                disabled: !row.getCanSelect(),
+                indeterminate: row.getIsSomeSelected(),
+                onChange: row.getToggleSelectedHandler(),
+              }}
+            />
+          </div>
+        ),
+      },
       {
         accessorFn: (row, index) => index + 1,
         id: "№",
@@ -475,11 +458,10 @@ function Employee(props:any) {
         header: "Зөрчлийг арилгах огноо",
         cell: (info) => info.getValue(),
       },
-     
     ],
     []
   );
-  
+
   const [data, setData] = React.useState([]);
 
   const table = useReactTable({
@@ -507,28 +489,23 @@ function Employee(props:any) {
     debugColumns: false,
   });
 
-
-
   useEffect(() => {
     async function fetchData() {
       DataRequest({
-        url:
-        Stat_Url + 'refEmployee',
+        url: Stat_Url + "refEmployee",
         method: "POST",
         data: {
-          DEPARTMENT_ID:null,//userDetils.USER_DEPARTMENT_ID,
-          SUB_DEPARTMENT_ID:null,//userDetils.USER_SUB_DEPARTMENT_ID
+          DEPARTMENT_ID: null, //userDetils.USER_DEPARTMENT_ID,
+          SUB_DEPARTMENT_ID: null, //userDetils.USER_SUB_DEPARTMENT_ID
         },
       })
-        .then(function(response) {
-          if(response.data !== undefined && response?.data.length > 0)
-          setData(response.data)
-          
+        .then(function (response) {
+          if (response.data !== undefined && response?.data.length > 0)
+            setData(response.data);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert("Aмжилтгүй");
         });
-     
     }
     fetchData();
   }, [props]);
@@ -580,19 +557,17 @@ function Employee(props:any) {
           </div>
         </div>
         <div className="flex justify-between mb-2 ">
-        <div className="flex justify-between h-8">
-      <div className="flex ">
-        
-          <DebouncedInput
-          value={globalFilter ?? ''}
-          onChange={value => setGlobalFilter(String(value))}
-          className="p-1.5 font-lg shadow border border-block rounded h-8"
-          placeholder="Search all columns..."
-
-        />
-       
-      </div>
-    </div>
+          {tsonkh === 2 ? <Employee setsongogdson={setSongogdson} /> : null}
+          <div className="flex justify-between h-8">
+            <div className="flex ">
+              <DebouncedInput
+                value={globalFilter ?? ""}
+                onChange={(value) => setGlobalFilter(String(value))}
+                className="p-1.5 font-lg shadow border border-block rounded h-8"
+                placeholder="Search all columns..."
+              />
+            </div>
+          </div>
         </div>
         <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
           <div className="h-2 mr-20" />
@@ -715,6 +690,17 @@ function Employee(props:any) {
             </select>
           </div>
         </div>
+        <div>
+          <span>Сонгогдсон:</span>
+          {songogdson.map((a: any) => (
+            <span>{a.USER_NAME + " "}</span>
+          ))}
+        </div>
+        {tsonkh === 2 ? (
+          <div className="mt-3">
+            <SaveButton Title="cонгох" />
+          </div>
+        ) : null}
       </div>
     );
   } else {
@@ -727,37 +713,23 @@ function Filter({
   column,
   table,
 }: {
-  column: Column<any, unknown>;
+  column: Column<any, any>;
   table: Table<any>;
 }) {
   const firstValue = table
     .getPreFilteredRowModel()
     .flatRows[0]?.getValue(column.id);
 
-  const columnFilterValue = column.getFilterValue();
-
-  const sortedUniqueValues = React.useMemo(
-    () =>
-      typeof firstValue === "number"
-        ? []
-        : Array.from(column.getFacetedUniqueValues().keys()).sort(),
-    [column.getFacetedUniqueValues()]
-  );
-
-  return typeof firstValue === "number" ? (
-    <div>
-      <div className="h-1" />
+  return (
+    <div className="flex space-x-2">
+      <input
+        type="text"
+        value={(column.getFilterValue() ?? "") as string}
+        onChange={(e) => column.setFilterValue(e.target.value)}
+        placeholder={`Search...`}
+        className="w-36 border shadow rounded"
+      />
     </div>
-  ) : (
-    <>
-      <datalist id={column.id + "list"}>
-        {sortedUniqueValues.slice(0, 5000).map((value: any) => (
-          <option value={value} key={value} />
-        ))}
-      </datalist>
-
-      <div className="h-4" />
-    </>
   );
 }
 
@@ -816,8 +788,26 @@ function DebouncedInput({
     </div>
   );
 }
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
 
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
 
-
-
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      {...rest}
+    />
+  );
+}
 export default Burtgel;
