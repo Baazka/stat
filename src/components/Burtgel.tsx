@@ -160,7 +160,7 @@ function Burtgel(props: any) {
       </div>
 
       <div className="ml-32 w-10/12 ">
-        {tsonkh === 1 ? <Employee setTsonkh={setTsonkh} /> : null}
+        {tsonkh === 1 ? <Employee setTsonkh={setTsonkh}  data = {data} loadData= {loadData}/> : null}
 
         <div
           style={{
@@ -294,7 +294,7 @@ function Burtgel(props: any) {
                         }}
                       >
                         {data.Team.map((value, index) =>
-                          value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
+                          value.ROLE_ID === 1 && value.IS_ACTIVE !== 0 ? (
                             <div className="flex flex-row">
                               <span>
                                 {value.USER_CODE + " " + value.USER_NAME}
@@ -386,6 +386,8 @@ function Employee(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [rowSelection, setRowSelection] = React.useState({})
+
   const columns = React.useMemo(
     () => [
       {
@@ -400,7 +402,7 @@ function Employee(props: any) {
           />
         ),
         cell: ({ row }) => (
-          <div className="px-1">
+          <div >
             <IndeterminateCheckbox
               {...{
                 checked: row.getIsSelected(),
@@ -415,49 +417,41 @@ function Employee(props: any) {
       {
         accessorFn: (row, index) => index + 1,
         id: "№",
-      },
-      {
-        accessorKey: "DEPARTMENT_ID",
-        cell: (info) => info.getValue(),
-        header: "Үндэсний аудитын газар",
-        footer: (props) => props.column.id,
+        minSize:'40px',
+        maxSize:'40px',
+        size:'40px'
       },
       {
         accessorKey: "DEPARTMENT_NAME",
-        header: "Аудитор",
         cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "POSITION_NAME",
-        header: "Санхүү нийцлийн аудитын газар",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "SUB_DEPARTMENT_ID",
-        header: "А0175303",
-        cell: (info) => info.getValue(),
+        header: "Төрийн аудитын байгууллага",
+        footer: (props) => props.column.id,
+       // enableColumnFilter : false,
       },
       {
         accessorKey: "SUB_DEPARTMENT_NAME",
-        header: "Албан шаардлагын огноо",
+        header: "Харъяа газар",
+        cell: (info) => info.getValue(),
+
+      },
+      {
+        accessorKey: "POSITION_NAME",
+        header: "Албан тушаал",
+        cell: (info) => info.getValue(),
+      },
+     
+      {
+        accessorKey: "USER_NAME",
+        header: "Албан хаагчийн нэр",
         cell: (info) => info.getValue(),
       },
 
       {
         accessorKey: "USER_CODE",
-        header: "Албан шаардлагын дугаар",
+        header: "Аудиторын код",
         cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "USER_ID",
-        header: "Хүлээн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "USER_NAME",
-        header: "Зөрчлийг арилгах огноо",
-        cell: (info) => info.getValue(),
-      },
+      }
+      
     ],
     []
   );
@@ -473,7 +467,11 @@ function Employee(props: any) {
     state: {
       columnFilters,
       globalFilter,
+      rowSelection,
     },
+    enableRowSelection: true, //enable row selection for all rows
+    // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
+    onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
@@ -484,9 +482,7 @@ function Employee(props: any) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: false,
+ 
   });
 
   useEffect(() => {
@@ -509,6 +505,29 @@ function Employee(props: any) {
     }
     fetchData();
   }, [props]);
+
+  function saveToDB(){
+    let temp = props.data
+  for(let j in rowSelection){
+      let temp_team = {
+      ID:null,
+      STAT_AUDIT_ID:null,
+      AUDITOR_ID:55,
+      ROLE_ID:1,
+      IS_ACTIVE:1,
+      AUDITOR_NAME:null,
+      USER_CODE:null
+      }
+      temp_team.AUDITOR_ID = data[j].USER_ID
+      temp_team.USER_NAME = data[j].USER_NAME
+      temp_team.USER_CODE = data[j].USER_CODE
+      temp.Team.push(temp_team)
+     
+  }  
+  props.loadData(temp)
+  props.setTsonkh(0)
+
+  }
 
   let listItems;
   if (data !== undefined) {
@@ -557,8 +576,8 @@ function Employee(props: any) {
           </div>
         </div>
         <div className="flex justify-between mb-2 ">
-          {tsonkh === 2 ? <Employee setsongogdson={setSongogdson} /> : null}
-          <div className="flex justify-between h-8">
+          
+          <div className="flex justify-between h-8 p-2">
             <div className="flex ">
               <DebouncedInput
                 value={globalFilter ?? ""}
@@ -569,10 +588,10 @@ function Employee(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
-          <div className="h-2 mr-20" />
+        <div style={{ maxHeight: "630px", overflow:"scroll" }}>
+          <div />
           <table>
-            <thead className="TableHeadBackroundcolor gap-20">
+            <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -580,15 +599,17 @@ function Employee(props: any) {
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        style={{ width: 250 }}
+                        style={{verticalAlign:'bottom'}}
+                        className= 'w-1'
                       >
                         {header.isPlaceholder ? null : (
                           <>
-                            <div
+                           <div
                               onMouseDown={header.getResizeHandler()}
                               onTouchStart={header.getResizeHandler()}
                             ></div>
-                            <div
+                            <div  
+                          
                               {...{
                                 className: header.column.getCanSort()
                                   ? "cursor-pointer select-none"
@@ -602,12 +623,13 @@ function Employee(props: any) {
                                 header.getContext()
                               )}
                             </div>
+                            
                             {header.column.getCanFilter() ? (
-                              <div>
+                              <div >
                                 <Filter column={header.column} table={table} />
                               </div>
                             ) : null}
-                          </>
+                        </>
                         )}
                       </th>
                     );
@@ -615,7 +637,7 @@ function Employee(props: any) {
                 </tr>
               ))}
             </thead>
-            <tbody>
+            <tbody className="overflow-scroll ">
               {table.getRowModel().rows.map((row, i) => {
                 return (
                   <tr
@@ -690,17 +712,12 @@ function Employee(props: any) {
             </select>
           </div>
         </div>
-        <div>
-          <span>Сонгогдсон:</span>
-          {songogdson.map((a: any) => (
-            <span>{a.USER_NAME + " "}</span>
-          ))}
-        </div>
-        {tsonkh === 2 ? (
-          <div className="mt-3">
-            <SaveButton Title="cонгох" />
+
+        
+          <div className="mt-2 p-2">
+            <SaveButton saveToDB = {()=>saveToDB()}/>
           </div>
-        ) : null}
+        
       </div>
     );
   } else {
@@ -727,7 +744,7 @@ function Filter({
         value={(column.getFilterValue() ?? "") as string}
         onChange={(e) => column.setFilterValue(e.target.value)}
         placeholder={`Search...`}
-        className="w-36 border shadow rounded"
+        className="border shadow rounded w-full"
       />
     </div>
   );
@@ -793,6 +810,7 @@ function IndeterminateCheckbox({
   className = "",
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+
   const ref = React.useRef<HTMLInputElement>(null!);
 
   React.useEffect(() => {
