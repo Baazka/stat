@@ -51,37 +51,6 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-type Stat_m5 = {
-  AUDIT_ON: string;
-  AUDIT_TOROL: string;
-  AUDIT_NER_SDEV: string;
-  AUDIT_KOD: number;
-  AKT_ALBAN_SHAARDLGA_DUGR: number;
-  AKT_ALBN_SHAARDLGIN_OGNOO: string;
-  HULEEN_OGSON_OGNOO: string;
-  ZORCHIL_ARILGAH_OGNOO: string;
-  ZORCHIL_TOWCH_UTGA: string;
-  TUHAIN_UR_DUN_ALDAA_ZTE: string;
-  ZORCHIL_ANGILL: string;
-  ALBAN_SHAARDLGIN_DUN_T: number;
-  TOLOWLH_DANSNI_TOROL_TOGROG: number;
-  BAIGUULGIN_NR: string;
-  REGISTER_DUGAAR: number;
-  TOSOW_ZAHIRGCH_ANGILL: string;
-  OWOG_NER: string;
-  ALBAN_TUSHAAL: string;
-  AUDITR_HUWIIN_DUGAAR: number;
-  ZORCHIL_ARILGH_BARIMT_OGNOO: string;
-  BIELSEN_ALBAN_SHARDLGIN_DUN_T: number;
-  DUNE_TOGROG: number;
-  HUGATSAANII_TOLOW: string;
-  ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH: string;
-  UR_OGOOJ_TOROL: string;
-  UR_OGOOJ_TOOTSH_ESEH: string;
-  DUN_TOGROG: number;
-  HULEEGDEJ_BUI_UR_OGOOJ: string;
-};
-
 function Burtgel(props: any) {
   const mayagtData = props.mayagtData;
   const userDetils = props.userDetils;
@@ -161,7 +130,9 @@ function Burtgel(props: any) {
 
       <div className="ml-32 w-10/12 ">
         {tsonkh === 1 ? <Employee setTsonkh={setTsonkh} /> : null}
-
+        {tsonkh === 2 ? <Employee setTsonkh={setTsonkh} /> : null}
+        {tsonkh === 3 ? <Employee setTsonkh={setTsonkh} /> : null}
+        {tsonkh === 4 ? <Employee setTsonkh={setTsonkh} /> : null}
         <div
           style={{
             display: "flex row text-base",
@@ -179,7 +150,12 @@ function Burtgel(props: any) {
                   </div>
                   <div className="w-6/12 ">
                     <select
-                      className="border rounded text-sm focus:outline-none py-0.5 w-28 "
+                      className="rounded text-sm focus:outline-none"
+                      style={{
+                        width: 140,
+                        height: 31,
+                        border: "1px solid gray",
+                      }}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.PERIOD_ID = value.target.value;
@@ -232,14 +208,19 @@ function Burtgel(props: any) {
                   </div>
                   <div className="w-6/12">
                     <select
-                      className="border rounded text-sm focus:outline-none py-0.5 w-28 "
+                      className="rounded text-sm focus:outline-none"
+                      style={{
+                        width: 140,
+                        height: 31,
+                        border: "1px solid gray",
+                      }}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.DEPARTMENT_ID = value.target.value;
                         loadData({ ...temp });
                       }}
                     >
-                      <option value={999}>Бүгд</option>
+                      <option value={999}>Сонгоно уу</option>
                       {drop.drop1.map((nation, index) => (
                         <option
                           className="font-semibold"
@@ -260,14 +241,19 @@ function Burtgel(props: any) {
                   </div>
                   <div className="w-6/12">
                     <select
-                      className="border rounded text-sm focus:outline-none py-0.5 w-28 "
+                      className="rounded text-sm focus:outline-none "
+                      style={{
+                        width: 140,
+                        height: 31,
+                        border: "1px solid gray",
+                      }}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.DOCUMENT_ID = value.target.value;
                         loadData({ ...temp });
                       }}
                     >
-                      <option value={999}>Бүгд</option>
+                      <option value={999}>Сонгоно уу</option>
                       {drop.drop3.map((nation, index) => (
                         <option
                           className="font-semibold"
@@ -287,10 +273,12 @@ function Burtgel(props: any) {
                     </div>
                     <div style={{ width: "60%", display: "flex" }}>
                       <div
+                        className="rounded-md text-sm"
                         style={{
-                          minHeight: "100px",
-                          border: "2px solid gray",
-                          width: "270px",
+                          minHeight: "70px",
+                          border: "1px solid gray",
+                          width: "265px",
+                          marginBottom: "20px",
                         }}
                       >
                         {data.Team.map((value, index) =>
@@ -320,7 +308,7 @@ function Burtgel(props: any) {
                         <button type="button" onClick={() => setTsonkh(1)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
+                            className="h-6 w-6 mt-4 ml-3"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -338,31 +326,177 @@ function Burtgel(props: any) {
                   </div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-0 pr-6">
-                      <span className="text-md">Батлах хэрэглэгч 1:</span>
-                    </label>
+                  <div className="flex flex-row " style={{ padding: "0.1rem" }}>
+                    <div style={{ width: "35%" }}>
+                      <label>Батлах хэрэглэгч 1:</label>{" "}
+                    </div>
+                    <div style={{ width: "60%", display: "flex" }}>
+                      <div
+                        className="rounded-md text-sm h-12"
+                        style={{
+                          minHeight: "40px",
+                          border: "1px solid gray",
+                          width: "240px",
+                        }}
+                      >
+                        {data.Team.map((value, index) =>
+                          value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
+                            <div className="flex flex-row">
+                              <span>
+                                {value.USER_CODE + " " + value.USER_NAME}
+                              </span>
+                              <img
+                                src={deleteIcon}
+                                width="20px"
+                                className="ml-1 cursor-pointer"
+                                onClick={() => {
+                                  let temp = data;
+                                  temp.Team[index].IS_ACTIVE = 0;
+                                  // temp.Team = temp.Team.filter(
+                                  //   (a, ind) => ind != index
+                                  // );
+                                  loadData({ ...temp });
+                                }}
+                              />
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                      <div>
+                        <button type="button" onClick={() => setTsonkh(2)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 mt-4 ml-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-6/12"></div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-0 pr-6">
-                      <span className="text-md">Батлах хэрэглэгч 2:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12">
-                    <textarea className="border rounded-md h-10 text-sm" />
+                  <div className="flex flex-row " style={{ padding: "0.1rem" }}>
+                    <div style={{ width: "35%" }}>
+                      <label>Батлах хэрэглэгч 2:</label>{" "}
+                    </div>
+                    <div style={{ width: "60%", display: "flex" }}>
+                      <div
+                        className="rounded-md text-sm h-12"
+                        style={{
+                          minHeight: "40px",
+                          border: "1px solid gray",
+                          width: "240px",
+                        }}
+                      >
+                        {data.Team.map((value, index) =>
+                          value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
+                            <div className="flex flex-row">
+                              <span>
+                                {value.USER_CODE + " " + value.USER_NAME}
+                              </span>
+                              <img
+                                src={deleteIcon}
+                                width="20px"
+                                className="ml-1 cursor-pointer"
+                                onClick={() => {
+                                  let temp = data;
+                                  temp.Team[index].IS_ACTIVE = 0;
+                                  // temp.Team = temp.Team.filter(
+                                  //   (a, ind) => ind != index
+                                  // );
+                                  loadData({ ...temp });
+                                }}
+                              />
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                      <div>
+                        <button type="button" onClick={() => setTsonkh(3)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 mt-4 ml-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="flex  space-x-40 space-x-reverse">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-0 pr-6">
-                      <span className="text-md">Батлах хэрэглэгч 3:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <textarea className="border rounded-md h-10 text-sm" />
+                  <div className="flex flex-row " style={{ padding: "0.1rem" }}>
+                    <div style={{ width: "35%" }}>
+                      <label>Батлах хэрэглэгч 3:</label>{" "}
+                    </div>
+                    <div style={{ width: "60%", display: "flex" }}>
+                      <div
+                        className="rounded-md text-sm h-12"
+                        style={{
+                          minHeight: "40px",
+                          border: "1px solid gray",
+                          width: "240px",
+                        }}
+                      >
+                        {data.Team.map((value, index) =>
+                          value.ROLE_ID === 3 && value.IS_ACTIVE !== 0 ? (
+                            <div className="flex flex-row">
+                              <span>
+                                {value.USER_CODE + " " + value.USER_NAME}
+                              </span>
+                              <img
+                                src={deleteIcon}
+                                width="20px"
+                                className="ml-1 cursor-pointer"
+                                onClick={() => {
+                                  let temp = data;
+                                  temp.Team[index].IS_ACTIVE = 0;
+                                  // temp.Team = temp.Team.filter(
+                                  //   (a, ind) => ind != index
+                                  // );
+                                  loadData({ ...temp });
+                                }}
+                              />
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                      <div>
+                        <button type="button" onClick={() => setTsonkh(4)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 mt-4 ml-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -557,7 +691,6 @@ function Employee(props: any) {
           </div>
         </div>
         <div className="flex justify-between mb-2 ">
-          {tsonkh === 2 ? <Employee setsongogdson={setSongogdson} /> : null}
           <div className="flex justify-between h-8">
             <div className="flex ">
               <DebouncedInput
@@ -692,15 +825,11 @@ function Employee(props: any) {
         </div>
         <div>
           <span>Сонгогдсон:</span>
-          {songogdson.map((a: any) => (
-            <span>{a.USER_NAME + " "}</span>
-          ))}
         </div>
-        {tsonkh === 2 ? (
-          <div className="mt-3">
-            <SaveButton Title="cонгох" />
-          </div>
-        ) : null}
+
+        <div className="mt-3">
+          <SaveButton Title="cонгох" />
+        </div>
       </div>
     );
   } else {
