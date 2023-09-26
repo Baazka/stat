@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import writeXlsxFile from "write-excel-file";
-
+import DataRequest from "../functions/make_Request";
 import Stat_URl from "../Stat_URL";
+import dateFormat, { masks } from "dateformat";
 import {
   addIcon,
   eye,
@@ -52,9 +53,9 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-
+const now = new Date();
 type Person = {
-  TAILANT_HUGATSAA: number;
+  PERIOD_LABEL: number;
   BATALGAAJUULAH_H: string;
   TORIIN_AUDIT_BAI: string;
   MAYGTIIN_DUGAAR: string;
@@ -67,7 +68,12 @@ type Person = {
   BURTGSEN_OGNOO: string;
   BURTGESEN_HEREGLEGCH: string;
 };
-function Home() {
+// const defaultData: Person[] = [
+//   {
+//     TAILANT_HUGATSAA: PERIOD_LABEL,
+//   },
+// ];
+function Home(props: any) {
   const objects = [
     {
       value: "",
@@ -570,30 +576,33 @@ function Home() {
         id: "№",
       },
       {
-        accessorKey: "TAILANT_HUGATSAA",
+        accessorKey: "PERIOD_LABEL",
         cell: (info) => info.getValue(),
         header: () => "Тайлант хугацаа",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "BATALGAAJUULAH_H",
-        header: () => "Баталгаажуулах хугацаа",
+        header: "Баталгаажуулах хугацаа",
         cell: (info) => info.getValue(),
+        accessorFn: (row, index) => {
+          return row.CONFIRM_DATE === null
+            ? ""
+            : dateFormat(row.CONFIRM_DATE, "yyyy-mm-dd");
+        },
       },
       {
-        accessorKey: "TORIIN_AUDIT_BAI",
+        accessorKey: "DEPARTMENT_NAME",
         header: () => "Төрийн аудитын байгууллага",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MAYGTIIN_DUGAAR",
+        accessorKey: "DOCUMENT_NAME",
         header: () => "Маягтын дугаар",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "BATLAH_1",
         header: "Батлах 1",
-        width: 200,
         cell: (info) => info.getValue(),
       },
       {
@@ -612,12 +621,16 @@ function Home() {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BURTGSEN_OGNOO",
-        header: () => "Бүртгэсэн огноо",
+        header: "Бүртгэсэн огноо",
         cell: (info) => info.getValue(),
+        accessorFn: (row, index) => {
+          return row.CREATED_DATE === null
+            ? ""
+            : dateFormat(row.CREATED_DATE, "yyyy-mm-dd");
+        },
       },
       {
-        accessorKey: "BURTGESEN_HEREGLEGCH",
+        accessorKey: "USER_NAME",
         header: "Бүртгэсэн хэрэглэгч",
         cell: (info) => info.getValue(),
       },
@@ -817,7 +830,32 @@ function Home() {
     debugHeaders: true,
     debugColumns: false,
   });
+  useEffect(() => {
+    fetchData();
+  }, [props.mayagtData]);
 
+  async function fetchData() {
+    DataRequest({
+      url: Stat_URl + "statisticList",
+      method: "POST",
+      data: {
+        CONFIRM_DATE: dateFormat(new Date(), "dd-mmm-yy"),
+        IS_ACTIVE: 1,
+      },
+    })
+      .then(function (response) {
+        console.log(response, "response");
+        if (response?.data.message === "failed" || response === undefined) {
+          alert("Өгөгдөл авчирхад алдаа гарлаа!");
+          //setloaderSpinner(0);
+        } else {
+          setData(response?.data);
+        }
+      })
+      .catch(function (error) {
+        alert("Aмжилтгүй");
+      });
+  }
   return (
     <>
       <div
