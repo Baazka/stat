@@ -156,7 +156,7 @@ function Burtgel(props: any) {
         <div
           style={{
             display: "flex row text-base",
-            padding: "8rem 0rem 0rem 0rem",
+            padding: "6rem 0rem 0rem 0rem",
           }}
         >
           <div className="flex  md:justify-center sm:justify-end">
@@ -172,8 +172,8 @@ function Burtgel(props: any) {
                     <select
                       className="rounded text-sm focus:outline-none"
                       style={{
-                        width: 140,
-                        height: 31,
+                        height: 45,
+                        width: 170,
                         border: "1px solid gray",
                       }}
                       onChange={(value) => {
@@ -187,7 +187,8 @@ function Burtgel(props: any) {
                         <option
                           className="font-semibold"
                           key={nation.PERIOD_LABEL}
-                          value={nation.ID}
+                          value
+                          className={nation.ID}
                         >
                           {nation.PERIOD_LABEL}
                         </option>
@@ -205,6 +206,10 @@ function Burtgel(props: any) {
                     <input
                       type="date"
                       className="inputRoundedMetting"
+                      style={{
+                        height: 45,
+                        width: 170,
+                      }}
                       onChange={(e) => {
                         let temp = data;
                         temp.Audit.CONFIRM_DATE = e.target.value;
@@ -227,8 +232,8 @@ function Burtgel(props: any) {
                     <select
                       className="rounded text-sm focus:outline-none"
                       style={{
-                        width: 140,
-                        height: 31,
+                        width: 170,
+                        height: 45,
                         border: "1px solid gray",
                       }}
                       onChange={(value) => {
@@ -237,7 +242,9 @@ function Burtgel(props: any) {
                         loadData({ ...temp });
                       }}
                     >
-                      <option value={999}>Сонгоно уу</option>
+                      <option className="text-center" value={999}>
+                        Сонгоно уу
+                      </option>
                       {drop.drop1.map((nation, index) => (
                         <option
                           className="font-semibold"
@@ -260,8 +267,8 @@ function Burtgel(props: any) {
                     <select
                       className="rounded text-sm focus:outline-none "
                       style={{
-                        width: 140,
-                        height: 31,
+                        width: 170,
+                        height: 45,
                         border: "1px solid gray",
                       }}
                       onChange={(value) => {
@@ -270,7 +277,9 @@ function Burtgel(props: any) {
                         loadData({ ...temp });
                       }}
                     >
-                      <option value={999}>Сонгоно уу</option>
+                      <option className="text-center" value={999}>
+                        Сонгоно уу
+                      </option>
                       {drop.drop3.map((nation, index) => (
                         <option
                           className="font-semibold"
@@ -290,12 +299,11 @@ function Burtgel(props: any) {
                     </div>
                     <div style={{ width: "60%", display: "flex" }}>
                       <div
-                        className="rounded-md text-sm"
+                        className="rounded-md text-sm h-12"
                         style={{
-                          minHeight: "70px",
                           border: "1px solid gray",
-                          width: "265px",
-                          marginBottom: "20px",
+                          width: "263px",
+                          overflow: "scroll",
                         }}
                       >
                         {data.Team.map((value, index) =>
@@ -351,7 +359,6 @@ function Burtgel(props: any) {
                       <div
                         className="rounded-md text-sm h-12"
                         style={{
-                          minHeight: "40px",
                           border: "1px solid gray",
                           width: "240px",
                         }}
@@ -409,7 +416,6 @@ function Burtgel(props: any) {
                       <div
                         className="rounded-md text-sm h-12"
                         style={{
-                          minHeight: "40px",
                           border: "1px solid gray",
                           width: "240px",
                         }}
@@ -467,7 +473,6 @@ function Burtgel(props: any) {
                       <div
                         className="rounded-md text-sm h-12"
                         style={{
-                          minHeight: "40px",
                           border: "1px solid gray",
                           width: "240px",
                         }}
