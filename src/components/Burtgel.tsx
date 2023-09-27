@@ -56,6 +56,7 @@ function Burtgel(props: any) {
   const userDetils = props.userDetils;
   const [tsonkh, setTsonkh] = useState(0);
   const [songogdson, setSongogdson] = useState(0);
+  let navigate = useNavigate();
   const [data, loadData] = useState({
     Audit: {
       ID: null,
@@ -103,6 +104,24 @@ function Burtgel(props: any) {
     }
     fetchData();
   }, [props]);
+
+  function savetoDB(){
+    DataRequest({
+      url: Stat_Url + "statisticIU",
+      method: "POST",
+      data:data
+    })
+      .then(function (response) {
+        console.log(response,'saveDB');
+        if(response?.data.message === 'Хадгаллаа.'){
+        alert('амжилттай хадгаллаа')
+        navigate('/web/Home/Audit')
+        }
+      })
+      .catch(function (error) {
+        alert("Aмжилтгүй");
+      });
+  }
 
   return (
     <div
@@ -190,10 +209,7 @@ function Burtgel(props: any) {
                         let temp = data;
                         temp.Audit.CONFIRM_DATE = e.target.value;
                         loadData({
-                          ...temp,
-                          ...{
-                            CONFIRM_DATE: e.target.value,
-                          },
+                                ...temp
                         });
                       }}
                     />
@@ -506,7 +522,7 @@ function Burtgel(props: any) {
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
           <button className="md:items-end rounded mr-28 mt-10">
-            <SaveButton saveToDB={() => console.log(data, "savedata")} />
+            <SaveButton saveToDB={() => savetoDB()} />
           </button>
         </div>
       </div>
@@ -549,6 +565,7 @@ function Employee(props: any) {
                 tsonkh:props.tsonkh,
                 data:props.data,
                 loadData:props.loadData,
+                setTsonkh:props.setTsonkh,
                 row
               }}
             />
@@ -951,7 +968,7 @@ function IndeterminateCheckbox({
   loadData,
   tsonkh,
   row,
-  
+  setTsonkh,
   ...rest
   
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
@@ -965,25 +982,26 @@ function IndeterminateCheckbox({
   }, [ref, indeterminate]);
   function saveToDB(value){
     console.log(row.original);
-    // if(tsonkh !== 1){
-    //   let temp = data
-    //   for (let j in rowSelection) {
-    //     let temp_team = {
-    //       ID: null,
-    //       STAT_AUDIT_ID: null,
-    //       AUDITOR_ID: null,
-    //       ROLE_ID: props.tsonkh,
-    //       IS_ACTIVE: 1,
-    //       AUDITOR_NAME: null,
-    //       USER_CODE: null,
-    //     };
-    //     temp_team.AUDITOR_ID = data[j].USER_ID;
-    //     temp_team.USER_NAME = data[j].USER_NAME;
-    //     temp_team.USER_CODE = data[j].USER_CODE;
-    //     temp.Team.push(temp_team);
-    //   }
-    //   props.loadData(temp);
-    //   props.setTsonkh(0);
+    if(tsonkh !== 1){
+      let temp = data
+     
+        let temp_team = {
+          ID: null,
+          STAT_AUDIT_ID: null,
+          AUDITOR_ID: null,
+          ROLE_ID: tsonkh,
+          IS_ACTIVE: 1,
+          USER_NAME: null,
+          USER_CODE: null,
+        }
+        temp_team.AUDITOR_ID = row.original.USER_ID;
+        temp_team.USER_NAME = row.original.USER_NAME;
+        temp_team.USER_CODE = row.original.USER_CODE;
+        temp.Team.push(temp_team);
+        loadData(temp);
+        setTsonkh(0);
+      }
+    
     //  }
   }
 
