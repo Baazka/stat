@@ -55,7 +55,7 @@ function App() {
           element: <News />,
         },
         {
-          path: "/web/Home/Nemeh",
+          path: "/web/Home/Nemeh/:id?",
           element: <Burtgel />,
         },
       ],

@@ -15,6 +15,8 @@ import ButtonRequest from "../ButtonRequest";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
 import writeXlsxFile from "write-excel-file";
+import DataRequest from "../../functions/make_Request";
+import Stat_Url from '../../Stat_URL'
 import {
   Column,
   Table,
@@ -192,31 +194,32 @@ type Stat_m2 = {
   TOSOW_ZAHIRAGCH_ANGILAL: string;
   BAI_UIL_AJIL_UNDSEN_CHIGLL: string;
 };
-function Mayagt_2() {
+function Mayagt_2(props:any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-
+  const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
   const [globalFilter, setGlobalFilter] = React.useState("");
-
-  const columns = React.useMemo<ColumnDef<Stat_m2, any>[]>(
+  const [data,loadData] = useState([])
+  const columns = React.useMemo(
     () => [
       {
         accessorFn: (row, index) => index + 1,
         id: "№",
       },
       {
-        accessorKey: "AUDIT_TOROL",
+        accessorKey: "AUDIT_TYPE_NAME",
         cell: (info) => info.getValue(),
         header: () => "Аудитын төрөл",
       },
       {
-        accessorKey: "AUDIT_NER_SEDEV",
+        accessorKey: "AUDIT_NAME",
         header: () => "Аудитын нэр, сэдэв",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_KOD",
+        accessorKey: "AUDIT_CODE",
         header: () => "Аудитын код",
         cell: (info) => info.getValue(),
         footer: (info) => info.column.id,
@@ -232,59 +235,88 @@ function Mayagt_2() {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HH_HELBER",
+        accessorKey: "AUDIT_TYPE",
         header: "Аудит хийх хэлбэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HH_BAI_TOROL",
+        accessorKey: "AUDIT_ORG_CHECK_NAME",
         header: "Аудит хийх байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HH_NEGJ_NER",
+        accessorKey: "AUDIT_DEPARTMENT_NAME",
         header: "Аудит хийх нэгжийн нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HH_BAI_TOROL_NN",
+        accessorKey: "CHECK_DEPARTMENT_NAME",
         header: "Аудит хийх байгууллага, нэгжийн нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BAIGUULLGUG_TROL",
+        accessorKey: "baiguulaga_turul",
         header: () => "Байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "SHALGAGDAGCH_BAIGUULLAGIN_NR",
+        accessorKey: "ENT_NAME",
         header: () => "Шалгагдагч байгууллагын нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "REGISTER",
+        accessorKey: "ORG_REGISTER_NO",
         header: "Регистрийн дугаар",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOSOW_ZAHIRAGCH_ANGILAL",
+        accessorKey: "BUDGET_SHORT_NAME",
         header: "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
       },
 
       {
-        accessorKey: "BAI_UIL_AJIL_UNDSEN_CHIGLL",
+        accessorKey: "SALBAR_ANGILAL",
         header: "Салбарын харьяалал",
         cell: (info) => info.getValue(),
       },
     ],
     []
   );
+  useEffect(() => {
+    fetchData();
+  }, [props.mayagtData]);
+
+  async function fetchData() {
+    
+    DataRequest({
+      url: Stat_Url + "BM1List",
+      method: "POST",
+      data:{
+        // STAT_ID : mayagtData.ID,
+        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
+      }
+    })
+      .then(function (response) {
+     console.log(response,'response');
+        if(response.data !== undefined && response.data.length >0){
+          loadData(response.data)
+        }
+      
+      })
+      .catch(function (error) {
+        console.log(error,'error');
+        alert("Aмжилтгүй");
+      });
+  }
+
+
 
   let Stat_m2 = [{}];
-  const [data, setData] = React.useState<Stat_m2[]>(Stat_m2);
+ 
   const Navigate = useNavigate();
-  const refreshData = () => setData((old) => []);
+ 
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 4,

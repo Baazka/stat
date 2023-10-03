@@ -12,8 +12,8 @@ import {
 import DataRequest from "../functions/make_Request";
 
 function Login(props: any) {
-  const [ner, setNer] = useState<string>("admin");
-  const [nuutsUg, setNuutsUg] = useState<string>("chub3");
+  const [ner, setNer] = useState<string>("");
+  const [nuutsUg, setNuutsUg] = useState<string>("");
   const [sanuulakh, setSanuulakh] = useState(false);
   let navigate = useNavigate();
 
@@ -25,12 +25,12 @@ function Login(props: any) {
   async function nevtrekh() {
     if (ner !== undefined && nuutsUg !== undefined) {
       DataRequest({
-        url: "https://fas.audit.mn/reg/api/v1/login/",
+        url: "http://stat.audit.mn/reg/api/v1/login/",
         method: "POST",
         data: {
           username: ner,
           password: nuutsUg,
-          systemid: 6,
+          systemid: 2,
         },
       })
         .then(function(response) {
@@ -51,7 +51,7 @@ function Login(props: any) {
             }
             DataRequest({
               url:
-                "https://fas.audit.mn/reg/api/v1/profile/" +
+                "http://stat.audit.mn/reg/api/v1/profile/" +
                 response.data.USER_ID +
                 "/" +
                 6,

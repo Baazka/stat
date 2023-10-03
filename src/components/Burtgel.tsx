@@ -1,5 +1,5 @@
 import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import Title from "./Title";
 import { saveIcon, deleteIcon } from "../assets/zurag";
 import "../pages/Home.css";
@@ -30,6 +30,9 @@ import DataRequest from "../functions/make_Request";
 import Stat_Url from "../Stat_URL";
 import axios from "axios";
 
+import dateFormat, { masks } from "dateformat";
+
+
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -52,18 +55,19 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 function Burtgel(props: any) {
-  const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+
   const [tsonkh, setTsonkh] = useState(0);
-  const [songogdson, setSongogdson] = useState(0);
+  //@ts-ignore
+  const stat = JSON.parse(localStorage.getItem("Stat"));
   let navigate = useNavigate();
+  const {state} = useLocation();
   const [data, loadData] = useState({
     Audit: {
       ID: null,
-      PERIOD_ID: 1,
-      DEPARTMENT_ID: 101,
-      DOCUMENT_ID: 1,
-      CONFIRM_DATE: "",
+      PERIOD_ID: 999,
+      DEPARTMENT_ID: 999,
+      DOCUMENT_ID: 999,
+      CONFIRM_DATE: new Date(),
     },
     Team: [
       // {
@@ -82,45 +86,90 @@ function Burtgel(props: any) {
     drop3: [],
   });
   useEffect(() => {
-    async function fetchData() {
-      let listItems = await axios(Stat_Url + "refDepartment");
-      if (listItems.data !== undefined && listItems.data.length > 0) {
-        let temp = drop;
-        temp.drop1 = listItems.data;
-        setDrop({ ...temp });
-      }
-      let refPeriod = await axios(Stat_Url + "refPeriod");
-      if (refPeriod.data !== undefined && refPeriod.data.length > 0) {
-        let temp = drop;
-        temp.drop2 = refPeriod.data;
-        setDrop({ ...temp });
-      }
-      let refDocument = await axios(Stat_Url + "refDocument?DocType=1");
-      if (refDocument.data !== undefined && refDocument.data.length > 0) {
-        let temp = drop;
-        temp.drop3 = refDocument.data;
-        setDrop({ ...temp });
-      }
-    }
-    fetchData();
-  }, [props]);
 
-  function savetoDB(){
+   
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+   if(state?.ID !== undefined && state.ID !== null){
+      console.log(state,'state');
     DataRequest({
-      url: Stat_Url + "statisticIU",
+      url: Stat_Url + "get_stat_plan",
       method: "POST",
-      data:data
+      data:{STAT_ID:state?.ID}
     })
       .then(function (response) {
-        console.log(response,'saveDB');
-        if(response?.data.message === 'Хадгаллаа.'){
-        alert('амжилттай хадгаллаа')
-        navigate('/web/Home/Audit')
+        if(response.data !== undefined && response.data !== null){
+        
+        loadData(response.data)
         }
       })
       .catch(function (error) {
         alert("Aмжилтгүй");
       });
+    }
+
+    let listItems = await axios(Stat_Url + "refDepartment");
+    if (listItems.data !== undefined && listItems.data.length > 0) {
+      let temp = drop;
+      temp.drop1 = listItems.data;
+      setDrop({ ...temp });
+    }
+    let refPeriod = await axios(Stat_Url + "refPeriod");
+    if (refPeriod.data !== undefined && refPeriod.data.length > 0) {
+      let temp = drop;
+      temp.drop2 = refPeriod.data;
+      setDrop({ ...temp });
+    }
+    let refDocument = await axios(Stat_Url + "refDocument?DocType=1");
+    if (refDocument.data !== undefined && refDocument.data.length > 0) {
+      let temp = drop;
+      temp.drop3 = refDocument.data;
+      setDrop({ ...temp });
+    }
+  }
+
+  function savetoDB(){
+    
+    DataRequest({
+      url: Stat_Url + "statisticCheck",
+      method: "POST",
+      data:
+      {
+        PERIOD_ID:data.Audit.PERIOD_ID,
+        DEPARTMENT_ID:data.Audit.DEPARTMENT_ID,
+        DOCUMENT_ID:data.Audit.DOCUMENT_ID
+      }
+    })
+      .then(function (resp) {
+        if(resp.data === false){
+          DataRequest({
+            url: Stat_Url + "statisticIU",
+            method: "POST",
+            data:data
+          })
+            .then(function (response) {
+              if(response?.data.message === 'Хадгаллаа.'){
+              alert('амжилттай хадгаллаа')
+              navigate('/web/Home/Audit')
+              }
+            })
+            .catch(function (error) {
+              alert("Aмжилтгүй");
+            });
+        }else{
+            alert ('Хувиар давхардаж байна!!!')
+       }
+        
+      })
+      .catch(function (error) {
+        
+        
+      
+      });
+   
+    
   }
 
   return (
@@ -176,19 +225,20 @@ function Burtgel(props: any) {
                         width: 170,
                         border: "1px solid gray",
                       }}
+                      value = {data.Audit.PERIOD_ID}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.PERIOD_ID = value.target.value;
                         loadData({ ...temp });
                       }}
+                     
                     >
                       <option value={999}>Бүгд</option>
                       {drop.drop2.map((nation, index) => (
                         <option
                           className="font-semibold"
                           key={nation.PERIOD_LABEL}
-                          value
-                          className={nation.ID}
+                          value = {nation.ID}                          
                         >
                           {nation.PERIOD_LABEL}
                         </option>
@@ -210,6 +260,14 @@ function Burtgel(props: any) {
                         height: 45,
                         width: 170,
                       }}
+                      value = {dateFormat(
+                        data.Audit.CONFIRM_DATE === null ||
+                        data.Audit.CONFIRM_DATE === undefined
+                          ? ""
+                          : data.Audit.CONFIRM_DATE,
+                        "yyyy-mm-dd"
+                      )
+                        }
                       onChange={(e) => {
                         let temp = data;
                         temp.Audit.CONFIRM_DATE = e.target.value;
@@ -236,6 +294,7 @@ function Burtgel(props: any) {
                         height: 45,
                         border: "1px solid gray",
                       }}
+                      value = {data.Audit.DEPARTMENT_ID}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.DEPARTMENT_ID = value.target.value;
@@ -271,6 +330,7 @@ function Burtgel(props: any) {
                         height: 45,
                         border: "1px solid gray",
                       }}
+                      value={data.Audit.DOCUMENT_ID}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.DOCUMENT_ID = value.target.value;
@@ -339,9 +399,9 @@ function Burtgel(props: any) {
                             stroke="currentColor"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
                             />
                           </svg>
@@ -396,9 +456,9 @@ function Burtgel(props: any) {
                             stroke="currentColor"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
                             />
                           </svg>
@@ -453,9 +513,9 @@ function Burtgel(props: any) {
                             stroke="currentColor"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
                             />
                           </svg>
@@ -510,9 +570,9 @@ function Burtgel(props: any) {
                             stroke="currentColor"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
                             />
                           </svg>
@@ -675,7 +735,7 @@ function Employee(props: any) {
     for (let j in rowSelection) {
       let temp_team = {
         ID: null,
-        STAT_AUDIT_ID: null,
+        STAT_AUDIT_ID: temp.Audit.ID,
         AUDITOR_ID: 55,
         ROLE_ID: 1,
         IS_ACTIVE: 1,
@@ -992,7 +1052,7 @@ function IndeterminateCheckbox({
      
         let temp_team = {
           ID: null,
-          STAT_AUDIT_ID: null,
+          STAT_AUDIT_ID: temp.Audit.ID,
           AUDITOR_ID: null,
           ROLE_ID: tsonkh,
           IS_ACTIVE: 1,

@@ -21,41 +21,42 @@ function Mayagt() {
   // @ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
 
+ console.log(mayagtData);
   return (
     <div>
-      {mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 1" ? (
+      {mayagtData.DOCUMENT_ID === 1 ? (
         // @ts-ignore
         <Mayagt_1 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 2" ? (
-        <Mayagt_2 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 3" ? (
-        <Mayagt_3 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 4" ? (
-        <Mayagt_4 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 5" ? (
-        <Mayagt_5 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 6" ? (
-        <Mayagt_6 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 7" ? (
-        <Mayagt_7 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 8" ? (
-        <Mayagt_8 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 9" ? (
-        <Mayagt_9 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 10" ? (
-        <Mayagt_10 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 11" ? (
-        <Mayagt_11 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 12" ? (
-        <Mayagt_12 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 13" ? (
-        <Mayagt_13 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 14" ? (
-        <Mayagt_14 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАББМ 15" ? (
-        <Mayagt_15 />
-      ) : mayagtData.MAYGTIIN_DUGAAR === "З-ТАБСМ 1 А" ? (
-        <CM_1A />
+      ) : mayagtData.DOCUMENT_ID === 2 ? (
+        <Mayagt_2  mayagtData={mayagtData} userDetils={userDetils}/>
+      ) : mayagtData.DOCUMENT_ID === 3 ? (
+        <Mayagt_3 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 4? (
+        <Mayagt_4 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 5 ? (
+        <Mayagt_5 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 6? (
+        <Mayagt_6 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 7 ? (
+        <Mayagt_7 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 8 ? (
+        <Mayagt_8 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 9 ? (
+        <Mayagt_9 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 10 ? (
+        <Mayagt_10 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === 15 ? (
+        <Mayagt_11 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-12" ? (
+        <Mayagt_12 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-13" ? (
+        <Mayagt_13 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-14" ? (
+        <Mayagt_14 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-15" ? (
+        <Mayagt_15 mayagtData={mayagtData} userDetils={userDetils} />
+      ) : mayagtData.DOCUMENT_ID === "З-ТАБСМ-1 А" ? (
+        <CM_1A mayagtData={mayagtData} userDetils={userDetils} />
       ) : null}
     </div>
   );

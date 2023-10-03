@@ -32,6 +32,7 @@
     "node-fetch": "^3.3.1",
     "path-browserify": "^1.0.1",
     "react": "^18.2.0",
+    "react-currency-input-field": "^3.6.11",
     "react-data-export": "^0.6.0",
     "react-dom": "^18.2.0",
     "react-dropdown": "^1.11.0",

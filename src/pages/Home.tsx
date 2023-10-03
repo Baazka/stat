@@ -596,7 +596,7 @@ function Home(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "DOCUMENT_NAME",
+        accessorKey: "DOCUMENT_SHORT_NAME",
         header: () => "Маягтын дугаар",
         cell: (info) => info.getValue(),
       },
@@ -674,7 +674,7 @@ function Home(props: any) {
             >
               <img
                 src={editPencil}
-                onClick={() => Navigate("/web/Home/Nemeh")}
+                onClick={() => Navigate("/web/Home/Nemeh",{ state: { ID: row.ID} })}
                 width="14px"
                 height="14px"
                 alt=""

@@ -12,6 +12,7 @@ import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import writeXlsxFile from "write-excel-file";
 import dateFormat, { masks } from "dateformat";
+import CurrencyInput from "react-currency-input-field";
 import {
   Column,
   Table,
@@ -398,12 +399,14 @@ type Stat_m1 = {
 
 function Mayagt_1(props: any) {
   const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
+  const [saveData,setSaveData] = useState(new Set())
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
 
-  const columns = React.useMemo<ColumnDef<Stat_m1, any>[]>(
+  const columns = React.useMemo(
     () => [
       {
         accessorFn: (row, index) => index + 1,
@@ -412,39 +415,39 @@ function Mayagt_1(props: any) {
         Filter: false,
       },
       {
-        accessorKey: "AUDIT_TYPE",
+        accessorKey: "AUDIT_TYPE_NAME",
         header: () => "Аудитын төрөл",
         cell: (info) => info.getValue(),
       },
 
       {
-        accessorKey: "AUDIT_NER_SEDEV",
+        accessorKey: "AUDIT_NAME",
         header: () => "Аудитын, нэр сэдэв",
         cell: (info) => info.getValue(),
       },
 
       {
-        accessorKey: "AUDIT_KOD",
+        accessorKey: "AUDIT_CODE",
         header: "Аудит код",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BAIGUULLGIIN_NER",
+        accessorKey: "ENT_NAME",
         header: "Байгууллагын нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "REGISTER",
+        accessorKey: "ORG_REGISTER_NO",
         header: "Регистрийн дугаар",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOSOW_ZAHIRGCH_ANGILL",
+        accessorKey: "BUDGET_SHORT_NAME",
         header: () => "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "S_HARYALL",
+        accessorKey: "SALBAR_ANGILAL",
         header: () => "Салбарын харьяалал",
         cell: (info) => info.getValue(),
       },
@@ -455,7 +458,7 @@ function Mayagt_1(props: any) {
       },
 
       {
-        accessorKey: "AUDIT_HIIH_HELBER",
+        accessorKey: "AUDIT_TYPE",
         header: () => "Аудит хийх хэлбэр",
         cell: (info) => info.getValue(),
       },
@@ -475,12 +478,12 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "SHINJEECH_OROLTSON_ESEH",
+        accessorKey: "IS_EXPERT_ATTEND",
         header: () => "Шинжээч оролцсон эсэх",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HEVLMEL_TAILAN_BELTGESEN_ESEH",
+        accessorKey: "IS_PRESS_REPORT",
         header: () => "Хэвлэмэл тайлан бэлтгэсэн эсэх",
         cell: (info) => info.getValue(),
       },
@@ -490,7 +493,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "WORK_DATE",
+        accessorKey: "WORK_DAY",
         header: () => "Ажилласан өдөр",
         cell: (info) => info.getValue(),
       },
@@ -500,37 +503,48 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TSUO_DUN_T",
+        accessorKey: "TUL_BENEFIT",
         header: () => "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
         cell: (info) => info.getValue(),
+        accessorFn: (row, index) => (
+          <div>
+         <CurrencyInput
+              id="input-example"
+              defaultValue={row.TUL_BENEFIT}
+              decimalsLimit={2}
+              disabled
+              style={{ textAlign: "center",backgroundColor:'transparent' }}
+             />
+         </div>
+        ),
       },
       {
-        accessorKey: "TSUO_DUN_TOG",
+        accessorKey: "TOD_BENEFIT",
         header: () => "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HIIH_BAI_TOROL",
+        accessorKey: "AUDIT_ORG_TYPE",
         header: () => "Аудит хийх байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HH_NEGJ_NER",
+        accessorKey: "AUDIT_ORG_CHECK_NAME",
         header: () => "Аудит хийх нэгжийн нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HIIH_BAI_NEGJ_NER",
+        accessorKey: "DEPARTMENT_NAME",
         header: () => "Аудит хийх байгууллага, нэгжийн нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BAGIIN_AHLAH",
+        accessorKey: "AUDITOR_LEAD",
         header: () => "Багийн ахлах",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BAGIIN_GISHUUN",
+        accessorKey: "AUDITOR_MEMBER",
         header: () => "Багийн гишүүн",
         cell: (info) => info.getValue(),
         wraptext: true,
@@ -540,9 +554,9 @@ function Mayagt_1(props: any) {
   );
 
   let Stat_m1 = [{}];
-  const [data, setData] = React.useState<Stat_m1[]>(Stat_m1);
+  const [data, loadData] = React.useState([]);
   const Navigate = useNavigate();
-  const refreshData = () => setData((old) => []);
+
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 4,
@@ -577,21 +591,28 @@ function Mayagt_1(props: any) {
     debugColumns: false,
   });
 
-  function Draw_input(param: any, cell: any, index: number) {
+  function Draw_input(param: any, cell: any, index: number,cell_all) {
     return (
       <div>
-        {cell.id === "SHINJEECH_OROLTSON_ESEH" ||
-        cell.id === "HEVLMEL_TAILAN_BELTGESEN_ESEH" ? (
+        {cell.id === "IS_EXPERT_ATTEND" ||
+        cell.id === "IS_PRESS_REPORT" ? (
           <select
             className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+            value = {param.row.original[cell.id]}
             onChange={(text) => {
-              let any = setFilter;
-            }}
+              let temp = data;
+              temp[index][cell.id] = text.target.value
+              let tset = saveData
+              tset.add(index)
+              setSaveData(tset)
+              loadData([...temp])
+              
+           }}
           >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
+            <option className="font-medium" key={"Сонгоно уу"} value={999}>
               {"Сонгоно уу"}
             </option>
-            <option className="font-medium" key={"Тийм"} value={0}>
+            <option className="font-medium" key={"Тийм"} value={1}>
               {"Тийм"}
             </option>
             <option className="font-medium" key={"Үгүй"} value={0}>
@@ -599,10 +620,11 @@ function Mayagt_1(props: any) {
             </option>
           </select>
         ) : cell.id === "WORK_PEOPLE" ||
-          cell.id === "WORK_DATE" ||
+          cell.id === "WORK_DAY" ||
           cell.id === "WORK_TIME" ? (
-          <textarea
+          <input
             value={param.row.original[cell.id]}
+            type ="number"
             className={
               index % 2 > 0
                 ? "flex text-center h-8 bg-gray-100"
@@ -616,13 +638,18 @@ function Mayagt_1(props: any) {
             }}
             onChange={(e) => {
               let temp = data;
-              //@ts-ignore
               temp[index][cell.id] = e.target.value;
-              // @ts-ignore
-              setData([...temp]);
+              let tset = saveData
+              tset.add(index)
+              setSaveData(tset)
+            
+              loadData([...temp]);
             }}
           />
-        ) : null}
+        ) : flexRender(
+          cell_all.column.columnDef.cell,
+          cell_all.getContext()
+        )}
       </div>
     );
   }
@@ -632,27 +659,52 @@ function Mayagt_1(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    
     DataRequest({
-      url: Stat_Url + "getBM1/" + mayagtData?.MAYGTIIN_DUGAAR + "/" + 1,
-      method: "GET",
-      // data: {
-      //   FAS_AUDIT_ID: props.data.ID,
-      //   DOCUMENT_ID: props.data.listID,
-      //   CREATED_BY: userDetils?.USER_ID,
-      //   CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
-      //   IS_ACTIVE: 1,
-      // },
+      url: Stat_Url + "BM1List",
+      method: "POST",
+      data:{
+        // STAT_ID : mayagtData.ID,
+        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
+      }
     })
       .then(function (response) {
-        console.log(response, "response");
-        if (response?.data.message === "failed" || response === undefined) {
-          alert("Өгөгдөл авчирхад алдаа гарлаа!");
-          //setloaderSpinner(0);
-        } else {
-          setData(response?.data);
+     
+        if(response.data !== undefined && response.data.length >0){
+          loadData(response.data)
+        }
+      
+      })
+      .catch(function (error) {
+        console.log(error,'error');
+        alert("Aмжилтгүй");
+      });
+  }
+  function saveToDB(){
+   let temp = []
+ //  console.log(saveData,'saveData');
+    for(let i of saveData){
+       temp.push(data[i])
+    }
+    console.log(temp,'save data');
+  DataRequest({
+      url: Stat_Url + "BM1IU",
+      method: "POST",
+      data:{
+        // STAT_ID : mayagtData.ID,
+       data:temp,
+       CREATED_BY:userDetils.USER_ID
+      }
+    })
+      .then(function (response) {
+        console.log(response.data);
+        if(response?.data.message === 'Хадгаллаа.'){
+          alert('амжилттай хадгаллаа')
         }
       })
       .catch(function (error) {
+        console.log(error,'error');
         alert("Aмжилтгүй");
       });
   }
@@ -742,7 +794,7 @@ function Mayagt_1(props: any) {
                                 cell.column.columnDef.cell,
                                 cell.getContext()
                               )
-                            : Draw_input(cell.getContext(), cell.column, i)}
+                            : Draw_input(cell.getContext(), cell.column, i,cell)}
                         </td>
                       );
                     })}
@@ -753,7 +805,7 @@ function Mayagt_1(props: any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave />
+          <ButtonSave saveToDB = {()=>saveToDB()}/>
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
