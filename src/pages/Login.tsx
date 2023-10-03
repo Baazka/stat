@@ -54,7 +54,7 @@ function Login(props: any) {
                 "http://stat.audit.mn/reg/api/v1/profile/" +
                 response.data.USER_ID +
                 "/" +
-                6,
+                2,
               method: "GET",
               data: {},
             })
