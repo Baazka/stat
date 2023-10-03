@@ -1,4 +1,4 @@
-const URL = "http://stat.audit.mn/back"
+const URL = "http://stat.audit.mn/back/"
 //"http://172.16.24.126:3004/";
 //"http://fas.audit.mn/tback/api/v1/";
 //"http://localhost:3004/";
