@@ -2,7 +2,7 @@ import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
 import Title from "./Title";
 import { saveIcon, deleteIcon } from "../assets/zurag";
-import "../pages/Home.css";
+
 import imagebackground from "../assets/zurag/background.png";
 import SaveButton from "./SaveButton";
 import {

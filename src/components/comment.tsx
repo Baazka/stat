@@ -1,4 +1,4 @@
-import "../pages/Home.css";
+
 import { sortingFns, FilterFn, SortingFn } from "@tanstack/react-table";
 
 import {

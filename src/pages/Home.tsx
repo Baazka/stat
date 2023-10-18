@@ -578,7 +578,7 @@ function Home(props: any) {
       {
         accessorKey: "PERIOD_LABEL",
         cell: (info) => info.getValue(),
-        header: () => "Тайлант хугацаа",
+        header: "Тайлант хугацаа",
         footer: (props) => props.column.id,
       },
       {
@@ -592,12 +592,12 @@ function Home(props: any) {
       },
       {
         accessorKey: "DEPARTMENT_NAME",
-        header: () => "Төрийн аудитын байгууллага",
+        header: "Төрийн аудитын байгууллага",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "DOCUMENT_SHORT_NAME",
-        header: () => "Маягтын дугаар",
+        header: "Маягтын дугаар",
         cell: (info) => info.getValue(),
       },
       {
@@ -617,7 +617,7 @@ function Home(props: any) {
       },
       {
         accessorKey: "GUITSETGELIIN_HUWI",
-        header: () => "Гүйцэтгэлийн хувь",
+        header: "Гүйцэтгэлийн хувь",
         cell: (info) => info.getValue(),
       },
       {

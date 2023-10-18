@@ -6,10 +6,8 @@ import {
 } from "react-router-dom";
 import Title from "../Title";
 import { excel } from "../../assets/zurag";
-import "../../pages/Home.css";
 import Comment from "../comment";
 import FooterValue from "../Footervalue";
-import dateFormat from "dateformat";
 import ButtonConfirm from "../ButtonConfirm";
 import ButtonRequest from "../ButtonRequest";
 import ButtonSearch from "../ButtonSearch";
@@ -42,7 +40,7 @@ import {
   rankItem,
   compareItems,
 } from "@tanstack/match-sorter-utils";
-import { masks } from "dateformat";
+import { getExportFileBlob } from "../../functions/excel_export";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -139,61 +137,8 @@ const data = [
     },
   ],
 ];
-function Excel() {
-  const exportSheet = () => {
-    writeXlsxFile(data, {
-      headerStyle: {
-        backgroundColor: "#aabbcc",
-        height: 23,
-        fontWeight: "bold",
-        position: "sticky",
-        fontSize: 13,
-        align: "center",
-        wrap: true,
-      },
-      fileName: "sample.xlsx",
-    });
-  };
-  return (
-    <div className="App">
-      <button
-        onClick={exportSheet}
-        className="inline-flex items-center rounded ml-2 py-1 h-7"
-        style={{
-          border: "1px solid #3cb371",
-        }}
-      >
-        <div className="bg-white">
-          <img src={excel} width="20px" height="20px" className="mx-1"></img>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#3cb371",
-          }}
-          className=" text-white rounded-r px-1 h-7"
-        >
-          Excel
-        </div>
-      </button>
-    </div>
-  );
-}
-type Stat_m2 = {
-  AUDIT_TOROL: string;
-  AUDIT_NER_SEDEV: string;
-  AUDIT_KOD: string;
-  HOSLUULAN_GUITSETGEH_ESEH: string;
-  SEDVIIN_UNDESLL: string;
-  TOSOW_ZAHIRGCH_ANGILL: string;
-  AUDIT_HH_BAI_TOROL: string;
-  AUDIT_HH_BAI_NEGJ_NER: string;
-  AUDIT_HH_BAI_TOROL_NN: string;
-  BAIGUULLGUG_TROL: string;
-  SHALGAGDAGCH_BAIGUULLAGIN_NR: string;
-  REGISTER: number;
-  TOSOW_ZAHIRAGCH_ANGILAL: string;
-  BAI_UIL_AJIL_UNDSEN_CHIGLL: string;
-};
+
+
 function Mayagt_2(props:any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -206,27 +151,28 @@ function Mayagt_2(props:any) {
     () => [
       {
         accessorFn: (row, index) => index + 1,
-        id: "№",
+        accessorKey:"№",
+        header:"№",
       },
       {
         accessorKey: "AUDIT_TYPE_NAME",
         cell: (info) => info.getValue(),
-        header: () => "Аудитын төрөл",
+        header: "Аудитын төрөл",
       },
       {
         accessorKey: "AUDIT_NAME",
-        header: () => "Аудитын нэр, сэдэв",
+        header: "Аудитын нэр, сэдэв",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "AUDIT_CODE",
-        header: () => "Аудитын код",
+        header: "Аудитын код",
         cell: (info) => info.getValue(),
         footer: (info) => info.column.id,
       },
       {
         accessorKey: "HOSLUULAN_GUITSETGEH_ESEH",
-        header: () => "Хослуулан гүйцэтгэсэн эсэх",
+        header: "Хослуулан гүйцэтгэсэн эсэх",
         cell: (info) => info.getValue(),
       },
       {
@@ -256,12 +202,12 @@ function Mayagt_2(props:any) {
       },
       {
         accessorKey: "baiguulaga_turul",
-        header: () => "Байгууллагын төрөл",
+        header: "Байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "ENT_NAME",
-        header: () => "Шалгагдагч байгууллагын нэр",
+        header: "Шалгагдагч байгууллагын нэр",
         cell: (info) => info.getValue(),
       },
       {
@@ -290,7 +236,7 @@ function Mayagt_2(props:any) {
   async function fetchData() {
     
     DataRequest({
-      url: Stat_Url + "BM1List",
+      url: Stat_Url + "BM2List",
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
@@ -315,7 +261,7 @@ function Mayagt_2(props:any) {
 
   let Stat_m2 = [{}];
  
-  const Navigate = useNavigate();
+
  
   const [filter, setFilter] = useState({
     Audit: {
@@ -378,8 +324,28 @@ function Mayagt_2(props:any) {
         />
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch />
-            <Excel />
+          <ButtonSearch  globalFilter={globalFilter} setGlobalFilter={(value)=> setGlobalFilter(value)}/>
+          <button
+          onClick={() => {
+            getExportFileBlob(columns,data,'З-ТАББМ-2')
+          }}
+        className="inline-flex items-center rounded ml-2 py-1 h-7"
+        style={{
+          border: "1px solid #3cb371",
+        }}
+      >
+        <div className="bg-white">
+          <img src={excel} width="20px" height="20px" className="mx-1"></img>
+        </div>
+        <div
+          style={{
+            backgroundColor: "#3cb371",
+          }}
+          className=" text-white rounded-r px-1 h-7"
+        >
+          Excel
+        </div>
+      </button>
           </div>
           <div className="flex">
             <ButtonRequest />
@@ -397,8 +363,7 @@ function Mayagt_2(props:any) {
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        style={{ width: 250 }}
-                      >
+                     >
                         {header.isPlaceholder ? null : (
                           <>
                             <div
@@ -489,9 +454,10 @@ function Mayagt_2(props:any) {
               {">>"}
             </button>
             <span className="flex items-center gap-4">
-              <div>нийт</div>
+            <div>нийт:</div>
+      <span>{data.length}</span>
               <strong>
-                {table.getState().pagination.pageIndex + 1}{" "}
+                {table.getState().pagination.pageIndex + 1}{" - "}
                 {table.getPageCount()}
               </strong>
             </span>

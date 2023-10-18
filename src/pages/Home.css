@@ -14,12 +14,12 @@ content {
   display: block;
   overflow-y: hidden;
   overflow-x: scroll;
-  width: 100%;
+  
 }
 table {
   text-align: center;
   font-size: 0.75rem;
-  width: 100%;
+  
 }
 
 .TableHeadBackroundcolor {

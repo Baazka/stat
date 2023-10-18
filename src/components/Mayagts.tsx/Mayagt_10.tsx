@@ -1004,22 +1004,22 @@ function Mayagt_10() {
       {
         accessorKey: "AUDIT_HH_BAI_NER",
         cell: (info) => info.getValue(),
-        header: () => "Аудитын төрөл",
+        header: "Аудитын төрөл",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "SANAL_DUGNELT_GARGAH",
-        header: () => "Аудит хийх байгууллагын төрөл/",
+        header: "Аудит хийх байгууллагын төрөл/",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "SANAL_DUGNELT_GARGAH_TOO",
-        header: () => "Сэдвийн үндэслэл",
+        header: "Сэдвийн үндэслэл",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "SANAL_DUGNELT_GARGAH_TTZ_TOO",
-        header: () => "Төсөв захирагчийн ангилал",
+        header: "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
       },
 
@@ -1046,18 +1046,18 @@ function Mayagt_10() {
       },
       {
         accessorKey: "SABAL_DUGNELT_GARGAH_TOO",
-        header: () => "Ажилласан хугацаа (сараар)",
+        header: "Ажилласан хугацаа (сараар)",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "TORIIN_AUDIT_GUITSETGEH_TBOAAN_TOO",
-        header: () => "Шинжээчийн зардал (төгрөг)",
+        header: "Шинжээчийн зардал (төгрөг)",
         cell: (info) => info.getValue(),
       },
 
       {
         accessorKey: "ADUIT_HUULIIN_ETGEED_TOO",
-        header: () => "Аудитын үйлчилгээний төлбөр  (төгрөг)",
+        header: "Аудитын үйлчилгээний төлбөр  (төгрөг)",
         cell: (info) => info.getValue(),
       },
     ],

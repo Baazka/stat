@@ -25,7 +25,6 @@ function Mayagt() {
   return (
     <div>
       {mayagtData.DOCUMENT_ID === 1 ? (
-        // @ts-ignore
         <Mayagt_1 mayagtData={mayagtData} userDetils={userDetils} />
       ) : mayagtData.DOCUMENT_ID === 2 ? (
         <Mayagt_2  mayagtData={mayagtData} userDetils={userDetils}/>

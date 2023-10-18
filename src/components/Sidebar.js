@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import right from "../assets/zurag/icons/2sum-right.png";
 import left from "../assets/zurag/icons/2sum-left.png";
-import "../assets/css/main.css";
+
 import { useNavigate } from "react-router-dom";
 import URL from "../Stat_URL";
 import {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-function Select() {
-  const [globalFilter, setGlobalFilter] = React.useState("");
+function Select({globalFilter,setGlobalFilter}) {
+  
   return (
     <div className="flex justify-between h-8">
       <div className="flex ">
