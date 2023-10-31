@@ -11,7 +11,7 @@ import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
-import Stat_URL from "../../Stat_URL";
+import Stat_Url from "../../Stat_URL";
 import CurrencyInput from "react-currency-input-field";
 import {
   Column,
@@ -57,11 +57,9 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-
-
-
 function Mayagt_3(props: any) {
   const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -71,8 +69,8 @@ function Mayagt_3(props: any) {
     () => [
       {
         accessorFn: (row, index) => index + 1,
-        accessorKey:"№",
-        header:"№",
+        accessorKey: "№",
+        header: "№",
       },
       {
         accessorKey: "AUDIT_TYPE_NAME",
@@ -130,16 +128,16 @@ function Mayagt_3(props: any) {
         header: "Мөнгөн дүн",
         accessorFn: (row, index) => (
           <div>
-         <CurrencyInput
+            <CurrencyInput
               id="input-example"
               defaultValue={row.AMOUNT}
               decimalsLimit={2}
               disabled
-              style={{ textAlign: "center",backgroundColor:'transparent' }}
-             />
-         </div>
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
         ),
-  
+
         cell: (info) => info.getValue(),
       },
       {
@@ -160,7 +158,6 @@ function Mayagt_3(props: any) {
     ],
     []
   );
-
 
   const [data, setData] = React.useState([]);
 
@@ -188,34 +185,34 @@ function Mayagt_3(props: any) {
     debugHeaders: true,
     debugColumns: false,
   });
-  function saveToDB(){
-  //   let temp = []
-  // //  console.log(saveData,'saveData');
-  //    for(let i of saveData){
-  //       temp.push(data[i])
-  //    }
-  //    console.log(temp,'save data');
-   DataRequest({
-       url: Stat_Url + "BM3IU",
-       method: "POST",
-       data:{
-         // STAT_ID : mayagtData.ID,
-        data:data,
-        log:data,
-        CREATED_BY:userDetils.USER_ID
-       }
-     })
-       .then(function (response) {
-         console.log(response.data);
-         if(response?.data.message === 'Хадгаллаа.'){
-           alert('амжилттай хадгаллаа')
-         }
-       })
-       .catch(function (error) {
-         console.log(error,'error');
-         alert("Aмжилтгүй");
-       });
-   }
+  function saveToDB() {
+    //   let temp = []
+    // //  console.log(saveData,'saveData');
+    //    for(let i of saveData){
+    //       temp.push(data[i])
+    //    }
+    //    console.log(temp,'save data');
+    DataRequest({
+      url: Stat_Url + "BM3IU",
+      method: "POST",
+      data: {
+        // STAT_ID : mayagtData.ID,
+        data: data,
+        log: data,
+        CREATED_BY: userDetils.USER_ID,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        if (response?.data.message === "Хадгаллаа.") {
+          alert("амжилттай хадгаллаа");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+        alert("Aмжилтгүй");
+      });
+  }
 
   // function Draw_input(param: any, cell: any, index: number) {
   //   return (
@@ -470,14 +467,14 @@ function Mayagt_3(props: any) {
       url: Stat_URL + "BM3List",
       method: "POST",
       data: {
-        PERIOD_LABEL:2021, //PERIOD_LABEL
-        DEPARTMENT_ID:101
+        PERIOD_LABEL: 2021, //PERIOD_LABEL
+        DEPARTMENT_ID: 101,
       },
     })
       .then(function (response) {
         console.log(response);
-        if (response.data !== undefined && response?.data.length>0) {
-           setData(response.data);
+        if (response.data !== undefined && response?.data.length > 0) {
+          setData(response.data);
         }
       })
       .catch(function (error) {
@@ -500,28 +497,36 @@ function Mayagt_3(props: any) {
         />
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-          <ButtonSearch  globalFilter={globalFilter} setGlobalFilter={(value)=> setGlobalFilter(value)}/>
-          <button
-          onClick={() => {
-            getExportFileBlob(columns,data,'З-ТАББМ-3')
-          }}
-        className="inline-flex items-center rounded ml-2 py-1 h-7"
-        style={{
-          border: "1px solid #3cb371",
-        }}
-      >
-        <div className="bg-white">
-          <img src={excel} width="20px" height="20px" className="mx-1"></img>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#3cb371",
-          }}
-          className=" text-white rounded-r px-1 h-7"
-        >
-          Excel
-        </div>
-      </button>
+            <ButtonSearch
+              globalFilter={globalFilter}
+              setGlobalFilter={(value) => setGlobalFilter(value)}
+            />
+            <button
+              onClick={() => {
+                getExportFileBlob(columns, data, "З-ТАББМ-3");
+              }}
+              className="inline-flex items-center rounded ml-2 py-1 h-7"
+              style={{
+                border: "1px solid #3cb371",
+              }}
+            >
+              <div className="bg-white">
+                <img
+                  src={excel}
+                  width="20px"
+                  height="20px"
+                  className="mx-1"
+                ></img>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#3cb371",
+                }}
+                className=" text-white rounded-r px-1 h-7"
+              >
+                Excel
+              </div>
+            </button>
           </div>
           <div className="flex">
             <ButtonRequest />
@@ -536,11 +541,7 @@ function Mayagt_3(props: any) {
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        
-                      >
+                      <th key={header.id} colSpan={header.colSpan}>
                         {header.isPlaceholder ? null : (
                           <>
                             <div
@@ -598,7 +599,7 @@ function Mayagt_3(props: any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-        <ButtonSave saveToDB = {()=>saveToDB()}/>
+          <ButtonSave saveToDB={() => saveToDB()} />
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
@@ -634,7 +635,8 @@ function Mayagt_3(props: any) {
               <div>нийт:</div>
               <span>{data.length}</span>
               <strong>
-                {table.getState().pagination.pageIndex + 1}{" - "}
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
                 {table.getPageCount()}
               </strong>
             </span>
