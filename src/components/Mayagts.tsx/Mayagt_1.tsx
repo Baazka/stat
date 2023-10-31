@@ -666,6 +666,7 @@ function Mayagt_1(props: any) {
       data:{
         // STAT_ID : mayagtData.ID,
        data:temp,
+       log:temp,
        CREATED_BY:userDetils.USER_ID
       }
     })

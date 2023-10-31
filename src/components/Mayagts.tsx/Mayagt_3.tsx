@@ -188,6 +188,34 @@ function Mayagt_3(props: any) {
     debugHeaders: true,
     debugColumns: false,
   });
+  function saveToDB(){
+  //   let temp = []
+  // //  console.log(saveData,'saveData');
+  //    for(let i of saveData){
+  //       temp.push(data[i])
+  //    }
+  //    console.log(temp,'save data');
+   DataRequest({
+       url: Stat_Url + "BM3IU",
+       method: "POST",
+       data:{
+         // STAT_ID : mayagtData.ID,
+        data:data,
+        log:data,
+        CREATED_BY:userDetils.USER_ID
+       }
+     })
+       .then(function (response) {
+         console.log(response.data);
+         if(response?.data.message === 'Хадгаллаа.'){
+           alert('амжилттай хадгаллаа')
+         }
+       })
+       .catch(function (error) {
+         console.log(error,'error');
+         alert("Aмжилтгүй");
+       });
+   }
 
   // function Draw_input(param: any, cell: any, index: number) {
   //   return (
@@ -570,7 +598,7 @@ function Mayagt_3(props: any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave />
+        <ButtonSave saveToDB = {()=>saveToDB()}/>
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
