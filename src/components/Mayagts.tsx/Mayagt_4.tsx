@@ -305,6 +305,7 @@ function Mayagt_1(props: any) {
           {cell.id === "HUGATSA_TOLOW" ? (
             <input
               type="date"
+              disabled
               className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
               value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
               onChange={(e) => {
