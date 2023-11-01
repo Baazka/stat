@@ -377,8 +377,8 @@ function Mayagt_1(props: any) {
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
-       data:temp,
-       log:temp,
+       data:data,
+       log:data,
        CREATED_BY:userDetils.USER_ID
       }
     })
