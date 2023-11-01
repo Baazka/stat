@@ -64,6 +64,8 @@ function Mayagt_1(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  
+
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo(
@@ -309,8 +311,12 @@ function Mayagt_1(props: any) {
                 let temp = data;
                 //@ts-ignore
                 temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
+                               
+                  let tset = saveData
+                  tset.add(index)
+                  setSaveData(tset)
                 // @ts-ignore
-                setData([...temp]);
+                loadData([...temp]);
               }}
             />
           ) :  flexRender(
@@ -358,11 +364,11 @@ function Mayagt_1(props: any) {
     }
     console.log(temp,'save data');
   DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM4IU",
       method: "POST",
       data:{
-        // STAT_ID : mayagtData.ID,
        data:temp,
+       log:temp,
        CREATED_BY:userDetils.USER_ID
       }
     })

@@ -296,14 +296,16 @@ function Mayagt_1(props: any) {
           {cell.id === "ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH" ? (
             <select
               className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-              value={param.row.original[cell.id]}
-              onChange={(e) => {
+              value = {param.row.original[cell.id]}
+              onChange={(text) => {
                 let temp = data;
-                //@ts-ignore
-                temp[index][cell.id] = e.target.value;
-                // @ts-ignore
-                setData([...temp]);
-              }}
+                temp[index][cell.id] = text.target.value
+                let tset = saveData
+                tset.add(index)
+                setSaveData(tset)
+                loadData([...temp])
+                
+             }}
             >
               <option className="font-medium" key={"Сонгоно уу"} value={0}>
                 {"Сонгоно уу"}
@@ -318,30 +320,12 @@ function Mayagt_1(props: any) {
                 let temp = data;
                 //@ts-ignore
                 temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
+                               
+                  let tset = saveData
+                  tset.add(index)
+                  setSaveData(tset)
                 // @ts-ignore
-                setData([...temp]);
-              }}
-            />
-          ) : cell.id === "" ? (
-            <textarea
-              value={param.row.original[cell.id]}
-              className={
-                index % 2 > 0
-                  ? "flex text-center h-8 bg-gray-100"
-                  : "flex text-center h-8"
-              }
-              style={{
-                minHeight: "33px",
-                border: "1px solid",
-                borderRadius: "4px",
-                color: "gray",
-              }}
-              onChange={(e) => {
-                let temp = data;
-                //@ts-ignore
-                temp[index][cell.id] = e.target.value;
-                // @ts-ignore
-                setData([...temp]);
+                loadData([...temp]);
               }}
             />
           )  :  flexRender(
@@ -389,11 +373,12 @@ function Mayagt_1(props: any) {
     }
     console.log(temp,'save data');
   DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM7IU",
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
        data:temp,
+       log:temp,
        CREATED_BY:userDetils.USER_ID
       }
     })

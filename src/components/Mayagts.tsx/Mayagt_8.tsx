@@ -233,9 +233,16 @@ function Mayagt_8(props: any) {
         {cell.id === "HUULI_HBSHE" ? (
           <select
             className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
+            value = {param.row.original[cell.id]}
             onChange={(text) => {
-              let any = setFilter;
-            }}
+              let temp = data;
+              temp[index][cell.id] = text.target.value
+              let tset = saveData
+              tset.add(index)
+              setSaveData(tset)
+              loadData([...temp])
+              
+           }}
           >
             <option className="font-medium" key={"Сонгоно уу"} value={0}>
               {"Сонгоно уу"}
@@ -247,20 +254,26 @@ function Mayagt_8(props: any) {
               {"Үгүй"}
             </option> */}
           </select>
-        ) : cell.id === "" ? (
-          <input
-            type="date"
-            className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-            value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
-            onChange={(e) => {
-              let temp = data;
-              //@ts-ignore
-              temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-              // @ts-ignore
-              setData([...temp]);
-            }}
-          />
-        ) : cell.id === "HUULI_HBSHA_DUN_T" ||
+        )
+        //  : cell.id === "" ? (
+        //   <input
+        //     type="date"
+        //     className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
+        //     value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
+        //       onChange={(e) => {
+        //         let temp = data;
+        //         //@ts-ignore
+        //         temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
+                               
+        //           let tset = saveData
+        //           tset.add(index)
+        //           setSaveData(tset)
+        //         // @ts-ignore
+        //         loadData([...temp]);
+        //       }}
+        //   />
+        // ) 
+        : cell.id === "HUULI_HBSHA_DUN_T" ||
           cell.id === "HUULI_HBSH_SHALTGAAN" ||
           cell.id === "HUUL_HBSHA_DUN_T" ||
           cell.id === "SHILJUULSEN_BAIGUULGGIN_NER" ||
@@ -270,7 +283,7 @@ function Mayagt_8(props: any) {
           cell.id === "HUULI_HBHB_DUN_TOG" ||
           cell.id === "HUULI_HBHBD_TOG" ? (
           <textarea
-            value={param.row.original[cell.id]}
+            
             className={
               index % 2 > 0
                 ? "flex text-center h-8 bg-gray-100"
@@ -282,13 +295,16 @@ function Mayagt_8(props: any) {
               borderRadius: "4px",
               color: "gray",
             }}
-            onChange={(e) => {
+            value = {param.row.original[cell.id]}
+            onChange={(text) => {
               let temp = data;
-              //@ts-ignore
-              temp[index][cell.id] = e.target.value;
-              // @ts-ignore
-              setData([...temp]);
-            }}
+              temp[index][cell.id] = text.target.value
+              let tset = saveData
+              tset.add(index)
+              setSaveData(tset)
+              loadData([...temp])
+              
+           }}
           />
         ) : flexRender(
           cell_all.column.columnDef.cell,
@@ -334,11 +350,12 @@ function Mayagt_8(props: any) {
     }
     console.log(temp,'save data');
   DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM8IU",
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
        data:temp,
+       log:temp,
        CREATED_BY:userDetils.USER_ID
       }
     })

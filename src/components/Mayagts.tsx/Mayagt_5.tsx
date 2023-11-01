@@ -305,9 +305,16 @@ function Mayagt_1(props: any) {
         {cell.id === "ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH" ? (
           <select
             className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+            value = {param.row.original[cell.id]}
             onChange={(text) => {
-              let any = setFilter;
-            }}
+              let temp = data;
+              temp[index][cell.id] = text.target.value
+              let tset = saveData
+              tset.add(index)
+              setSaveData(tset)
+              loadData([...temp])
+              
+           }}
           >
             <option className="font-medium" key={"Сонгоно уу"} value={0}>
               {"Сонгоно уу"}
@@ -328,8 +335,12 @@ function Mayagt_1(props: any) {
               let temp = data;
               //@ts-ignore
               temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
+                             
+                let tset = saveData
+                tset.add(index)
+                setSaveData(tset)
               // @ts-ignore
-              setData([...temp]);
+              loadData([...temp]);
             }}
           />
         ) : flexRender(
@@ -375,11 +386,12 @@ function Mayagt_1(props: any) {
     }
     console.log(temp,'save data');
   DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM5IU",
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
        data:temp,
+       log:temp,
        CREATED_BY:userDetils.USER_ID
       }
     })

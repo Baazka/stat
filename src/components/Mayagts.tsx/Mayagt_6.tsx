@@ -266,18 +266,19 @@ function Mayagt_1(props: any) {
       });
   }
   function saveToDB(){
-   let temp = []
- //  console.log(saveData,'saveData');
-    for(let i of saveData){
-       temp.push(data[i])
-    }
-    console.log(temp,'save data');
+//    let temp = []
+//  //  console.log(saveData,'saveData');
+//     for(let i of saveData){
+//        temp.push(data[i])
+//     }
+//     console.log(temp,'save data');
   DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM6IU",
       method: "POST",
       data:{
         // STAT_ID : mayagtData.ID,
-       data:temp,
+       data:data,
+       log:data,
        CREATED_BY:userDetils.USER_ID
       }
     })
