@@ -345,9 +345,7 @@ function Mayagt_2(props:any) {
         }}
       >
         <Title
-          title={
-            "ТАЙЛАНТ ОНЫ ШАЛГАГДАГЧ ЭТГЭЭД БОЛОН АУДИТАД ХАМРАГДАГЧИЙИН БҮРТГЭЛ З-ТАББМ-2"
-          }
+          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"39rem"}
           widthL={"20rem"}
         />

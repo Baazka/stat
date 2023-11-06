@@ -21,7 +21,7 @@ function Mayagt() {
   // @ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
 
- console.log(mayagtData);
+ 
   return (
     <div>
       {mayagtData.DOCUMENT_ID === 1 ? (

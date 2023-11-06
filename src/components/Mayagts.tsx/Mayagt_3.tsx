@@ -491,7 +491,7 @@ function Mayagt_3(props: any) {
         }}
       >
         <Title
-          title={"ТАЙЛАНТ ОНЫ АЛДААНЫ БҮРТГЭЛ З-ТАББМ-3"}
+         title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"20rem"}
           widthL={"10rem"}
         />

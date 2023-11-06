@@ -403,7 +403,7 @@ function Mayagt_1(props: any) {
         }}
       >
         <Title
-          title={"ТАЙЛАНТ ОНД ГҮЙЦЭТГЭСЭН АУДИТЫН БҮРТГЭЛ З-ТАББМ-7"}
+          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"28rem"}
           widthL={"10rem"}
         />
