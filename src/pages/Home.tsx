@@ -826,9 +826,7 @@ function Home(props: any) {
         pageSize: data.length,
       },
     },
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: false,
+    
   });
   useEffect(() => {
     fetchData();

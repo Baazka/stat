@@ -11,7 +11,7 @@ import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
-import Stat_Url from "../../Stat_URL";
+import Stat_URL  from "../../Stat_URL";
 import CurrencyInput from "react-currency-input-field";
 import {
   Column,
@@ -193,7 +193,7 @@ function Mayagt_3(props: any) {
     //    }
     //    console.log(temp,'save data');
     DataRequest({
-      url: Stat_Url + "BM3IU",
+      url: Stat_URL  + "BM3IU",
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
