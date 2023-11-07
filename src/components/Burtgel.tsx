@@ -58,7 +58,7 @@ function Burtgel(props: any) {
 
   const [tsonkh, setTsonkh] = useState(0);
   //@ts-ignore
-  const stat = JSON.parse(localStorage.getItem("Stat"));
+  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
   let navigate = useNavigate();
   const {state} = useLocation();
   const [data, loadData] = useState({
@@ -711,8 +711,8 @@ function Employee(props: any) {
         url: Stat_Url + "refEmployee",
         method: "POST",
         data: {
-          DEPARTMENT_ID: null, //userDetils.USER_DEPARTMENT_ID,
-          SUB_DEPARTMENT_ID: null, //userDetils.USER_SUB_DEPARTMENT_ID
+          DEPARTMENT_ID: userDetils.USER_DEPARTMENT_ID,
+          SUB_DEPARTMENT_ID: userDetils.USER_SUB_DEPARTMENT_ID
         },
       })
         .then(function (response) {

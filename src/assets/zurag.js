@@ -73,6 +73,8 @@ import SEDEV_TSENHER from "./zurag/icons/SEDEV_TSENHER.svg";
 import SEDEV_TSAGAAN from "./zurag/icons/SEDEV_TSAGAAN.svg";
 import Statictic1 from "./zurag/icons/Statictic1.png";
 import Statictic2 from "./zurag/icons/Statictic2.png";
+import TSOOJ from "./zurag/icons/TSOOJ.svg";
+import TSUGJEE from "./zurag/icons/TUGJEE.svg";
 export {
   Statictic1,
   Statictic2,
@@ -148,4 +150,6 @@ export {
   commentIcon,
   SEDEV_TSENHER,
   SEDEV_TSAGAAN,
+  TSOOJ,
+  TSUGJEE
 };

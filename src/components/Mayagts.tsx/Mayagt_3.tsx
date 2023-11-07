@@ -467,14 +467,15 @@ function Mayagt_3(props: any) {
       url: Stat_URL + "BM3List",
       method: "POST",
       data: {
-        PERIOD_LABEL: 2021, //PERIOD_LABEL
-        DEPARTMENT_ID: 101,
+        ID : mayagtData.ID,
+        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
       },
     })
       .then(function (response) {
         console.log(response);
-        if (response.data !== undefined && response?.data.length > 0) {
-          setData(response.data);
+        if (response.data !== undefined && response?.data.data.length > 0) {
+          setData(response.data.data);
         }
       })
       .catch(function (error) {
@@ -530,7 +531,7 @@ function Mayagt_3(props: any) {
           </div>
           <div className="flex">
             <ButtonRequest />
-            <ButtonConfirm />
+            {/* <ButtonConfirm /> */}
           </div>
         </div>
         <div style={{ maxHeight: "630px", overflowY: "scroll" }}>

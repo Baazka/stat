@@ -53,316 +53,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-// function Excel() {
-//   const objects = [0];
 
-//   const schema = [
-//     {
-//       column: "№",
-//       Sticky: true,
-//       type: Number,
-//       width: 5,
-//       value: (student: any) => student.N,
-//     },
-//     {
-//       column: "Аудитын он",
-//       wrap: true,
-//       sticky: true,
-//       position: "sticky",
-//       state: "frozen",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Status,
-//     },
-//     {
-//       column: "Аудитын төрөл",
-//       wrap: true,
-//       sticky: true,
-//       position: "sticky",
-//       state: "frozen",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Аудитын нэр, сэдэв",
-//       wrap: true,
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Аудитын код",
-//       wrap: true,
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Албан шаардлагын огноо",
-//       wrap: true,
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Албан шаардлагын дугаар",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Хүлээлгэн өгсөн огноо",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Зөрчлийг арилгах огноо",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Зөрчлийн товч утга",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Тухайн үр дүнг алдаа зөрчилд тооцох эсэх",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Алдаа, зөрчлийн ангилал",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Албан шаардлагын дүн (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Төвлөрүүлэх дансны төрөл (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Шалгагдагч байгууллагын нэр",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Регистрийн дугаар",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Төсөв захирагчийн ангилал",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Овог, нэр",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Албан тушаал",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Аудиторын код",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Зөрчлийг арилгасан баримтын огноо",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Биелсэн албан шаардлагын дүн (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Бүртгэлээс хасагдсан дүн (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Бүртгэлээс хасагдсан огноо",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Бүртгэлээс хасагдсан дугаар",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Хугацааны төлөв",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Эрх бүхий байгууллагад шилжүүлсэн эсэх ",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Үр өгөөжийн төрөл",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Үр өгөөжөөр тооцсон эсэх",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-//     {
-//       column: "санхүүгийн үр өгөөжийн дүн (төгрөг)",
-//       wrap: true,
-//       sticky: "top-0",
-//       width: 30,
-//       type: String,
-//       value: (student: any) => student.Name,
-//     },
-
-//     // {
-//     //   column: "Name",
-//     //   type: String,
-//     //   value: (student) => student.Name,
-//     // },
-//     // {
-//     //   column: "Cost",
-//     //   type: Number,
-//     //   format: "#,##0.00",
-//     //   value: (student) => student.cost,
-//     // },
-//     // {
-//     //   column: "Paid",
-//     //   type: Boolean,
-//     //   value: (student) => student.paid,
-//     // },
-//   ];
-
-
-
-//   //   writeXlsxFile(objects, {
-//   //     schema,
-//   //     headerStyle: {
-//   //       backgroundColor: "#aabbcc",
-//   //       fontWeight: "bold",
-//   //       fontSize: 13,
-//   //       align: "center",
-//   //       alignVertical: "top",
-//   //       wrap: true,
-//   //     },
-//   //     fileName: "З-ТАББМ-5",
-//   //   });
-//   // };
-//   return (
-//     <div className="s">
-//       <button
-//         onClick={exportar}
-//         className="inline-flex items-center rounded ml-2 py-1 h-7"
-//         style={{
-//           border: "1px solid #3cb371",
-//         }}
-//       >
-//         <div className="bg-white">
-//           <img src={excel} width="20px" height="20px" className="mx-1"></img>
-//         </div>
-//         <div
-//           style={{
-//             backgroundColor: "#3cb371",
-//           }}
-//           className=" text-white rounded-r px-1 h-7"
-//         >
-//           Excel
-//         </div>
-//       </button>
-//     </div>
-//   );
-// }
 
 
 function Mayagt_1(props: any) {
@@ -373,7 +64,7 @@ function Mayagt_1(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-
+  const [status,setStatus] =useState({STATUS:{},ROLE:{}})
   const columns = React.useMemo(
     () => [
       {
@@ -523,8 +214,8 @@ function Mayagt_1(props: any) {
     ],
     []
   );
-
-
+  
+     
   const [data, loadData] = React.useState([]);
 
 
@@ -558,8 +249,8 @@ function Mayagt_1(props: any) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
+    debugTable: false,
+    debugHeaders: false,
     debugColumns: false,
   });
 
@@ -636,15 +327,17 @@ function Mayagt_1(props: any) {
       url: Stat_Url + "BM1List",
       method: "POST",
       data:{
-        // STAT_ID : mayagtData.ID,
+        ID : mayagtData.ID,
         PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
         DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
       }
     })
       .then(function (response) {
-     
-        if(response.data !== undefined && response.data.length >0){
-          loadData(response.data)
+     console.log('mayagt1',response);
+        if(response.data !== undefined && response.data.data.length >0){
+          loadData(response.data.data)
+          if(response?.data.role.length> 0)
+          setStatus({STATUS:response?.data.status ,ROLE:response?.data.role.find(a => a.AUDITOR_ID === userDetils.USER_ID)})
         }
       
       })
@@ -681,55 +374,7 @@ function Mayagt_1(props: any) {
         alert("Aмжилтгүй");
       });
   }
-  // function getExportFileBlob( columns, data ) {
-  //     console.log(columns.length);
-  //   let excel_header = []
-  //   let data_header = []
-  //   let excel_data = []
-
-  //   columns.forEach((value,index)=> {
-  //     excel_header.push(value.header)
-  //     data_header.push(value.accessorKey)
-  //   })
-  //   excel_data.push(excel_header)
-  //   data.forEach((value,i) =>{
-  //     let array = []
-  //     data_header.forEach((data_name,index)=>{
-  //       if(data_name === '№'){
-  //         array.push(i+1)
-  //       }else{
-  //       array.push(value[data_name])
-  //       }
-  //     })
-  //     excel_data.push(array)
-      
-  //   })
-
-  //   var wb = utils.book_new(); var ws = utils.aoa_to_sheet(excel_data); utils.book_append_sheet(wb, ws, "Sheet1");
-  //   writeFileXLSX(wb, "test.xlsx", { compression: true});
-   
-  //     // XLSX example
   
-  //     // const header = columns.map((c) => c.exportValue);
-  //     // const compatibleData = data.map((row) => {
-  //     //   const obj = {};
-  //     //   header.forEach((col, index) => {
-  //     //     obj[col] = row[index];
-  //     //   });
-  //     //   return obj;
-  //     // });
-  
-  //     // let wb = XLSX.utils.book_new();
-  //     // let ws1 = XLSX.utils.json_to_sheet(compatibleData, {
-  //     //   header,
-  //     // });
-  //     // XLSX.utils.book_append_sheet(wb, ws1, "React Table Data");
-  //     // XLSX.writeFile(wb, `${fileName}.xlsx`);
-  
- 
-  //     return false;
-   
-  // }
   return (
     <>
       <div
@@ -746,7 +391,7 @@ function Mayagt_1(props: any) {
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
             <ButtonSearch  globalFilter={globalFilter} setGlobalFilter={(value)=> setGlobalFilter(value)}/>
-            <button
+      <button
           onClick={() => {
             getExportFileBlob(columns,data,'З-ТАББМ-1')
           }}
@@ -770,7 +415,20 @@ function Mayagt_1(props: any) {
           </div>
           <div className="flex">
             <ButtonRequest />
-            <ButtonConfirm />
+            {/* {status.ROLE.AUDITOR_ID !== undefined?
+            <ButtonConfirm     
+              STATUS={status?.STATUS}
+              data={data}
+              Title={mayagtData.DOCUMENT_SHORT_NAME}
+              RoleID={status?.ROLE.ROLE_ID}
+              statusID={status?.STATUS.ID}
+              fetchData={() => fetchData()}
+              CREATED_BY={{
+                APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+              }}
+              />:null} */}
           </div>
         </div>
         <div style={{ maxHeight: "630px", overflowY: "scroll" }}>

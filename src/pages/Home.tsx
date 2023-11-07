@@ -4,7 +4,9 @@ import Title from "../components/Title";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../functions/make_Request";
 import Stat_URl from "../Stat_URL";
+import { getExportFileBlob } from "../functions/excel_export";
 import dateFormat, { masks } from "dateformat";
+import UserPremission from "../functions/userPermission";
 import {
   addIcon,
   eye,
@@ -12,6 +14,8 @@ import {
   printIcon,
   xIcon,
   excel,
+  TSUGJEE,
+  TSOOJ
 } from "../assets/zurag";
 import {
   Column,
@@ -33,6 +37,7 @@ import { Period, Department } from "../components/library";
 // import RightMenu from "../components/RightMenu";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import "./Home.css";
+
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -53,527 +58,68 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-const now = new Date();
-type Person = {
-  PERIOD_LABEL: number;
-  BATALGAAJUULAH_H: string;
-  TORIIN_AUDIT_BAI: string;
-  MAYGTIIN_DUGAAR: string;
-  BAG: string;
-  BATLAH_1: string;
-  BATLAH_2: string;
-  BATLAH_3: string;
-  TOLOV: string;
-  GUITSETGELIIN_HUWI: string;
-  BURTGSEN_OGNOO: string;
-  BURTGESEN_HEREGLEGCH: string;
-};
-// const defaultData: Person[] = [
-//   {
-//     TAILANT_HUGATSAA: PERIOD_LABEL,
-//   },
-// ];
+
 function Home(props: any) {
-  const objects = [
-    {
-      value: "",
-      Persons: "TORIIN_AUDIT_BAI",
-    },
-  ];
-  const schema = [
-    {
-      column: "№",
-      type: Number,
-      width: 5,
-      value: (student: any) => student.N,
-    },
-    {
-      column: "Тайлант хугацаа",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Status,
-    },
-    {
-      column: "Бaталгаажуулах хугацаа",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Төрийн аудитын байгууллага",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (item: any) => item.Persons,
-    },
-    {
-      column: "Маягтын дугаар",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) =>
-        student.TORIIN_AUDIT_BAI === null ||
-        student.TORIIN_AUDIT_BAI === undefined
-          ? ""
-          : student.TORIIN_AUDIT_BAI.toString(),
-    },
-    {
-      column: "Баг",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Батлах 1",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Батлах 2",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Батлах 3",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Гүйцэтгэлийн хувь",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Бүртгэсэн огноо",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    {
-      column: "Бүртгэсэн хэрэглэгч",
-      wrap: true,
-      width: 30,
-      type: String,
-      value: (student: any) => student.Name,
-    },
-    //   {
-    //     column: 'Name',
-    //     type: String,
-    //     value: student => student.Name
-    //   },
-    //   {
-    //     column: 'Cost',
-    //     type: Number,
-    //     format: '#,##0.00',
-    //     value: student => student.cost
-    //   },
-    //   {
-    //     column: 'Paid',
-    //     type: Boolean,
-    //     value: student => student.paid
-    //   }
-  ];
-  function Excel() {
-    let temp = [];
-    temp[0] = schema[0];
-    rows.map((row: any, index: any) => {
-      temp.push([
-        {
-          value: index + 1,
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "center",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.TEZ_NAME === null ||
-            row.original.TEZ_NAME === undefined
-              ? ""
-              : row.original.TEZ_NAME.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.TTZ_NAME === null ||
-            row.original.TTZ_NAME === undefined
-              ? ""
-              : row.original.TTZ_NAME.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.TORIIN_AUDIT_BAI === null ||
-            row.original.TORIIN_AUDIT_BAI === undefined
-              ? ""
-              : row.original.TORIIN_AUDIT_BAI.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.TAILANT_HUGATSAA === null ||
-            row.original.TAILANT_HUGATSAA === undefined
-              ? ""
-              : row.original.TAILANT_HUGATSAA.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.ENT_NAME === null ||
-            row.original.ENT_NAME === undefined
-              ? ""
-              : row.original.ENT_NAME.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.ORG_REGISTER_NO === null ||
-            row.original.ORG_REGISTER_NO === undefined
-              ? ""
-              : row.original.ORG_REGISTER_NO.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.CHECK_DEPARTMENT_NAME === null ||
-            row.original.CHECK_DEPARTMENT_NAME === undefined
-              ? ""
-              : row.original.CHECK_DEPARTMENT_NAME.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.AUDIT_HH === null ||
-            row.original.AUDIT_HH === undefined
-              ? ""
-              : row.original.AUDIT_HH.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-            numFmt: "0",
-          },
-        },
-        {
-          value:
-            row.original.DEPARTMENT_NAME === null ||
-            row.original.DEPARTMENT_NAME === undefined
-              ? ""
-              : row.original.DEPARTMENT_NAME.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.BURTGESEN_OGNOO === null ||
-            row.original.BURTGESEN_OGNOO === undefined
-              ? ""
-              : row.original.BURTGESEN_OGNOO.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.BURTSEN_HERGLEGCH === null ||
-            row.original.BURTSEN_HERGLEGCH === undefined
-              ? ""
-              : row.original.BURTSEN_HERGLEGCH.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "left",
-            },
-            font: { sz: "11" },
-          },
-        },
-        {
-          value:
-            row.original.ISHLEL === null || row.original.ISHLEL === undefined
-              ? ""
-              : row.original.ISHLEL.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.NOHTSOL_B === null ||
-            row.original.NOHTSOL_B === undefined
-              ? ""
-              : row.original.NOHTSOL_B.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.ILRUULELT === null ||
-            row.original.ILRUULELT === undefined
-              ? ""
-              : row.original.ILRUULELT.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.SHALTGAAN === null ||
-            row.original.SHALTGAAN === undefined
-              ? ""
-              : row.original.SHALTGAAN.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.UR_DAGAWAR === null ||
-            row.original.UR_DAGAWAR === undefined
-              ? ""
-              : row.original.UR_DAGAWAR.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.ZOWLOMJ === null || row.original.ZOWLOMJ === undefined
-              ? ""
-              : row.original.ZOWLOMJ.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.IBT_OGNOO === null ||
-            row.original.IBT_OGNOO === undefined
-              ? ""
-              : row.original.IBT_OGNOO.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.IBT_TOLOW === null ||
-            row.original.IBT_TOLOW === undefined
-              ? ""
-              : row.original.IBT_TOLOW.toString(),
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.AUDIT_BAG_H === undefined ||
-            row.original.AUDIT_BAG_H === null
-              ? ""
-              : parseInt(row.original.AUDIT_BAG_H) > 0
-              ? "Зөвшөөрсөн тест"
-              : "Тайлбартай тест",
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.BURTGESEN_HEREGLEGCH === undefined ||
-            row.original.BURTGESEN_HEREGLEGCH === null
-              ? ""
-              : parseInt(row.original.BURTGESEN_HEREGLEGCH) > 0
-              ? "Б.Эрдэнэзул"
-              : "Б.Эрдэнэзул",
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-        {
-          value:
-            row.original.CHBA_TAILBAR === undefined ||
-            row.original.CHBA_TAILBAR === null
-              ? ""
-              : parseInt(row.original.CHBA_TAILBAR) > 0
-              ? "Тайлбар хүлээн авсан"
-              : "Татгалзсан",
-          style: {
-            alignment: {
-              wrapText: "true",
-              vertical: "top",
-              horizontal: "right",
-            },
-          },
-        },
-      ]);
-    });
-    const exportar = () => {
-      writeXlsxFile(objects, {
-        schema,
-        headerStyle: {
-          backgroundColor: "#aabbcc",
-          fontWeight: "bold",
-          fontSize: 13,
-          align: "center",
-          alignVertical: "top",
-          wrap: true,
-        },
-        fileName: "Хуваарь",
-      });
-    };
-    return (
-      <div className="s">
-        <button
-          onClick={exportar}
-          className="inline-flex items-center rounded ml-2 py-1 h-7"
-          style={{
-            border: "1px solid #3cb371",
-          }}
-        >
-          <div className="bg-white">
-            <img src={excel} width="20px" height="20px" className="mx-1"></img>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#3cb371",
-            }}
-            className=" text-white rounded-r px-1 h-7"
-          >
-            Excel
-          </div>
-        </button>
-      </div>
-    );
-  }
 
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  // @ts-ignore
+  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [data, setData] = React.useState([]);
+  const Navigate = useNavigate();
+  const [filter, setFilter] = useState({
+    Audit: {
+      PERIOD_ID: 999,
+      DEPARTMENT_ID: 999,
+      DOCUMENT_ID: 999,
+      PARENT_BUDGET_ID: 999,
+      TYPE: 0,
+    },
+  });
+  const [drop,setDrop] = useState([])
+  
 
-  const columns = React.useMemo<ColumnDef<Person, any>[]>(
+  const columns = React.useMemo(
     () => [
+      UserPremission(userDetils.USER_TYPE_NAME,'plan','lock')?
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckboxALL
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+              data,
+              setData,
+             
+              
+
+            }}
+          />
+        
+        ),
+        cell: ({ row }) => (
+          <div>
+            <IndeterminateCheckbox
+              {...{
+                checked: row.original.IS_LOCK === 1 ?true:false,//ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                disabled: !row.getCanSelect(),
+                indeterminate: row.getIsSomeSelected(),
+                onChange: row.getToggleSelectedHandler(),
+                data,
+                setData,
+                row
+              }}
+            />
+          </div>
+        ),
+      }:
       {
         accessorFn: (row, index) => index + 1,
-        id: "№",
+        accessorKey:  "№",
+        header: "№",
+       
       },
       {
         accessorKey: "PERIOD_LABEL",
@@ -583,6 +129,7 @@ function Home(props: any) {
       },
       {
         header: "Баталгаажуулах хугацаа",
+        accessorKey: "CONFIRM_DATE",
         cell: (info) => info.getValue(),
         accessorFn: (row, index) => {
           return row.CONFIRM_DATE === null
@@ -601,17 +148,17 @@ function Home(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BATLAH_1",
+        accessorKey: "AUDIT_APPROVE_MEMBER1",
         header: "Батлах 1",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BATLAH_2",
+        accessorKey: "AUDIT_APPROVE_MEMBER2",
         header: "Батлах 2",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BATLAH_3",
+        accessorKey: "AUDIT_APPROVE_MEMBER3",
         header: "Батлах 3",
         cell: (info) => info.getValue(),
       },
@@ -622,6 +169,7 @@ function Home(props: any) {
       },
       {
         header: "Бүртгэсэн огноо",
+        accessorKey: "CREATED_DATE",
         cell: (info) => info.getValue(),
         accessorFn: (row, index) => {
           return row.CREATED_DATE === null
@@ -662,6 +210,16 @@ function Home(props: any) {
                 alt=""
               />
             </button>
+            {row.IS_LOCK === 1?
+            
+            <img
+            src={TSUGJEE}
+            width="20px"
+            height="16px"
+            alt="tsooj"
+          />:
+          UserPremission(userDetils.USER_TYPE_NAME,'plan','write')?
+            <>
             <button
               className="bg-transparent text-xs"
               type="button"
@@ -680,7 +238,7 @@ function Home(props: any) {
                 alt=""
               />
             </button>
-            <button
+            {/* <button
               className="bg-transparent text-xs"
               type="button"
               style={{
@@ -691,10 +249,11 @@ function Home(props: any) {
               }}
             >
               <img src={printIcon} width="14px" height="14px" alt="" />
-            </button>
+            </button> */}
             {/* {UserPremission(userDetils.USER_TYPE_NAME, "HUVAARI") ? ( */}
             <button
               className="bg-transparent text-xs"
+              onClick={()=>deletePlan(row)}
               type="button"
               style={{
                 padding: "2px",
@@ -733,73 +292,45 @@ function Home(props: any) {
                 }}
               ></div>
             </div>
+            </>:null
+            }
           </div>
         ),
       },
     ],
-    []
+    [data]
   );
 
-  let persons = [
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 1",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 2",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 3",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 4",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 5",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 6",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 7",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 8",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 9",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 10",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 11",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 12",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 13",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 14",
-    },
-    {
-      MAYGTIIN_DUGAAR: "З-ТАББМ 15",
-    },
-  ];
 
-  const [data, setData] = React.useState<Person[]>(persons);
-  const Navigate = useNavigate();
-  const [rows, setrows] = useState([]);
-  const [filter, setFilter] = useState({
-    Audit: {
-      PERIOD_ID: 4,
-      DEPARTMENT_ID: 999,
-      DOCUMENT_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
-    },
-  });
+
+function deletePlan (row){
+  if (window.confirm("Устгахдаа итгэлтэй байна уу?")) {
+    alert('хөгжүүлэлт хийгдэж байна.')
+    // DataRequest({
+    //   url: Stat_URl + "auditDelete/",
+    //   method: "POST",
+    //   data: {
+    //     FAS_AUDIT_ID: row.ID,
+    //     UPDATED_BY: userDetils.USER_ID,
+    //     UPDATED_DATE: dateFormat(new Date(), "yyyy-mm-dd"),
+    //   },
+    // })
+    //   .then(function (response) {
+    //     if (
+    //       response.data !== undefined &&
+    //       response.data.message === "success"
+    //     ) {
+    //       alert("устлаа");
+    //       fetchData();
+    //     } else alert(response.data.message);
+    //   })
+    //   .catch(function (error) {
+    //     alert("Aмжилтгүй");
+    //   });
+  }
+}
+
+
 
   const table = useReactTable({
     data,
@@ -810,6 +341,7 @@ function Home(props: any) {
     state: {
       columnFilters,
       globalFilter,
+      
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -821,39 +353,85 @@ function Home(props: any) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    initialState: {
-      pagination: {
-        pageSize: data.length,
-      },
-    },
-    
+    debugTable: false,
+    debugHeaders: false,
+    debugColumns: false,
   });
+  
   useEffect(() => {
     fetchData();
-  }, [props.mayagtData]);
+  }, [props]);
+
+  useEffect(() => {
+    fetchData();
+  }, [filter]);
+  
 
   async function fetchData() {
+
     DataRequest({
       url: Stat_URl + "statisticList",
       method: "POST",
       data: {
-        CONFIRM_DATE: dateFormat(new Date(), "dd-mmm-yy"),
-        IS_ACTIVE: 1,
+        PERIOD_ID: filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID ==='999' ? null :filter.Audit.PERIOD_ID,//filter.Audit.PERIOD_ID,
+        DEPARTMENT_ID: UserPremission(userDetils.USER_TYPE_NAME,'plan','view')?(filter.Audit.DEPARTMENT_ID === 999 || filter.Audit.DEPARTMENT_ID === '999' ? null: filter.Audit.DEPARTMENT_ID): userDetils.USER_DEPARTMENT_ID//filter.Audit.DEPARTMENT_ID
+
       },
     })
       .then(function (response) {
-        console.log(response, "response");
-        if (response?.data.message === "failed" || response === undefined) {
-          alert("Өгөгдөл авчирхад алдаа гарлаа!");
+ 
+        if (response.data !== undefined && response.data.length > 0) {
+           setData([...response.data]);
           //setloaderSpinner(0);
-        } else {
-          setData(response?.data);
-        }
+        } 
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+        alert("Өгөгдөл авчирхад алдаа гарлаа!");
       });
-  }
+
+      DataRequest({
+        url: Stat_URl + "refDepartment",
+        method: "GET",
+        data: {
+         
+        },
+      })
+        .then(function (res) {
+          
+          if (res.data !== undefined && res?.data.length > 0) {
+          setDrop(res.data)
+
+          }
+        }).catch(function (error) {
+          alert("Aмжилтгүй");
+        });
+  
+    }
+
+    function lockPlan(){
+
+      
+
+      DataRequest({
+        url: Stat_URl + "statisticLock",
+        method: "POST",
+        data: 
+        {
+        lockData:data,
+        CREATED_BY:userDetils.USER_ID
+        }
+      })
+        .then(function (res) {
+          
+          if(res?.data.message === 'Хадгаллаа.'){
+            alert('амжилттай хадгаллаа')
+            fetchData()
+          }
+        }).catch(function (error) {
+          alert("Aмжилтгүй");
+        });
+    }
+  
   return (
     <>
       <div
@@ -879,11 +457,29 @@ function Home(props: any) {
             />
           </div>
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <Department
-              data={filter}
-              setData={(value: any) => setFilter(value)}
-              title="Аудит хийх нэгж нэр"
-            />
+          {UserPremission(userDetils.USER_TYPE_NAME,'plan','view')?
+          <select
+        className="border rounded text-sm focus:outline-none py-0.5"
+     
+        value = {filter.Audit.DEPARTMENT_ID}
+        onChange={(value) => {
+          let temp = filter;
+          temp.Audit.DEPARTMENT_ID = value.target.value;
+          setFilter({ ...temp });
+        }}
+      >
+        <option value={999}>Аудит хийх нэгж</option>
+        {drop.map((nation, index) => (
+          <option
+            className="font-semibold"
+            key={nation.DEPARTMENT_SHORT_NAME}
+            value={nation.DEPARTMENT_ID}
+          >
+            {nation.DEPARTMENT_NAME}
+          </option>
+        ))}
+      </select>:null}
+     
           </div>
 
           <DebouncedInput
@@ -899,6 +495,7 @@ function Home(props: any) {
               style={{ height: 28 }}
               className="flex flex-row  cursor-pointer"
             >
+               {UserPremission(userDetils.USER_TYPE_NAME,'plan','write')?
               <button
                 onClick={() => Navigate("/web/Home/Nemeh")}
                 className="inline-flex items-center rounded ml-2 py-1 h-7"
@@ -918,12 +515,56 @@ function Home(props: any) {
                   нэмэх
                 </div>
               </button>
+                :null}
+              <button
+          onClick={() => {
+            getExportFileBlob(columns,data,'хуваарь')
+          }}
+        className="inline-flex items-center rounded ml-2 py-1 h-7"
+        style={{
+          border: "1px solid #3cb371",
+        }}
+      >
+        <div className="bg-white">
+          <img src={excel} width="20px" height="20px" className="mx-1"></img>
+        </div>
+        <div
+          style={{
+            backgroundColor: "#3cb371",
+          }}
+          className=" text-white rounded-r px-1 h-7"
+        >
+          Excel
+        </div>
+      </button>
+          {UserPremission(userDetils.USER_TYPE_NAME,'plan','lock')?
+      <button
+                onClick={() => lockPlan()}
+                className="inline-flex items-center rounded ml-2 py-1 h-7"
+                style={{
+                  border: "1px solid #2684fe",
+                }}
+              >
+                <div className="bg-white px-1 ">
+                  <img src={TSOOJ} width="12px" height="10px "></img>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#2684fe",
+                  }}
+                  className=" text-white rounded-r px-1 h-7"
+                >
+                  Түгжих
+                </div>
+              </button>:null
+}
             </div>
           </div>
-          <Excel />
+      
         </div>
         <div style={{ maxHeight: "600px", overflow: "scroll" }}>
           <div className="h-2 mr-20" />
+          
           <table>
             <thead className="TableHeadBackroundcolor gap-20 ">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -995,6 +636,109 @@ function Home(props: any) {
     </>
   );
 }
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+  row,
+ 
+  ...rest
+  
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+
+     
+     
+    }
+    
+  }, [ref, indeterminate]);
+  
+  function saveToDB(value){
+   
+    let tempData = data
+    tempData[row.index].IS_LOCK =  row.original.IS_LOCK === 0 ? 1:0
+    setData(tempData)
+   
+      }
+ 
+
+  return (
+   
+   
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked = {true}
+      onClick = {(value)=> saveToDB(ref)}
+      {...rest}
+    />
+  );
+}
+
+function IndeterminateCheckboxALL({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+
+ table,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+    
+  }, [ref, indeterminate]);
+  
+  function saveToDB(){
+   
+
+    let tempData = data
+    for(let i=0;i<data.length;i++){
+        tempData[i].IS_LOCK =  data[i].IS_LOCK === 0 ? 1:0
+        if(i === (data.length - 1)){
+          setData(tempData)
+          
+          
+        }
+    }
+
+    
+
+    
+      }
+ 
+
+  return (
+   
+   
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked = {true}
+      onClick = {(value)=> saveToDB()}
+      {...rest}
+    />
+  );
+}
+
 
 function Filter({
   column,

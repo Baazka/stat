@@ -34,7 +34,7 @@ import axios from "axios";
 function CM(props: any) {
   const [data, setData] = React.useState([]);
   // @ts-ignore
-  const NewsData = JSON.parse(localStorage.getItem("News"));
+  const NewsData = JSON.parse(localStorage.getItem("userDetails"));
   const [dataMenu, setDataMenu] = useState({
     value: {},
     index: 0,
@@ -72,136 +72,137 @@ function CM(props: any) {
       });
   }
   return (
-    <div
-      style={{
-        maxHeight: window.innerHeight - 129,
-        maxWidth: window.innerWidth,
-        padding: "1rem 0 0 1rem",
-        overflow: "scroll",
-      }}
-    >
-      <Title title={"СТАТИСТИК МЭДЭЭ"} widthS={"9rem"} widthL={"8rem"} />
+    <div></div>
+    // <div
+    //   style={{
+    //     maxHeight: window.innerHeight - 129,
+    //     maxWidth: window.innerWidth,
+    //     padding: "1rem 0 0 1rem",
+    //     overflow: "scroll",
+    //   }}
+    // >
+    //   <Title title={"СТАТИСТИК МЭДЭЭ"} widthS={"9rem"} widthL={"8rem"} />
 
-      <div className="flex  max-w-full">
-        <div
-        // style={{
-        //   width:
-        //     window.innerWidth - 260,
-        // }}
-        >
-          {NewsData.USER_TYPE_NAME === "KHSHUDAG" ? (
-            <div>
-              {dataMenu.value.ID === 1 ? (
-                <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 2 ? (
-                <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 3 ? (
-                <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 4 ? (
-                <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-            </div>
-          ) : NewsData.USER_TYPE_NAME === "AKT_ORG" ||
-            NewsData.USER_TYPE_NAME === "AKT_MONITOR" ? (
-            <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-          ) : (
-            <div>
-              {dataMenu.value.ID === 1 ? (
-                <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 2 ? (
-                <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {/* {dataMenu.value.ID === 3 ? <Short_Report2 /> : null} */}
-              {dataMenu.value.ID === 3 ? (
-                <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 4 ? (
-                <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 5 ? (
-                <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 6 ? (
-                <CM_2C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 7 ? (
-                <CM_3A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 8 ? (
-                <CM_3B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 9 ? (
-                <CM_3C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 10 ? (
-                <CM_4 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 12 ? (
-                <CM_5A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 13 ? (
-                <CM_5B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 14 ? (
-                <CM_5C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 15 ? (
-                <CM_5D REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 16 ? (
-                <CM_5E REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 17 ? (
-                <CM_5F REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 18 ? (
-                <CM_6 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 19 ? (
-                <CM_7 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 20 ? (
-                <CM_8 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 21 ? (
-                <CM_9A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 22 ? (
-                <CM_9B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 23 ? (
-                <CM_9C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 24 ? (
-                <CM_9D REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 25 ? (
-                <CM_9E REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 26 ? (
-                <CM_9F REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 27 ? (
-                <CM_10 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-              {dataMenu.value.ID === 28 ? (
-                <CM_11 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-              ) : null}
-            </div>
-          )}
-        </div>
+    //   <div className="flex  max-w-full">
+    //     <div
+    //     // style={{
+    //     //   width:
+    //     //     window.innerWidth - 260,
+    //     // }}
+    //     >
+    //       {NewsData.USER_TYPE_NAME === "KHSHUDAG" ? (
+    //         <div>
+    //           {dataMenu.value.ID === 1 ? (
+    //             <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 2 ? (
+    //             <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 3 ? (
+    //             <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 4 ? (
+    //             <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //         </div>
+    //       ) : NewsData.USER_TYPE_NAME === "AKT_ORG" ||
+    //         NewsData.USER_TYPE_NAME === "AKT_MONITOR" ? (
+    //         <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //       ) : (
+    //         <div>
+    //           {dataMenu.value.ID === 1 ? (
+    //             <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 2 ? (
+    //             <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {/* {dataMenu.value.ID === 3 ? <Short_Report2 /> : null} */}
+    //           {dataMenu.value.ID === 3 ? (
+    //             <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 4 ? (
+    //             <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 5 ? (
+    //             <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 6 ? (
+    //             <CM_2C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 7 ? (
+    //             <CM_3A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 8 ? (
+    //             <CM_3B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 9 ? (
+    //             <CM_3C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 10 ? (
+    //             <CM_4 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 12 ? (
+    //             <CM_5A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 13 ? (
+    //             <CM_5B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 14 ? (
+    //             <CM_5C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 15 ? (
+    //             <CM_5D REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 16 ? (
+    //             <CM_5E REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 17 ? (
+    //             <CM_5F REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 18 ? (
+    //             <CM_6 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 19 ? (
+    //             <CM_7 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 20 ? (
+    //             <CM_8 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 21 ? (
+    //             <CM_9A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 22 ? (
+    //             <CM_9B REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 23 ? (
+    //             <CM_9C REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 24 ? (
+    //             <CM_9D REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 25 ? (
+    //             <CM_9E REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 26 ? (
+    //             <CM_9F REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 27 ? (
+    //             <CM_10 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //           {dataMenu.value.ID === 28 ? (
+    //             <CM_11 REPORT_NAME={dataMenu.value.REPORT_NAME} />
+    //           ) : null}
+    //         </div>
+    //       )}
+    //     </div>
 
-        <RightMenu
-          Fdata={reportMenu}
-          data={dataMenu}
-          setData={(text: any) => setDataMenu(text)}
-        />
-      </div>
-    </div>
+    //     <RightMenu
+    //       Fdata={reportMenu}
+    //       data={dataMenu}
+    //       setData={(text: any) => setDataMenu(text)}
+    //     />
+    //   </div>
+    // </div>
   );
 }
 

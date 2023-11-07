@@ -239,21 +239,21 @@ function Mayagt_2(props:any) {
       url: Stat_Url + "BM2List",
       method: "POST",
       data:{
-        // STAT_ID : mayagtData.ID,
+        ID : mayagtData.ID,
         PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
         DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
       }
     })
       .then(function (response) {
      console.log(response,'response');
-        if(response.data !== undefined && response.data.length >0){
-          loadData(response.data)
+        if(response.data !== undefined && response.data.data.length >0){
+          loadData(response.data.data)
         }
       
       })
       .catch(function (error) {
         console.log(error,'error');
-        alert("Aмжилтгүй");
+       
       });
   }
 
@@ -376,7 +376,7 @@ function Mayagt_2(props:any) {
           </div>
           <div className="flex">
             <ButtonRequest />
-            <ButtonConfirm />
+            {/* <ButtonConfirm /> */}
           </div>
         </div>
         <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
