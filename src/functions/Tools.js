@@ -14,6 +14,14 @@ const checkNullFloat = function (value) {
   else return parseFloat(value);
 };
 
+const checkNullInt = function (value) {
+  if (value === undefined) return 0;
+  else if (value === null) return 0;
+  else if (value === "") return 0;
+  else if (value.toString() === "NaN") return 0;
+  else return parseInt(value);
+};
+
 const checkString = function (value) {
   if (value === undefined) return "";
   else if (value === null) return "";
@@ -29,4 +37,4 @@ const checkNullDate = function (value) {
   else return dateFormat(value, "yyyy-mm-dd");
 };
 
-export { checkNull, checkString, checkNullFloat, checkNullDate };
+export { checkNull, checkString, checkNullFloat, checkNullDate,checkNullInt };

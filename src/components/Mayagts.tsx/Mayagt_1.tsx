@@ -3,8 +3,8 @@ import Title from "../Title";
 import "../../pages/Home.css";
 import Comment from "../comment";
 import FooterValue from "../Footervalue";
-import ButtonConfirm from "../ButtonConfirm";
 import ButtonRequest from "../ButtonRequest";
+import ButtonConfirm from "../ButtonConfirm"
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
@@ -29,7 +29,8 @@ import {
 } from "@tanstack/react-table";
 import DataRequest from "../../functions/make_Request";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
-import { read, writeFileXLSX,utils } from "xlsx";
+import fasUrl from "../../fasURL";
+import UserPremission from "../../functions/userPermission";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -217,6 +218,7 @@ function Mayagt_1(props: any) {
   
      
   const [data, loadData] = React.useState([]);
+  const [batlakhHuselt, setBatlakhHuselt] = useState({});
 
 
   const [filter, setFilter] = useState({
@@ -322,7 +324,7 @@ function Mayagt_1(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
-    
+    console.log(mayagtData,'data');
     DataRequest({
       url: Stat_Url + "BM1List",
       method: "POST",
@@ -333,7 +335,7 @@ function Mayagt_1(props: any) {
       }
     })
       .then(function (response) {
-     console.log('mayagt1',response);
+console.log(response,'mayagt1 response');
         if(response.data !== undefined && response.data.data.length >0){
           loadData(response.data.data)
           if(response?.data.role.length> 0)
@@ -345,12 +347,31 @@ function Mayagt_1(props: any) {
         console.log(error,'error');
         alert("Aмжилтгүй");
       });
+
+      DataRequest({
+        url: fasUrl + "OT_REQUEST_FOR_CONFIRM/"+ mayagtData.ID + '/' + mayagtData.DOCUMENT_ID + '/'+ 6,
+        method: "GET",
+        data:{
+        }
+      })
+        .then(function (response) {
+          setBatlakhHuselt(response.data);
+        })
+        .catch(function (error) {
+          console.log(error,'error');
+          alert("Aмжилтгүй");
+        });
+
   }
+
   function saveToDB(){
+    console.log("count");
    let temp = []
  //  console.log(saveData,'saveData');
     for(let i of saveData){
        temp.push(data[i])
+
+       
     }
     console.log(temp,'save data');
   DataRequest({
@@ -364,9 +385,40 @@ function Mayagt_1(props: any) {
       }
     })
       .then(function (response) {
-        console.log(response.data);
+        console.log({
+          ID:status.STATUS.ID,
+          STAT_AUDIT_ID:mayagtData.ID,
+          ACTION_ID:status.ROLE.ROLE_ID, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
+          ACTION_DESC:"mayagt hadgallaa",
+          CREATED_BY:userDetils.USER_ID
+          },'test');
         if(response?.data.message === 'Хадгаллаа.'){
-          alert('амжилттай хадгаллаа')
+
+          DataRequest({
+            url: Stat_Url + "BM1IU",
+            method: "POST",
+            data:{
+              ID:status.STATUS.ID,
+              STAT_AUDIT_ID:mayagtData.ID,
+              ACTION_ID:status.ROLE.ROLE_ID, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
+              ACTION_DESC:"mayagt hadgallaa",
+              CREATED_BY:userDetils.USER_ID
+              }
+            
+          })
+            .then(function (response) {
+              console.log(response.data);
+              if(response?.data.message === 'Хадгаллаа.'){
+                alert('амжилттай хадгаллаа')
+                
+      
+                fetchData()
+              }
+            })
+            .catch(function (error) {
+              console.log(error,'error');
+              alert("Aмжилтгүй");
+            });
         }
       })
       .catch(function (error) {
@@ -413,12 +465,26 @@ function Mayagt_1(props: any) {
         </div>
       </button>
           </div>
+         
           <div className="flex">
-            <ButtonRequest />
-            {/* {status.ROLE.AUDITOR_ID !== undefined?
+          {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","confirm") &&
+            status?.STATUS !== null &&
+            status?.STATUS !== undefined ? (
+             <ButtonRequest
+                audID={mayagtData.ID}
+                docId={mayagtData.DOCUMENT_ID}
+                STATUS={status.STATUS?.STATUS}
+                RoleID={status.ROLE?.ROLE_ID}
+                statusID={status.STATUS.ID}
+                Title="Хүсэлт илгээх"
+                batlakhHuselt={batlakhHuselt}
+                MODULE_TYPE={6}
+                PERIOD_TYPE ={0}
+              /> ):null} */}
+            {/* {status.ROLE?.AUDITOR_ID !== undefined?
             <ButtonConfirm     
               STATUS={status?.STATUS}
-              data={data}
+              data={mayagtData}
               Title={mayagtData.DOCUMENT_SHORT_NAME}
               RoleID={status?.ROLE.ROLE_ID}
               statusID={status?.STATUS.ID}
@@ -522,7 +588,9 @@ function Mayagt_1(props: any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB = {()=>saveToDB()}/>
+          {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
+          <ButtonSave saveToDB = {()=>saveToDB()}/>:null
+          {/* } */}
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">

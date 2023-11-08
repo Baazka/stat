@@ -11,7 +11,6 @@ import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import CurrencyInput from "react-currency-input-field";
 import { getExportFileBlob } from "../../functions/excel_export";
-import dateFormat from "dateformat";
 import {
   Column,
   Table,

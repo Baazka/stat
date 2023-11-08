@@ -4,9 +4,7 @@ import { saveIcon } from "../assets/zurag";
 
 
 function ButtonSave(props: any) {
-  const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
-  const [data, setData] = useState([]);
+
  
   return (
     <div style={{ display: "flex", justifyContent: "end" }}>

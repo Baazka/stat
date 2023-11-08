@@ -1,11 +1,20 @@
+import { checkNullInt } from "./Tools";
 function UserPremission(userType, scope,action) {
   if(scope === "mayagt"){
-    if(action === 'save'){
-      switch(userType.toUpperCase()) {
-        case 'admin'.toUpperCase():
+    if(action === 'confirm'){
+      switch(checkNullInt(userType)) {
+       case 2:
           return true;
-          
-        case 'AUDITOR'.toUpperCase():
+        case 3:
+          return true;
+        case 4:
+          return true;
+        default:
+          return false;
+      }
+    }else if(action === 'save'){
+      switch(checkNullInt(userType)) {
+        case 1:
           return true;
         default:
           return false;

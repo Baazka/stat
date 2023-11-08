@@ -1013,7 +1013,7 @@ type Stat_m15 = {
   TSAHIMAAR_MEDEELSEN_ESEH: string;
 };
 
-function Mayagt_15() {
+function Mayagt_15(props:any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -1434,9 +1434,7 @@ function Mayagt_15() {
         }}
       >
         <Title
-          title={
-            "ТӨРИЙН АУДИТЫН БАЙГУУЛЛАГЫН МЭДЭЭЛЛИЙН ИЛ ТОД БАЙДАЛ З-ТАББМ-14"
-          }
+          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"33rem"}
           widthL={"17rem"}
         />

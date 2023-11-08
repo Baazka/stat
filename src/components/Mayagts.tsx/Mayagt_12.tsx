@@ -1016,11 +1016,12 @@ type Stat_m12 = {
   SHILJILT_HODOLGOONII_SHALTGAN: string;
 };
 
-function Mayagt_12() {
+function Mayagt_12(props:any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-
+  const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m12, any>[]>(
@@ -1543,7 +1544,7 @@ function Mayagt_12() {
         }}
       >
         <Title
-          title={"ТӨРИЙН АУДИТЫН БАЙГУУЛЛАГЫН ХҮНИЙ НӨӨЦ З-ТАББМ-12"}
+          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"29rem"}
           widthL={"10rem"}
         />

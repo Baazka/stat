@@ -44,15 +44,15 @@ function Mayagt() {
         <Mayagt_9 mayagtData={mayagtData} userDetils={userDetils} />
       ) : mayagtData.DOCUMENT_ID === 10 ? (
         <Mayagt_10 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.DOCUMENT_ID === 15 ? (
+      ) : mayagtData.DOCUMENT_ID === 11 ? (
         <Mayagt_11 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-12" ? (
+      ) : mayagtData.DOCUMENT_ID === 12 ? (
         <Mayagt_12 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-13" ? (
+      ) : mayagtData.DOCUMENT_ID === 13 ? (
         <Mayagt_13 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-14" ? (
+      ) : mayagtData.DOCUMENT_ID === 14 ? (
         <Mayagt_14 mayagtData={mayagtData} userDetils={userDetils} />
-      ) : mayagtData.DOCUMENT_ID === "З-ТАББМ-15" ? (
+      ) : mayagtData.DOCUMENT_ID === 15 ? (
         <Mayagt_15 mayagtData={mayagtData} userDetils={userDetils} />
       ) : mayagtData.DOCUMENT_ID === "З-ТАБСМ-1 А" ? (
         <CM_1A mayagtData={mayagtData} userDetils={userDetils} />

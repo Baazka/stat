@@ -103,10 +103,12 @@ type Stat_m13 = {
   BOLOWSROLIIN_TUWSHIN: string;
 };
 
-function Mayagt_13() {
+function Mayagt_13(props:any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
   const [globalFilter, setGlobalFilter] = React.useState("");
   const columns = React.useMemo<ColumnDef<Stat_m13, any>[]>(
     () => [
@@ -488,9 +490,7 @@ function Mayagt_13() {
         }}
       >
         <Title
-          title={
-            "ТӨРИЙН АУДИТЫН БАЙГУУЛЛАГЫН СУРГАЛТ, ХӨГЖЛИЙН ҮЙЛ АЖИЛГААНЫ ХЭРЭГЖИЛТ З-ТАББМ-13"
-          }
+          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"47rem"}
           widthL={"16rem"}
         />

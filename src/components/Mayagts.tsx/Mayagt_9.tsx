@@ -1053,7 +1053,10 @@ type Stat_m9 = {
   HEREGJEEGUI_TAILBAR_SHALTGN_NOHTSOL: string;
 };
 
-function Mayagt_9() {
+function Mayagt_9(props:any) {
+  const mayagtData = props.mayagtData;
+  const userDetils = props.userDetils;
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -1383,9 +1386,7 @@ function Mayagt_9() {
         }}
       >
         <Title
-          TITLE={
-            "ТӨРИЙН АЛБАН ТУШААЛТНЫ ТӨРД УЧРУУЛСАН ХОХИРЛЫГ ТӨЛҮҮЛЭХ ҮҮРГИЙН ХЭРЭГЖИЛТИЙН БҮРТГЭЛ З-ТАББМ-9"
-          }
+              title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
           widthS={"51rem"}
           widthL={"22rem"}
         />

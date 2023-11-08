@@ -248,6 +248,8 @@ function Mayagt_2(props:any) {
      console.log(response,'response');
         if(response.data !== undefined && response.data.data.length >0){
           loadData(response.data.data)
+          if(response?.data.role.length> 0)
+          setStatus({STATUS:response?.data.status ,ROLE:response?.data.role.find(a => a.AUDITOR_ID === userDetils.USER_ID)})
         }
       
       })
@@ -271,6 +273,7 @@ function Mayagt_2(props:any) {
       TYPE: 0,
     },
   });
+  const [status,setStatus] =useState({STATUS:{},ROLE:{}})
 
   const table = useReactTable({
     data,

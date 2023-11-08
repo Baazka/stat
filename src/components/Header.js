@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+ import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/zurag/logo.png";
 import imagebackground from "../assets/zurag/background.png";

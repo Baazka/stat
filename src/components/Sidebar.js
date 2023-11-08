@@ -39,9 +39,9 @@ function Sidebar(props) {
     if (value === 1) {
       Navigate("/web/Home/Audit");
     }
-    if (value === 2) {
-      Navigate("/web/CM/ReportAudit");
-    }
+    // if (value === 2) {
+    //   Navigate("/web/CM/ReportAudit");
+    // }
   }
   return !props.sidebarSize ? (
     <div className="SideBarHidden" id="SideMenuZurag">
@@ -89,7 +89,7 @@ function Sidebar(props) {
                     </span>
                   </div>
 
-                  <div
+                  {/* <div
                     onClick={() => SelectMenu(2)}
                     className="w-full flex items-center  h-16 pl-1.5 hover:bg-white  cursor-pointer"
                     style={{ borderBottomLeftRadius: "28px" }}
@@ -113,7 +113,7 @@ function Sidebar(props) {
                     >
                       СТАТИСТИК МЭДЭЭ
                     </span>
-                  </div>
+                  </div> */}
                 </>
               )}
 
@@ -194,27 +194,29 @@ function Sidebar(props) {
                     }}
                   ></div>
                 </div>
-              ) : userDetils.USER_TYPE_NAME === "KHSHUDAG" ? (
-                <div
-                  onClick={() => SelectMenu(2)}
-                  className="w-full flex items-center  h-14 pl-1.5 hover:bg-white  cursor-pointer"
-                  style={{ borderBottomLeftRadius: "28px" }}
-                  onMouseOver={() => {
-                    setIcons({
-                      ...icons,
-                      ...{ menu2: Statictic1, menu2Color: "#2684fe" },
-                    });
-                  }}
-                  onMouseOut={() => {
-                    setIcons({
-                      ...icons,
-                      ...{ menu2: Statictic1, menu2Color: "white" },
-                    });
-                  }}
-                >
-                  <img src={icons.menu2} width="60" height="52"></img>
-                </div>
-              ) : userDetils.USER_TYPE_NAME === "AKT_ORG" ? (
+              ) 
+              // : userDetils.USER_TYPE_NAME === "KHSHUDAG" ? (
+              //   <div
+              //     onClick={() => SelectMenu(2)}
+              //     className="w-full flex items-center  h-14 pl-1.5 hover:bg-white  cursor-pointer"
+              //     style={{ borderBottomLeftRadius: "28px" }}
+              //     onMouseOver={() => {
+              //       setIcons({
+              //         ...icons,
+              //         ...{ menu2: Statictic1, menu2Color: "#2684fe" },
+              //       });
+              //     }}
+              //     onMouseOut={() => {
+              //       setIcons({
+              //         ...icons,
+              //         ...{ menu2: Statictic1, menu2Color: "white" },
+              //       });
+              //     }}
+              //   >
+              //     <img src={icons.menu2} width="60" height="52"></img>
+              //   </div>
+              // )
+               : userDetils.USER_TYPE_NAME === "AKT_ORG" ? (
                 <> </>
               ) : (
                 <>
@@ -238,7 +240,7 @@ function Sidebar(props) {
                     <img src={icons.menu1} width="60" height="52"></img>
                   </div>
 
-                  <div
+                  {/* <div
                     onClick={() => SelectMenu(2)}
                     className="w-full flex items-center  h-20 pl-1.5 hover:bg-white  cursor-pointer"
                     style={{ borderBottomLeftRadius: "28px" }}
@@ -256,7 +258,7 @@ function Sidebar(props) {
                     }}
                   >
                     <img src={icons.menu2} width="60" height="52"></img>
-                  </div>
+                  </div> */}
                 </>
               )}
 
