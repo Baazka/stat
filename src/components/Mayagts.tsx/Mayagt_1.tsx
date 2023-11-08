@@ -589,8 +589,8 @@ console.log(response,'mayagt1 response');
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
           {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
-          <ButtonSave saveToDB = {()=>saveToDB()}/>:null
-          {/* } */}
+          <ButtonSave saveToDB = {()=>saveToDB()}/>
+          {/* :null} */}
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
