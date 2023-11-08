@@ -97,13 +97,19 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ALBN_SHAARDLGIN_OGNOO",
+        accessorKey: "AKT_DATE",
         header: "Албан шаардлагын огноо",
+        accessorFn: (row, index) => {
+          return row.AKT_DATE === null
+            ? ""
+            : dateFormat(row.AKT_DATE, "yyyy-mm-dd");
+        },
+    
         cell: (info) => info.getValue(),
       },
 
       {
-        accessorKey: "AKT_ALBAN_SHAARDLGA_DUGR",
+        accessorKey: "AKT_NO",
         header: "Албан шаардлагын дугаар",
         cell: (info) => info.getValue(),
       },
@@ -121,6 +127,7 @@ function Mayagt_1(props: any) {
         accessorKey: "ALD_SHORT_DESC",
         header: "Зөрчлийн товч утга",
         cell: (info) => info.getValue(),
+        size:500
       },
       {
         accessorKey: "IS_ERROR_CONFLICT_NAME",
@@ -131,6 +138,7 @@ function Mayagt_1(props: any) {
         accessorKey: "SOLUTION_ERROR_NAME",
         header: "Алдаа, зөрчлийн ангилал",
         cell: (info) => info.getValue(),
+        size:300
       },
       {
         accessorKey: "ALBAN_SHAARDLGIN_DUN_T",

@@ -96,12 +96,17 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLBOR_AKTIIN_OGNOO",
+        accessorKey: "AKT_DATE",
         header: "Төлбөрийн актын огноо",
+        accessorFn: (row, index) => {
+          return row.AKT_DATE === null
+            ? ""
+            : dateFormat(row.AKT_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLBOR_AKTIIN_DUGAR",
+        accessorKey: "AKT_NO",
         header: "Төлбөрийн актын дугаар",
         cell: (info) => info.getValue(),
       },
