@@ -636,6 +636,60 @@ function deletePlan (row){
               })}
             </tbody>
           </table>
+          <div style={{ justifyContent: "flex-end" }}>
+          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+            <button
+              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+            >
+              {"<"}
+            </button>
+            <button
+              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+            <span className="flex items-center gap-4">
+            <div>нийт:</div>
+            <span>{data.length}</span>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}{" - "}
+                {table.getPageCount()}
+              </strong>
+            </span>
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         </div>
       </div>
     </>
