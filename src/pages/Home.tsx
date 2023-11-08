@@ -441,7 +441,7 @@ function deletePlan (row){
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
+          maxHeight: window.innerHeight ,
           maxWidth: window.innerWidth,
           overflow: "scroll",
           padding: "0.5rem 0rem 0 0.8rem",
