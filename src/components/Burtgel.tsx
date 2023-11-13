@@ -334,7 +334,9 @@ function Burtgel(props: any) {
                           key={nation.DOCUMENT_SHORT_NAME}
                           value={nation.ID}
                         >
-                          {nation.DOCUMENT_NAME}
+                          {nation.DOCUMENT_SHORT_NAME +
+                            " " +
+                            nation.DOCUMENT_NAME}
                         </option>
                       ))}
                     </select>

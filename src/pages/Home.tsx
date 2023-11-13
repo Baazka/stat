@@ -143,6 +143,11 @@ function Home(props: any) {
         cell: (info) => info.getValue(),
       },
       {
+        accessorKey: "DOCUMENT_NAME",
+        header: "Маягтын нэр",
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "AUDITOR_MEMBER",
         header: "Багийн гишүүд",
         cell: (info) => info.getValue(),
