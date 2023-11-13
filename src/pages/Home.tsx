@@ -15,7 +15,7 @@ import {
   xIcon,
   excel,
   TSUGJEE,
-  TSOOJ
+  TSOOJ,
 } from "../assets/zurag";
 import {
   Column,
@@ -60,10 +60,11 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 function Home(props: any) {
-
   // @ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
@@ -76,51 +77,45 @@ function Home(props: any) {
       TYPE: 0,
     },
   });
-  const [drop,setDrop] = useState([])
-  
+  const [drop, setDrop] = useState([]);
 
   const columns = React.useMemo(
     () => [
-      UserPremission(userDetils.USER_TYPE_NAME,'plan','lock')?
-      {
-        id: "select",
-        header: ({ table }) => (
-          <IndeterminateCheckboxALL
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler(),
-              data,
-              setData,
-             
-              
-
-            }}
-          />
-        
-        ),
-        cell: ({ row }) => (
-          <div>
-            <IndeterminateCheckbox
-              {...{
-                checked: row.original.IS_LOCK === 1 ?true:false,//ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
-                disabled: !row.getCanSelect(),
-                indeterminate: row.getIsSomeSelected(),
-                onChange: row.getToggleSelectedHandler(),
-                data,
-                setData,
-                row
-              }}
-            />
-          </div>
-        ),
-      }:
-      {
-        accessorFn: (row, index) => index + 1,
-        accessorKey:  "№",
-        header: "№",
-       
-      },
+      UserPremission(userDetils.USER_TYPE_NAME, "plan", "lock")
+        ? {
+            id: "select",
+            header: ({ table }) => (
+              <IndeterminateCheckboxALL
+                {...{
+                  checked: table.getIsAllRowsSelected(),
+                  indeterminate: table.getIsSomeRowsSelected(),
+                  onChange: table.getToggleAllRowsSelectedHandler(),
+                  data,
+                  setData,
+                }}
+              />
+            ),
+            cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox
+                  {...{
+                    checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                    disabled: !row.getCanSelect(),
+                    indeterminate: row.getIsSomeSelected(),
+                    onChange: row.getToggleSelectedHandler(),
+                    data,
+                    setData,
+                    row,
+                  }}
+                />
+              </div>
+            ),
+          }
+        : {
+            accessorFn: (row, index) => index + 1,
+            accessorKey: "№",
+            header: "№",
+          },
       {
         accessorKey: "PERIOD_LABEL",
         cell: (info) => info.getValue(),
@@ -215,35 +210,31 @@ function Home(props: any) {
                 alt=""
               />
             </button>
-            {row.IS_LOCK === 1?
-            
-            <img
-            src={TSUGJEE}
-            width="20px"
-            height="16px"
-            alt="tsooj"
-          />:
-          UserPremission(userDetils.USER_TYPE_NAME,'plan','write')?
-            <>
-            <button
-              className="bg-transparent text-xs"
-              type="button"
-              style={{
-                padding: "2px",
-                boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
-                borderRadius: "4px",
-                marginRight: "6px",
-              }}
-            >
-              <img
-                src={editPencil}
-                onClick={() => Navigate("/web/Home/Nemeh",{ state: { ID: row.ID} })}
-                width="14px"
-                height="14px"
-                alt=""
-              />
-            </button>
-            {/* <button
+            {row.IS_LOCK === 1 ? (
+              <img src={TSUGJEE} width="20px" height="16px" alt="tsooj" />
+            ) : UserPremission(userDetils.USER_TYPE_NAME, "plan", "write") ? (
+              <>
+                <button
+                  className="bg-transparent text-xs"
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={editPencil}
+                    onClick={() =>
+                      Navigate("/web/Home/Nemeh", { state: { ID: row.ID } })
+                    }
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+                {/* <button
               className="bg-transparent text-xs"
               type="button"
               style={{
@@ -255,50 +246,50 @@ function Home(props: any) {
             >
               <img src={printIcon} width="14px" height="14px" alt="" />
             </button> */}
-            {/* {UserPremission(userDetils.USER_TYPE_NAME, "HUVAARI") ? ( */}
-            <button
-              className="bg-transparent text-xs"
-              onClick={()=>deletePlan(row)}
-              type="button"
-              style={{
-                padding: "2px",
-                boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
-                borderRadius: "4px",
-                marginRight: "6px",
-              }}
-            >
-              <img
-                src={xIcon}
-                // onClick={() => {
-                //   row;
-                // }}
-                width="14px"
-                height="14px"
-                alt=""
-              />
-            </button>
-            {/* ) : null} */}
-            <div
-              style={{
-                position: "relative",
-                padding: "2px",
-                boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
-                marginRight: "6px",
-                borderRadius: "4px",
-                width: "22px",
-                textAlignLast: "center",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  height: "35px",
-                  width: "30px",
-                }}
-              ></div>
-            </div>
-            </>:null
-            }
+                {/* {UserPremission(userDetils.USER_TYPE_NAME, "HUVAARI") ? ( */}
+                <button
+                  className="bg-transparent text-xs"
+                  onClick={() => deletePlan(row)}
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={xIcon}
+                    // onClick={() => {
+                    //   row;
+                    // }}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+                {/* ) : null} */}
+                <div
+                  style={{
+                    position: "relative",
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    marginRight: "6px",
+                    borderRadius: "4px",
+                    width: "22px",
+                    textAlignLast: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      height: "35px",
+                      width: "30px",
+                    }}
+                  ></div>
+                </div>
+              </>
+            ) : null}
           </div>
         ),
       },
@@ -306,36 +297,32 @@ function Home(props: any) {
     [data]
   );
 
-
-
-function deletePlan (row){
-  if (window.confirm("Устгахдаа итгэлтэй байна уу?")) {
-    alert('хөгжүүлэлт хийгдэж байна.')
-    // DataRequest({
-    //   url: Stat_URl + "auditDelete/",
-    //   method: "POST",
-    //   data: {
-    //     FAS_AUDIT_ID: row.ID,
-    //     UPDATED_BY: userDetils.USER_ID,
-    //     UPDATED_DATE: dateFormat(new Date(), "yyyy-mm-dd"),
-    //   },
-    // })
-    //   .then(function (response) {
-    //     if (
-    //       response.data !== undefined &&
-    //       response.data.message === "success"
-    //     ) {
-    //       alert("устлаа");
-    //       fetchData();
-    //     } else alert(response.data.message);
-    //   })
-    //   .catch(function (error) {
-    //     alert("Aмжилтгүй");
-    //   });
+  function deletePlan(row) {
+    if (window.confirm("Устгахдаа итгэлтэй байна уу?")) {
+      alert("хөгжүүлэлт хийгдэж байна.");
+      // DataRequest({
+      //   url: Stat_URl + "auditDelete/",
+      //   method: "POST",
+      //   data: {
+      //     FAS_AUDIT_ID: row.ID,
+      //     UPDATED_BY: userDetils.USER_ID,
+      //     UPDATED_DATE: dateFormat(new Date(), "yyyy-mm-dd"),
+      //   },
+      // })
+      //   .then(function (response) {
+      //     if (
+      //       response.data !== undefined &&
+      //       response.data.message === "success"
+      //     ) {
+      //       alert("устлаа");
+      //       fetchData();
+      //     } else alert(response.data.message);
+      //   })
+      //   .catch(function (error) {
+      //     alert("Aмжилтгүй");
+      //   });
+    }
   }
-}
-
-
 
   const table = useReactTable({
     data,
@@ -346,7 +333,6 @@ function deletePlan (row){
     state: {
       columnFilters,
       globalFilter,
-      
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -362,7 +348,7 @@ function deletePlan (row){
     debugHeaders: false,
     debugColumns: false,
   });
-  
+
   useEffect(() => {
     fetchData();
   }, [props]);
@@ -370,78 +356,76 @@ function deletePlan (row){
   useEffect(() => {
     fetchData();
   }, [filter]);
-  
 
   async function fetchData() {
-
     DataRequest({
       url: Stat_URl + "statisticList",
       method: "POST",
       data: {
-        PERIOD_ID: filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID ==='999' ? null :filter.Audit.PERIOD_ID,//filter.Audit.PERIOD_ID,
-        DEPARTMENT_ID: UserPremission(userDetils.USER_TYPE_NAME,'plan','view')?(filter.Audit.DEPARTMENT_ID === 999 || filter.Audit.DEPARTMENT_ID === '999' ? null: filter.Audit.DEPARTMENT_ID): userDetils.USER_DEPARTMENT_ID//filter.Audit.DEPARTMENT_ID
-
+        PERIOD_ID:
+          filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID === "999"
+            ? null
+            : filter.Audit.PERIOD_ID, //filter.Audit.PERIOD_ID,
+        DEPARTMENT_ID: UserPremission(userDetils.USER_TYPE_NAME, "plan", "view")
+          ? filter.Audit.DEPARTMENT_ID === 999 ||
+            filter.Audit.DEPARTMENT_ID === "999"
+            ? null
+            : filter.Audit.DEPARTMENT_ID
+          : userDetils.USER_DEPARTMENT_ID, //filter.Audit.DEPARTMENT_ID
+        USER_ID: userDetils.USER_TYPE_NAME,
+        USER_TYPE_NAME: userDetils.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
- 
         if (response.data !== undefined && response.data.length > 0) {
-           setData([...response.data]);
+          setData([...response.data]);
           //setloaderSpinner(0);
-        } 
+        }
       })
       .catch(function (error) {
         alert("Өгөгдөл авчирхад алдаа гарлаа!");
       });
 
-      DataRequest({
-        url: Stat_URl + "refDepartment",
-        method: "GET",
-        data: {
-         
-        },
-      })
-        .then(function (res) {
-          
-          if (res.data !== undefined && res?.data.length > 0) {
-          setDrop(res.data)
-
-          }
-        }).catch(function (error) {
-          alert("Aмжилтгүй");
-        });
-  
-    }
-
-    function lockPlan(){
-
-      
-
-      DataRequest({
-        url: Stat_URl + "statisticLock",
-        method: "POST",
-        data: 
-        {
-        lockData:data,
-        CREATED_BY:userDetils.USER_ID
+    DataRequest({
+      url: Stat_URl + "refDepartment",
+      method: "GET",
+      data: {},
+    })
+      .then(function (res) {
+        if (res.data !== undefined && res?.data.length > 0) {
+          setDrop(res.data);
         }
       })
-        .then(function (res) {
-          
-          if(res?.data.message === 'Хадгаллаа.'){
-            alert('амжилттай хадгаллаа')
-            fetchData()
-          }
-        }).catch(function (error) {
-          alert("Aмжилтгүй");
-        });
-    }
-  
+      .catch(function (error) {
+        alert("Aмжилтгүй");
+      });
+  }
+
+  function lockPlan() {
+    DataRequest({
+      url: Stat_URl + "statisticLock",
+      method: "POST",
+      data: {
+        lockData: data,
+        CREATED_BY: userDetils.USER_ID,
+      },
+    })
+      .then(function (res) {
+        if (res?.data.message === "Хадгаллаа.") {
+          alert("амжилттай хадгаллаа");
+          fetchData();
+        }
+      })
+      .catch(function (error) {
+        alert("Aмжилтгүй");
+      });
+  }
+
   return (
     <>
       <div
         style={{
-          maxHeight: window.innerHeight ,
+          maxHeight: window.innerHeight,
           maxWidth: window.innerWidth,
           overflow: "scroll",
           padding: "0.5rem 0rem 0 0.8rem",
@@ -462,29 +446,28 @@ function deletePlan (row){
             />
           </div>
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-          {UserPremission(userDetils.USER_TYPE_NAME,'plan','view')?
-          <select
-        className="border rounded text-sm focus:outline-none py-0.5"
-     
-        value = {filter.Audit.DEPARTMENT_ID}
-        onChange={(value) => {
-          let temp = filter;
-          temp.Audit.DEPARTMENT_ID = value.target.value;
-          setFilter({ ...temp });
-        }}
-      >
-        <option value={999}>Аудит хийх нэгж</option>
-        {drop.map((nation, index) => (
-          <option
-            className="font-semibold"
-            key={nation.DEPARTMENT_SHORT_NAME}
-            value={nation.DEPARTMENT_ID}
-          >
-            {nation.DEPARTMENT_NAME}
-          </option>
-        ))}
-      </select>:null}
-     
+            {UserPremission(userDetils.USER_TYPE_NAME, "plan", "view") ? (
+              <select
+                className="border rounded text-sm focus:outline-none py-0.5"
+                value={filter.Audit.DEPARTMENT_ID}
+                onChange={(value) => {
+                  let temp = filter;
+                  temp.Audit.DEPARTMENT_ID = value.target.value;
+                  setFilter({ ...temp });
+                }}
+              >
+                <option value={999}>Аудит хийх нэгж</option>
+                {drop.map((nation, index) => (
+                  <option
+                    className="font-semibold"
+                    key={nation.DEPARTMENT_SHORT_NAME}
+                    value={nation.DEPARTMENT_ID}
+                  >
+                    {nation.DEPARTMENT_NAME}
+                  </option>
+                ))}
+              </select>
+            ) : null}
           </div>
 
           <DebouncedInput
@@ -500,76 +483,80 @@ function deletePlan (row){
               style={{ height: 28 }}
               className="flex flex-row  cursor-pointer"
             >
-               {UserPremission(userDetils.USER_TYPE_NAME,'plan','write')?
+              {UserPremission(userDetils.USER_TYPE_NAME, "plan", "write") ? (
+                <button
+                  onClick={() => Navigate("/web/Home/Nemeh")}
+                  className="inline-flex items-center rounded ml-2 py-1 h-7"
+                  style={{
+                    border: "1px solid #2684fe",
+                  }}
+                >
+                  <div className="bg-white px-1 ">
+                    <img src={addIcon} width="18px" height="10px "></img>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: "#2684fe",
+                    }}
+                    className=" text-white rounded-r px-1 h-7"
+                  >
+                    нэмэх
+                  </div>
+                </button>
+              ) : null}
               <button
-                onClick={() => Navigate("/web/Home/Nemeh")}
+                onClick={() => {
+                  getExportFileBlob(columns, data, "хуваарь");
+                }}
                 className="inline-flex items-center rounded ml-2 py-1 h-7"
                 style={{
-                  border: "1px solid #2684fe",
+                  border: "1px solid #3cb371",
                 }}
               >
-                <div className="bg-white px-1 ">
-                  <img src={addIcon} width="18px" height="10px "></img>
+                <div className="bg-white">
+                  <img
+                    src={excel}
+                    width="20px"
+                    height="20px"
+                    className="mx-1"
+                  ></img>
                 </div>
                 <div
                   style={{
-                    backgroundColor: "#2684fe",
+                    backgroundColor: "#3cb371",
                   }}
                   className=" text-white rounded-r px-1 h-7"
                 >
-                  нэмэх
+                  Excel
                 </div>
               </button>
-                :null}
-              <button
-          onClick={() => {
-            getExportFileBlob(columns,data,'хуваарь')
-          }}
-        className="inline-flex items-center rounded ml-2 py-1 h-7"
-        style={{
-          border: "1px solid #3cb371",
-        }}
-      >
-        <div className="bg-white">
-          <img src={excel} width="20px" height="20px" className="mx-1"></img>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#3cb371",
-          }}
-          className=" text-white rounded-r px-1 h-7"
-        >
-          Excel
-        </div>
-      </button>
-          {UserPremission(userDetils.USER_TYPE_NAME,'plan','lock')?
-      <button
-                onClick={() => lockPlan()}
-                className="inline-flex items-center rounded ml-2 py-1 h-7"
-                style={{
-                  border: "1px solid #2684fe",
-                }}
-              >
-                <div className="bg-white px-1 ">
-                  <img src={TSOOJ} width="12px" height="10px "></img>
-                </div>
-                <div
+              {UserPremission(userDetils.USER_TYPE_NAME, "plan", "lock") ? (
+                <button
+                  onClick={() => lockPlan()}
+                  className="inline-flex items-center rounded ml-2 py-1 h-7"
                   style={{
-                    backgroundColor: "#2684fe",
+                    border: "1px solid #2684fe",
                   }}
-                  className=" text-white rounded-r px-1 h-7"
                 >
-                  Түгжих
-                </div>
-              </button>:null
-}
+                  <div className="bg-white px-1 ">
+                    <img src={TSOOJ} width="12px" height="10px "></img>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: "#2684fe",
+                    }}
+                    className=" text-white rounded-r px-1 h-7"
+                  >
+                    Түгжих
+                  </div>
+                </button>
+              ) : null}
             </div>
           </div>
-      
         </div>
         <div style={{ maxHeight: "600px", overflow: "scroll" }}>
           <div className="h-2 mr-20" />
-          
+
           <table>
             <thead className="TableHeadBackroundcolor gap-20 ">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -637,59 +624,59 @@ function deletePlan (row){
             </tbody>
           </table>
           <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            >
-              {"<"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-            <span className="flex items-center gap-4">
-            <div>нийт:</div>
-            <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}{" - "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
+            <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<<"}
+              </button>
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              >
+                {"<"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {">"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {">>"}
+              </button>
+              <span className="flex items-center gap-4">
+                <div>нийт:</div>
+                <span>{data.length}</span>
+                <strong>
+                  {table.getState().pagination.pageIndex + 1}
+                  {" - "}
+                  {table.getPageCount()}
+                </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
-
         </div>
       </div>
     </>
@@ -702,43 +689,32 @@ function IndeterminateCheckbox({
   data,
   setData,
   row,
- 
-  ...rest
-  
-}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
 
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
   const ref = React.useRef<HTMLInputElement>(null!);
   // @ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
   React.useEffect(() => {
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
-
-     
-     
     }
-    
   }, [ref, indeterminate]);
-  
-  function saveToDB(value){
-   
-    let tempData = data
-    tempData[row.index].IS_LOCK =  row.original.IS_LOCK === 0 ? 1:0
-    setData(tempData)
-   
-      }
- 
+
+  function saveToDB(value) {
+    let tempData = data;
+    tempData[row.index].IS_LOCK = row.original.IS_LOCK === 0 ? 1 : 0;
+    setData(tempData);
+  }
 
   return (
-   
-   
     <input
       type="checkbox"
       ref={ref}
       className={className + " cursor-pointer"}
       //{row?.original.IS_LOCK === 1 ?true:false}
-      checked = {true}
-      onClick = {(value)=> saveToDB(ref)}
+      checked={true}
+      onClick={(value) => saveToDB(ref)}
       {...rest}
     />
   );
@@ -750,10 +726,9 @@ function IndeterminateCheckboxALL({
   data,
   setData,
 
- table,
+  table,
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
-
   const ref = React.useRef<HTMLInputElement>(null!);
   // @ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
@@ -761,43 +736,30 @@ function IndeterminateCheckboxALL({
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
-    
   }, [ref, indeterminate]);
-  
-  function saveToDB(){
-   
 
-    let tempData = data
-    for(let i=0;i<data.length;i++){
-        tempData[i].IS_LOCK =  data[i].IS_LOCK === 0 ? 1:0
-        if(i === (data.length - 1)){
-          setData(tempData)
-          
-          
-        }
-    }
-
-    
-
-    
+  function saveToDB() {
+    let tempData = data;
+    for (let i = 0; i < data.length; i++) {
+      tempData[i].IS_LOCK = data[i].IS_LOCK === 0 ? 1 : 0;
+      if (i === data.length - 1) {
+        setData(tempData);
       }
- 
+    }
+  }
 
   return (
-   
-   
     <input
       type="checkbox"
       ref={ref}
       className={className + " cursor-pointer"}
       //{row?.original.IS_LOCK === 1 ?true:false}
-      checked = {true}
-      onClick = {(value)=> saveToDB()}
+      checked={true}
+      onClick={(value) => saveToDB()}
       {...rest}
     />
   );
 }
-
 
 function Filter({
   column,

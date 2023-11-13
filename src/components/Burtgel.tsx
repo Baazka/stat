@@ -1,5 +1,5 @@
 import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Title from "./Title";
 import { saveIcon, deleteIcon } from "../assets/zurag";
 
@@ -32,7 +32,6 @@ import axios from "axios";
 
 import dateFormat, { masks } from "dateformat";
 
-
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -55,12 +54,11 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 function Burtgel(props: any) {
-
   const [tsonkh, setTsonkh] = useState(0);
   //@ts-ignore
   const userDetils = JSON.parse(localStorage.getItem("userDetails"));
   let navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
   const [data, loadData] = useState({
     Audit: {
       ID: null,
@@ -78,7 +76,7 @@ function Burtgel(props: any) {
       // "IS_ACTIVE":1
       // }
     ],
-    CREATED_BY: 1,
+    CREATED_BY: userDetils.USER_ID,
   });
   const [drop, setDrop] = useState({
     drop1: [],
@@ -86,28 +84,25 @@ function Burtgel(props: any) {
     drop3: [],
   });
   useEffect(() => {
-
-   
     fetchData();
   }, []);
 
   async function fetchData() {
-   if(state?.ID !== undefined && state.ID !== null){
-      console.log(state,'state');
-    DataRequest({
-      url: Stat_Url + "get_stat_plan",
-      method: "POST",
-      data:{STAT_ID:state?.ID}
-    })
-      .then(function (response) {
-        if(response.data !== undefined && response.data !== null){
-        
-        loadData(response.data)
-        }
+    if (state?.ID !== undefined && state.ID !== null) {
+      console.log(state, "state");
+      DataRequest({
+        url: Stat_Url + "get_stat_plan",
+        method: "POST",
+        data: { STAT_ID: state?.ID },
       })
-      .catch(function (error) {
-        alert("Aмжилтгүй");
-      });
+        .then(function (response) {
+          if (response.data !== undefined && response.data !== null) {
+            loadData(response.data);
+          }
+        })
+        .catch(function (error) {
+          alert("Aмжилтгүй");
+        });
     }
 
     let listItems = await axios(Stat_Url + "refDepartment");
@@ -130,46 +125,37 @@ function Burtgel(props: any) {
     }
   }
 
-  function savetoDB(){
-    
+  function savetoDB() {
     DataRequest({
       url: Stat_Url + "statisticCheck",
       method: "POST",
-      data:
-      {
-        PERIOD_ID:data.Audit.PERIOD_ID,
-        DEPARTMENT_ID:data.Audit.DEPARTMENT_ID,
-        DOCUMENT_ID:data.Audit.DOCUMENT_ID
-      }
+      data: {
+        PERIOD_ID: data.Audit.PERIOD_ID,
+        DEPARTMENT_ID: data.Audit.DEPARTMENT_ID,
+        DOCUMENT_ID: data.Audit.DOCUMENT_ID,
+      },
     })
       .then(function (resp) {
-        if(resp.data === false){
+        if (resp.data === false) {
           DataRequest({
             url: Stat_Url + "statisticIU",
             method: "POST",
-            data:data
+            data: data,
           })
             .then(function (response) {
-              if(response?.data.message === 'Хадгаллаа.'){
-              alert('амжилттай хадгаллаа')
-              navigate('/web/Home/Audit')
+              if (response?.data.message === "Хадгаллаа.") {
+                alert("амжилттай хадгаллаа");
+                navigate("/web/Home/Audit");
               }
             })
             .catch(function (error) {
               alert("Aмжилтгүй");
             });
-        }else{
-            alert ('Хувиар давхардаж байна!!!')
-       }
-        
+        } else {
+          alert("Хувиар давхардаж байна!!!");
+        }
       })
-      .catch(function (error) {
-        
-        
-      
-      });
-   
-    
+      .catch(function (error) {});
   }
 
   return (
@@ -198,9 +184,13 @@ function Burtgel(props: any) {
 
       <div className="ml-32 w-10/12 ">
         {tsonkh !== 0 ? (
-          <Employee setTsonkh={setTsonkh} data={data} loadData={loadData} tsonkh = {tsonkh} />
+          <Employee
+            setTsonkh={setTsonkh}
+            data={data}
+            loadData={loadData}
+            tsonkh={tsonkh}
+          />
         ) : null}
-        
 
         <div
           style={{
@@ -225,20 +215,19 @@ function Burtgel(props: any) {
                         width: 170,
                         border: "1px solid gray",
                       }}
-                      value = {data.Audit.PERIOD_ID}
+                      value={data.Audit.PERIOD_ID}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.PERIOD_ID = value.target.value;
                         loadData({ ...temp });
                       }}
-                     
                     >
                       <option value={999}>Бүгд</option>
                       {drop.drop2.map((nation, index) => (
                         <option
                           className="font-semibold"
                           key={nation.PERIOD_LABEL}
-                          value = {nation.ID}                          
+                          value={nation.ID}
                         >
                           {nation.PERIOD_LABEL}
                         </option>
@@ -260,19 +249,18 @@ function Burtgel(props: any) {
                         height: 45,
                         width: 170,
                       }}
-                      value = {dateFormat(
+                      value={dateFormat(
                         data.Audit.CONFIRM_DATE === null ||
-                        data.Audit.CONFIRM_DATE === undefined
+                          data.Audit.CONFIRM_DATE === undefined
                           ? ""
                           : data.Audit.CONFIRM_DATE,
                         "yyyy-mm-dd"
-                      )
-                        }
+                      )}
                       onChange={(e) => {
                         let temp = data;
                         temp.Audit.CONFIRM_DATE = e.target.value;
                         loadData({
-                                ...temp
+                          ...temp,
                         });
                       }}
                     />
@@ -294,7 +282,7 @@ function Burtgel(props: any) {
                         height: 45,
                         border: "1px solid gray",
                       }}
-                      value = {data.Audit.DEPARTMENT_ID}
+                      value={data.Audit.DEPARTMENT_ID}
                       onChange={(value) => {
                         let temp = data;
                         temp.Audit.DEPARTMENT_ID = value.target.value;
@@ -608,17 +596,16 @@ function Employee(props: any) {
     () => [
       {
         id: "select",
-        header: ({ table }) => (
-          props.tsonkh === 1?
-          <IndeterminateCheckbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler(),
-            }}
-          />:null
-        
-        ),
+        header: ({ table }) =>
+          props.tsonkh === 1 ? (
+            <IndeterminateCheckbox
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+              }}
+            />
+          ) : null,
         cell: ({ row }) => (
           <div>
             <IndeterminateCheckbox
@@ -627,11 +614,11 @@ function Employee(props: any) {
                 disabled: !row.getCanSelect(),
                 indeterminate: row.getIsSomeSelected(),
                 onChange: row.getToggleSelectedHandler(),
-                tsonkh:props.tsonkh,
-                data:props.data,
-                loadData:props.loadData,
-                setTsonkh:props.setTsonkh,
-                row
+                tsonkh: props.tsonkh,
+                data: props.data,
+                loadData: props.loadData,
+                setTsonkh: props.setTsonkh,
+                row,
               }}
             />
           </div>
@@ -712,7 +699,7 @@ function Employee(props: any) {
         method: "POST",
         data: {
           DEPARTMENT_ID: userDetils.USER_DEPARTMENT_ID,
-          SUB_DEPARTMENT_ID: userDetils.USER_SUB_DEPARTMENT_ID
+          SUB_DEPARTMENT_ID: userDetils.USER_SUB_DEPARTMENT_ID,
         },
       })
         .then(function (response) {
@@ -725,10 +712,6 @@ function Employee(props: any) {
     }
     fetchData();
   }, [props]);
-
-
-
-
 
   function saveToDB() {
     let temp = props.data;
@@ -931,12 +914,11 @@ function Employee(props: any) {
             </select>
           </div>
         </div>
-        {props.tsonkh === 1?
-        <div className="mt-2 p-2">
-          <SaveButton saveToDB={() => saveToDB()} />
-        </div>
-        :null
-        }
+        {props.tsonkh === 1 ? (
+          <div className="mt-2 p-2">
+            <SaveButton saveToDB={() => saveToDB()} />
+          </div>
+        ) : null}
       </div>
     );
   } else {
@@ -944,8 +926,6 @@ function Employee(props: any) {
   }
   return listItems;
 }
-
-
 
 function Filter({
   column,
@@ -1035,9 +1015,7 @@ function IndeterminateCheckbox({
   row,
   setTsonkh,
   ...rest
-  
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
-
   const ref = React.useRef<HTMLInputElement>(null!);
 
   React.useEffect(() => {
@@ -1045,45 +1023,44 @@ function IndeterminateCheckbox({
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
   }, [ref, indeterminate]);
-  function saveToDB(value){
+  function saveToDB(value) {
     console.log(row.original);
-    if(tsonkh !== 1){
-      let temp = data
-     
-        let temp_team = {
-          ID: null,
-          STAT_AUDIT_ID: temp.Audit.ID,
-          AUDITOR_ID: null,
-          ROLE_ID: tsonkh,
-          IS_ACTIVE: 1,
-          USER_NAME: null,
-          USER_CODE: null,
-        }
-        temp_team.AUDITOR_ID = row.original.USER_ID;
-        temp_team.USER_NAME = row.original.USER_NAME;
-        temp_team.USER_CODE = row.original.USER_CODE;
-        temp.Team.push(temp_team);
-        loadData(temp);
-        setTsonkh(0);
-      }
-    
+    if (tsonkh !== 1) {
+      let temp = data;
+
+      let temp_team = {
+        ID: null,
+        STAT_AUDIT_ID: temp.Audit.ID,
+        AUDITOR_ID: null,
+        ROLE_ID: tsonkh,
+        IS_ACTIVE: 1,
+        USER_NAME: null,
+        USER_CODE: null,
+      };
+      temp_team.AUDITOR_ID = row.original.USER_ID;
+      temp_team.USER_NAME = row.original.USER_NAME;
+      temp_team.USER_CODE = row.original.USER_CODE;
+      temp.Team.push(temp_team);
+      loadData(temp);
+      setTsonkh(0);
+    }
+
     //  }
   }
 
-  return (
-    tsonkh === 1?
+  return tsonkh === 1 ? (
     <input
       type="checkbox"
       ref={ref}
       className={className + " cursor-pointer"}
       {...rest}
     />
-    :
+  ) : (
     <input
       type="checkbox"
       ref={ref}
       className={className + " cursor-pointer"}
-      onClick = {(value)=> saveToDB(ref)}
+      onClick={(value) => saveToDB(ref)}
       {...rest}
     />
   );
