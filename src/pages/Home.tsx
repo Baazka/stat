@@ -372,7 +372,7 @@ function Home(props: any) {
             ? null
             : filter.Audit.DEPARTMENT_ID
           : userDetils.USER_DEPARTMENT_ID, //filter.Audit.DEPARTMENT_ID
-        USER_ID: userDetils.USER_TYPE_NAME,
+        USER_ID: userDetils.USER_ID,
         USER_TYPE_NAME: userDetils.USER_TYPE_NAME,
       },
     })
