@@ -371,16 +371,8 @@ function Home(props: any) {
           filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID === "999"
             ? null
             : filter.Audit.PERIOD_ID, //filter.Audit.PERIOD_ID,
-        DEPARTMENT_ID: UserPremission(
-          userDetails.USER_TYPE_NAME,
-          "plan",
-          "view"
-        )
-          ? filter.Audit.DEPARTMENT_ID === 999 ||
-            filter.Audit.DEPARTMENT_ID === "999"
-            ? null
-            : filter.Audit.DEPARTMENT_ID
-          : userDetails.USER_DEPARTMENT_ID, //filter.Audit.DEPARTMENT_ID
+        FILTER_DEPARTMENT_ID: filter.Audit.DEPARTMENT_ID,
+        USER_DEPARTMENT_ID: userDetails.USER_DEPARTMENT_ID,
         USER_ID: userDetails.USER_ID,
         USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
