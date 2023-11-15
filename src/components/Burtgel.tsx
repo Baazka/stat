@@ -796,7 +796,7 @@ function Employee(props: any) {
         <div style={{ maxHeight: "630px", overflow: "scroll" }}>
           <div />
           <table>
-            <thead className="TableHeadBackroundcolor ">
+            <thead className="TableHeadBackroundcolor">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -805,8 +805,7 @@ function Employee(props: any) {
                         key={header.id}
                         colSpan={header.colSpan}
                         style={{ verticalAlign: "bottom" }}
-                        className="w-1"
-                      >
+                       >
                         {header.isPlaceholder ? null : (
                           <>
                             <div

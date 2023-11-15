@@ -437,7 +437,7 @@ function Home(props: any) {
           maxHeight: window.innerHeight,
           maxWidth: window.innerWidth,
           overflow: "scroll",
-          padding: "0.5rem 0rem 0 0.8rem",
+          padding: "0.5rem 0rem 0 0.4rem",
           // scrollbarWidth: "none",
         }}
       >
@@ -446,7 +446,7 @@ function Home(props: any) {
           widthS={"28rem"}
           widthL={"14rem"}
         />
-        <div className="justify-start flex mb-4 mt-4">
+        <div className="justify-start flex mb-2">
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
             <Period
               title="Аудит жил"
@@ -563,19 +563,19 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: "600px", overflow: "scroll" }}>
-          <div className="h-2 mr-20" />
+        <div style={{ maxHeight: window.innerHeight-300}}>
+          
 
           <table>
-            <thead className="TableHeadBackroundcolor gap-20 ">
+            <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
+                <tr key={headerGroup.id} >
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        style={{ width: 200 }}
+                        className="sticky-col"
                       >
                         {header.isPlaceholder ? null : (
                           <>
@@ -610,7 +610,7 @@ function Home(props: any) {
                 </tr>
               ))}
             </thead>
-            <tbody>
+            <tbody  >
               {table.getRowModel().rows.map((row, i) => {
                 return (
                   <tr
@@ -687,6 +687,7 @@ function Home(props: any) {
             </div>
           </div>
         </div>
+        
       </div>
     </>
   );
