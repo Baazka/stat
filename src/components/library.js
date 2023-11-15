@@ -21,6 +21,12 @@ function Period(props) {
         // style={
         //   ({ border: "1px solid black", borderRadius: "4px" }, props.styleLib)
         // }
+        value={props.data.Audit.DEPARTMENT_ID}
+        onChange={(value) => {
+          let temp = props.data;
+          temp.Audit.PERIOD_ID = value.target.value;
+          props.setData({ ...temp });
+        }}
       >
         <option value={999}>Бүгд</option>
         {data?.map((nation, index) => (
