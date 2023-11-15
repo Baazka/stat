@@ -21,7 +21,7 @@ function Period(props) {
         // style={
         //   ({ border: "1px solid black", borderRadius: "4px" }, props.styleLib)
         // }
-        value={props.data.Audit.DEPARTMENT_ID}
+        value={props.data.Audit.PERIOD_ID}
         onChange={(value) => {
           let temp = props.data;
           temp.Audit.PERIOD_ID = value.target.value;

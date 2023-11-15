@@ -381,6 +381,8 @@ function Home(props: any) {
         if (response.data !== undefined && response.data.length > 0) {
           setData([...response.data]);
           //setloaderSpinner(0);
+        }else{
+          setData([])
         }
       })
       .catch(function (error) {
