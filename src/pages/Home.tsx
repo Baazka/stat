@@ -61,7 +61,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Home(props: any) {
   // @ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -81,7 +81,7 @@ function Home(props: any) {
 
   const columns = React.useMemo(
     () => [
-      UserPremission(userDetils.USER_TYPE_NAME, "plan", "lock")
+      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
         ? {
             id: "select",
             header: ({ table }) => (
@@ -217,7 +217,7 @@ function Home(props: any) {
             </button>
             {row.IS_LOCK === 1 ? (
               <img src={TSUGJEE} width="20px" height="16px" alt="tsooj" />
-            ) : UserPremission(userDetils.USER_TYPE_NAME, "plan", "write") ? (
+            ) : UserPremission(userDetails.USER_TYPE_NAME, "plan", "write") ? (
               <>
                 <button
                   className="bg-transparent text-xs"
@@ -251,7 +251,7 @@ function Home(props: any) {
             >
               <img src={printIcon} width="14px" height="14px" alt="" />
             </button> */}
-                {/* {UserPremission(userDetils.USER_TYPE_NAME, "HUVAARI") ? ( */}
+                {/* {UserPremission(userDetails.USER_TYPE_NAME, "HUVAARI") ? ( */}
                 <button
                   className="bg-transparent text-xs"
                   onClick={() => deletePlan(row)}
@@ -310,7 +310,7 @@ function Home(props: any) {
       //   method: "POST",
       //   data: {
       //     FAS_AUDIT_ID: row.ID,
-      //     UPDATED_BY: userDetils.USER_ID,
+      //     UPDATED_BY: userDetails.USER_ID,
       //     UPDATED_DATE: dateFormat(new Date(), "yyyy-mm-dd"),
       //   },
       // })
@@ -371,14 +371,18 @@ function Home(props: any) {
           filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID === "999"
             ? null
             : filter.Audit.PERIOD_ID, //filter.Audit.PERIOD_ID,
-        DEPARTMENT_ID: UserPremission(userDetils.USER_TYPE_NAME, "plan", "view")
+        DEPARTMENT_ID: UserPremission(
+          userDetails.USER_TYPE_NAME,
+          "plan",
+          "view"
+        )
           ? filter.Audit.DEPARTMENT_ID === 999 ||
             filter.Audit.DEPARTMENT_ID === "999"
             ? null
             : filter.Audit.DEPARTMENT_ID
-          : userDetils.USER_DEPARTMENT_ID, //filter.Audit.DEPARTMENT_ID
-        USER_ID: userDetils.USER_ID,
-        USER_TYPE_NAME: userDetils.USER_TYPE_NAME,
+          : userDetails.USER_DEPARTMENT_ID, //filter.Audit.DEPARTMENT_ID
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
@@ -412,7 +416,7 @@ function Home(props: any) {
       method: "POST",
       data: {
         lockData: data,
-        CREATED_BY: userDetils.USER_ID,
+        CREATED_BY: userDetails.USER_ID,
       },
     })
       .then(function (res) {
@@ -451,7 +455,7 @@ function Home(props: any) {
             />
           </div>
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            {UserPremission(userDetils.USER_TYPE_NAME, "plan", "view") ? (
+            {UserPremission(userDetails.USER_TYPE_NAME, "plan", "view") ? (
               <select
                 className="border rounded text-sm focus:outline-none py-0.5"
                 value={filter.Audit.DEPARTMENT_ID}
@@ -488,7 +492,7 @@ function Home(props: any) {
               style={{ height: 28 }}
               className="flex flex-row  cursor-pointer"
             >
-              {UserPremission(userDetils.USER_TYPE_NAME, "plan", "write") ? (
+              {UserPremission(userDetails.USER_TYPE_NAME, "plan", "write") ? (
                 <button
                   onClick={() => Navigate("/web/Home/Nemeh")}
                   className="inline-flex items-center rounded ml-2 py-1 h-7"
@@ -535,7 +539,7 @@ function Home(props: any) {
                   Excel
                 </div>
               </button>
-              {UserPremission(userDetils.USER_TYPE_NAME, "plan", "lock") ? (
+              {UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock") ? (
                 <button
                   onClick={() => lockPlan()}
                   className="inline-flex items-center rounded ml-2 py-1 h-7"
@@ -699,7 +703,7 @@ function IndeterminateCheckbox({
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
   const ref = React.useRef<HTMLInputElement>(null!);
   // @ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   React.useEffect(() => {
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
@@ -736,7 +740,7 @@ function IndeterminateCheckboxALL({
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
   const ref = React.useRef<HTMLInputElement>(null!);
   // @ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   React.useEffect(() => {
     if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;

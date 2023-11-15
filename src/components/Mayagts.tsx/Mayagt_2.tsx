@@ -14,7 +14,7 @@ import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
-import Stat_Url from '../../Stat_URL'
+import Stat_Url from "../../Stat_URL";
 import {
   Column,
   Table,
@@ -138,21 +138,20 @@ const data = [
   ],
 ];
 
-
-function Mayagt_2(props:any) {
+function Mayagt_2(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [data,loadData] = useState([])
+  const [data, loadData] = useState([]);
   const columns = React.useMemo(
     () => [
       {
         accessorFn: (row, index) => index + 1,
-        accessorKey:"№",
-        header:"№",
+        accessorKey: "№",
+        header: "№",
       },
       {
         accessorKey: "AUDIT_TYPE_NAME",
@@ -234,36 +233,33 @@ function Mayagt_2(props:any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
-    
     DataRequest({
       url: Stat_Url + "BM2List",
       method: "POST",
-      data:{
-        ID : mayagtData.ID,
-        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
-      }
+      data: {
+        ID: mayagtData.ID,
+        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+      },
     })
       .then(function (response) {
-     console.log(response,'response');
-        if(response.data !== undefined && response.data.data.length >0){
-          loadData(response.data.data)
-          if(response?.data.role.length> 0)
-          setStatus({STATUS:response?.data.status ,ROLE:response?.data.role.find(a => a.AUDITOR_ID === userDetils.USER_ID)})
+        console.log(response, "response");
+        if (response.data !== undefined && response.data.data.length > 0) {
+          loadData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
         }
-      
       })
       .catch(function (error) {
-        console.log(error,'error');
-       
+        console.log(error, "error");
       });
   }
 
-
-
-
-
- 
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 4,
@@ -273,7 +269,7 @@ function Mayagt_2(props:any) {
       TYPE: 0,
     },
   });
-  const [status,setStatus] =useState({STATUS:{},ROLE:{}})
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
 
   const table = useReactTable({
     data,
@@ -307,37 +303,35 @@ function Mayagt_2(props:any) {
       }
     }
   }, [table.getState().columnFilters[0]?.id]);
-    
 
-
-  function saveToDB(){
-  //   let temp = []
-  // //  console.log(saveData,'saveData');
-  //    for(let i of saveData){
-  //       temp.push(data[i])
-  //    }
-      console.log(data,'save data');
-   DataRequest({
-       url: Stat_Url + "BM2IU",
-       method: "POST",
-       data:{
-         // STAT_ID : mayagtData.ID,
-        data:data,
-        log:data,
-        CREATED_BY:userDetils.USER_ID
-       }
-     })
-       .then(function (response) {
-         console.log(response.data);
-         if(response?.data.message === 'Хадгаллаа.'){
-           alert('амжилттай хадгаллаа')
-         }
-       })
-       .catch(function (error) {
-         console.log(error,'error');
-         alert("Aмжилтгүй");
-       });
-   }
+  function saveToDB() {
+    //   let temp = []
+    // //  console.log(saveData,'saveData');
+    //    for(let i of saveData){
+    //       temp.push(data[i])
+    //    }
+    console.log(data, "save data");
+    DataRequest({
+      url: Stat_Url + "BM2IU",
+      method: "POST",
+      data: {
+        // STAT_ID : mayagtData.ID,
+        data: data,
+        log: data,
+        CREATED_BY: userDetails.USER_ID,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data);
+        if (response?.data.message === "Хадгаллаа.") {
+          alert("амжилттай хадгаллаа");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+        alert("Aмжилтгүй");
+      });
+  }
   return (
     <>
       <div
@@ -348,34 +342,44 @@ function Mayagt_2(props:any) {
         }}
       >
         <Title
-          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"39rem"}
           widthL={"20rem"}
         />
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-          <ButtonSearch  globalFilter={globalFilter} setGlobalFilter={(value)=> setGlobalFilter(value)}/>
-          <button
-          onClick={() => {
-            getExportFileBlob(columns,data,'З-ТАББМ-2')
-          }}
-        className="inline-flex items-center rounded ml-2 py-1 h-7"
-        style={{
-          border: "1px solid #3cb371",
-        }}
-      >
-        <div className="bg-white">
-          <img src={excel} width="20px" height="20px" className="mx-1"></img>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#3cb371",
-          }}
-          className=" text-white rounded-r px-1 h-7"
-        >
-          Excel
-        </div>
-      </button>
+            <ButtonSearch
+              globalFilter={globalFilter}
+              setGlobalFilter={(value) => setGlobalFilter(value)}
+            />
+            <button
+              onClick={() => {
+                getExportFileBlob(columns, data, "З-ТАББМ-2");
+              }}
+              className="inline-flex items-center rounded ml-2 py-1 h-7"
+              style={{
+                border: "1px solid #3cb371",
+              }}
+            >
+              <div className="bg-white">
+                <img
+                  src={excel}
+                  width="20px"
+                  height="20px"
+                  className="mx-1"
+                ></img>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#3cb371",
+                }}
+                className=" text-white rounded-r px-1 h-7"
+              >
+                Excel
+              </div>
+            </button>
           </div>
           <div className="flex">
             <ButtonRequest />
@@ -390,10 +394,7 @@ function Mayagt_2(props:any) {
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                     >
+                      <th key={header.id} colSpan={header.colSpan}>
                         {header.isPlaceholder ? null : (
                           <>
                             <div
@@ -451,7 +452,7 @@ function Mayagt_2(props:any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-        <ButtonSave saveToDB = {()=>saveToDB()}/>
+          <ButtonSave saveToDB={() => saveToDB()} />
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
@@ -484,10 +485,11 @@ function Mayagt_2(props:any) {
               {">>"}
             </button>
             <span className="flex items-center gap-4">
-            <div>нийт:</div>
-      <span>{data.length}</span>
+              <div>нийт:</div>
+              <span>{data.length}</span>
               <strong>
-                {table.getState().pagination.pageIndex + 1}{" - "}
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
                 {table.getPageCount()}
               </strong>
             </span>

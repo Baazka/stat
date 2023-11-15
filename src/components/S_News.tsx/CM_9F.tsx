@@ -77,7 +77,7 @@ function CM_9F() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetils = JSON.parse(getItem("userDetails"));
+  // const userDetails = JSON.parse(getItem("userDetails"));
   // const [status, setStatus] = useState([]);
   // const [commentText, setCommentText] = useState("");
   // async function fetchData() {

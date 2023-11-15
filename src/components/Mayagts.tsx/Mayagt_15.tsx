@@ -992,12 +992,12 @@ type Stat_m14 = {
   ZOWLOMJ_HEREGJEEGUI_SHALTGAAN_TAILBAR: string;
 };
 
-function Mayagt_14(props:any) {
+function Mayagt_14(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
   const [globalFilter, setGlobalFilter] = React.useState("");
   const columns = React.useMemo<ColumnDef<Stat_m14, any>[]>(
     () => [
@@ -1360,7 +1360,9 @@ function Mayagt_14(props:any) {
         }}
       >
         <Title
-             title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"13rem"}
           widthL={"6rem"}
         />

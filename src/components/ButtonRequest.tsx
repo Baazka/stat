@@ -3,16 +3,16 @@ import { DataRequest } from "../functions/DataApi";
 import fasUrl from "../fasURL";
 var dateFormat = require("dateformat");
 
-function RequestButtonOT(props:any) {
+function RequestButtonOT(props: any) {
   // @ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [tsonkh, setTsonkh] = useState(0);
   const [data, loadData] = useState({
     ID: null,
     OT_AUDIT_ID: props.audID,
     DOCUMENT_ID: props.docId,
     IS_ACTIVE: 1,
-    CREATED_BY: userDetils.USER_ID,
+    CREATED_BY: userDetails.USER_ID,
     IS_SHOW: 0,
     REQUEST_TYPE: "",
     DESCRIPTION: "",
@@ -31,7 +31,7 @@ function RequestButtonOT(props:any) {
     ) {
       alert("Хүсэлтийн төрөл сонгоно уу");
       return false;
-    } 
+    }
     // else if (
     //   data.DESCRIPTION === "" ||
     //   data.DESCRIPTION === null ||
@@ -39,7 +39,7 @@ function RequestButtonOT(props:any) {
     // ) {
     //   alert("Чанарын хяналтын санал, зөвлөмж оруулна уу");
     //   return false;
-    // } 
+    // }
     else {
       return true;
     }
@@ -62,7 +62,7 @@ function RequestButtonOT(props:any) {
           OT_AUDIT_ID: props.audID,
           DOCUMENT_ID: props.docId,
           IS_ACTIVE: 1,
-          CREATED_BY: userDetils.USER_ID,
+          CREATED_BY: userDetails.USER_ID,
           IS_SHOW: 0,
           REQUEST_TYPE: data.REQUEST_TYPE,
           DESCRIPTION: data.DESCRIPTION,
@@ -100,7 +100,7 @@ function RequestButtonOT(props:any) {
       data: {
         PROCESS_ID: props.statusID,
         ACTION_ID: 4,
-        CREATED_BY: userDetils.USER_ID,
+        CREATED_BY: userDetails.USER_ID,
         CREATED_DATE: dateFormat(new Date(), "dd-mmm-yyyy"),
       },
     })

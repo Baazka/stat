@@ -42,7 +42,7 @@ function Period(props) {
 
 function Department(props) {
   const [data, loadData] = useState([]);
- 
+
   let listItems;
   if (data !== undefined) {
     listItems = (
@@ -209,7 +209,7 @@ function Document(param) {
 //           let value = props.data;
 //           value.Audit.PARENT_BUDGET_ID = text.target.value;
 //           value.Audit.oldIndex = props.index;
-//           value.Audit.CREATED_BY = userDetils?.USER_ID;
+//           value.Audit.CREATED_BY = userDetails?.USER_ID;
 //           value.Audit.CREATED_DATE = dateFormat(new Date(), "dd-mmm-yy");
 //           props.setData({ ...value });
 //         }}
@@ -276,7 +276,7 @@ function Document(param) {
 //           let value = props.data;
 //           value.Audit.TTZ_ID = text.target.value;
 //           value.Audit.oldIndex = props.index;
-//           value.Audit.CREATED_BY = userDetils?.USER_ID;
+//           value.Audit.CREATED_BY = userDetails?.USER_ID;
 //           value.Audit.CREATED_DATE = dateFormat(new Date(), "dd-mmm-yy");
 //           props.setData({ ...value });
 //         }}
@@ -347,7 +347,7 @@ function Document(param) {
 //           let value = props.data;
 //           value.Audit.SHILEN_TYPE_ID = text.target.value;
 //           value.Audit.oldIndex = props.index;
-//           value.Audit.CREATED_BY = userDetils?.USER_ID;
+//           value.Audit.CREATED_BY = userDetails?.USER_ID;
 //           value.Audit.CREATED_DATE = dateFormat(new Date(), "dd-mmm-yy");
 //           props.setData({ ...value });
 //         }}
@@ -394,7 +394,7 @@ function Document(param) {
 //           let value = props.data;
 //           value.Audit.REASON_TYPE_ID = text.target.value;
 //           value.Audit.oldIndex = props.index;
-//           value.Audit.CREATED_BY = userDetils?.USER_ID;
+//           value.Audit.CREATED_BY = userDetails?.USER_ID;
 //           value.Audit.CREATED_DATE = dateFormat(new Date(), "dd-mmm-yy");
 //           props.setData({ ...value });
 //         }}

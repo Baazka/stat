@@ -11,7 +11,7 @@ import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
-import Stat_URL  from "../../Stat_URL";
+import Stat_URL from "../../Stat_URL";
 import CurrencyInput from "react-currency-input-field";
 import {
   Column,
@@ -59,7 +59,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 function Mayagt_3(props: any) {
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -193,13 +193,13 @@ function Mayagt_3(props: any) {
     //    }
     //    console.log(temp,'save data');
     DataRequest({
-      url: Stat_URL  + "BM3IU",
+      url: Stat_URL + "BM3IU",
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
         data: data,
         log: data,
-        CREATED_BY: userDetils.USER_ID,
+        CREATED_BY: userDetails.USER_ID,
       },
     })
       .then(function (response) {
@@ -467,9 +467,9 @@ function Mayagt_3(props: any) {
       url: Stat_URL + "BM3List",
       method: "POST",
       data: {
-        ID : mayagtData.ID,
-        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
+        ID: mayagtData.ID,
+        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
       },
     })
       .then(function (response) {
@@ -492,7 +492,9 @@ function Mayagt_3(props: any) {
         }}
       >
         <Title
-         title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"20rem"}
           widthL={"10rem"}
         />

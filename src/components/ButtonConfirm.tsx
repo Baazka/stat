@@ -7,12 +7,12 @@ import { DataRequest } from "../functions/DataApi";
 import fasUrl from "../Stat_URL";
 var dateFormat = require("dateformat");
 
-function Batlakh(props:any) {
-   // @ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+function Batlakh(props: any) {
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [tsonkh, setTsonkh] = useState(0);
   const [ACTION_DESC, setAction_DESK] = useState("");
-   // @ts-ignore
+  // @ts-ignore
   const mayagtData = JSON.parse(localStorage.getItem("Stat"));
   const [batlakhHuselt, setBatlakhHuselt] = useState({});
 
@@ -24,21 +24,20 @@ function Batlakh(props:any) {
     DataRequest({
       url: fasUrl + "OT_REQUEST_FOR_CONFIRM",
       method: "GET",
-      data:{
-        ID : mayagtData.ID,
-        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
-      }
+      data: {
+        ID: mayagtData.ID,
+        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+      },
     })
       .then(function (response) {
-     console.log('mayagt1',response);
-        if(response.data !== undefined && response.data.length >0){
+        console.log("mayagt1", response);
+        if (response.data !== undefined && response.data.length > 0) {
           setBatlakhHuselt(response.data);
         }
-      
       })
       .catch(function (error) {
-        console.log(error,'error');
+        console.log(error, "error");
         alert("Aмжилтгүй");
       });
     // let listbatlakhHuselt = await axios(
@@ -50,11 +49,7 @@ function Batlakh(props:any) {
     //     "/" +
     //     3
     // );
-
-
-    
   }
-
 
   function batlakhDugaar() {
     if (props.RoleID === 4) return 1;
@@ -84,13 +79,12 @@ function Batlakh(props:any) {
           PROCESS_ID: props.statusID,
           ACTION_ID: dugaar,
           ACTION_DESC: ACTION_DESC,
-          CREATED_BY: userDetils.USER_ID,
+          CREATED_BY: userDetails.USER_ID,
           CREATED_DATE: dateFormat(new Date(), "dd-mmm-yyyy"),
         },
       })
         .then(function (response) {
           if (response?.data.message === "success") {
-          
             DataRequest({
               url: fasUrl + "OT_REQUEST_FOR_CONFIRM/",
               method: "POST",
@@ -98,8 +92,8 @@ function Batlakh(props:any) {
                 ID: null,
                 OT_AUDIT_ID: props.data.ID,
                 DOCUMENT_ID: props.data.listID,
-                IS_ACTIVE: 1, 
-                CREATED_BY: userDetils.USER_ID,
+                IS_ACTIVE: 1,
+                CREATED_BY: userDetails.USER_ID,
                 IS_SHOW: 0,
                 REQUEST_TYPE: 1,
                 DESCRIPTION: ACTION_DESC,
@@ -109,10 +103,10 @@ function Batlakh(props:any) {
             })
               .then(function (response) {
                 if (response?.data.message === "success") {
-                    alert("Aмжилттай хадгаллаа");
-                    setTsonkh(0);
-                    props.fetchData();
-                    props.changeData();
+                  alert("Aмжилттай хадгаллаа");
+                  setTsonkh(0);
+                  props.fetchData();
+                  props.changeData();
                 } else {
                   alert("Мэдэгдэл илгээх алдаа гарлаа");
                 }
@@ -130,11 +124,7 @@ function Batlakh(props:any) {
     }
   }
 
-
-
-
   function cancel() {
-
     DataRequest({
       url: fasUrl + "processChange/",
       method: "POST",
@@ -142,13 +132,12 @@ function Batlakh(props:any) {
         PROCESS_ID: props.statusID,
         ACTION_ID: 4,
         ACTION_DESC: ACTION_DESC,
-        CREATED_BY: userDetils.USER_ID,
+        CREATED_BY: userDetails.USER_ID,
         CREATED_DATE: dateFormat(new Date(), "dd-mmm-yyyy"),
       },
     })
       .then(function (response) {
         if (response?.data.message === "success") {
-         
           DataRequest({
             url: fasUrl + "OT_REQUEST_FOR_CONFIRM/",
             method: "POST",
@@ -157,7 +146,7 @@ function Batlakh(props:any) {
               OT_AUDIT_ID: props.data.ID,
               DOCUMENT_ID: props.data.listID,
               IS_ACTIVE: 1,
-              CREATED_BY: userDetils.USER_ID,
+              CREATED_BY: userDetails.USER_ID,
               IS_SHOW: 0,
               REQUEST_TYPE: 0,
               DESCRIPTION: ACTION_DESC,
@@ -201,13 +190,11 @@ function Batlakh(props:any) {
           return false;
         }
       } else if (parseInt(props.RoleID) === 5) {
-       
-          if (parseInt(props.STATUS) === 1) {
-            return true;
-          } else {
-            return false;
-          }
-       
+        if (parseInt(props.STATUS) === 1) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -225,13 +212,11 @@ function Batlakh(props:any) {
           return false;
         }
       } else if (parseInt(props.RoleID) === 6) {
-   
-          if (parseInt(props.STATUS) === 2) {
-            return true;
-          } else {
-            return false;
-          }
-       
+        if (parseInt(props.STATUS) === 2) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -265,7 +250,7 @@ function Batlakh(props:any) {
   }
 
   function breakComfirm(value) {
-    let user = userDetils.USER_ID;
+    let user = userDetails.USER_ID;
     if (
       mayagtData.AuditData.AUDIT_APPROVE_MEMBER3 === null ||
       mayagtData.AuditData.AUDIT_APPROVE_MEMBER3 === undefined ||
@@ -278,13 +263,11 @@ function Batlakh(props:any) {
           return false;
         }
       } else if (props.RoleID === 5) {
-     
-          if (props.STATUS === 2) {
-            return true;
-          } else {
-            return false;
-          }
-        
+        if (props.STATUS === 2) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -302,12 +285,11 @@ function Batlakh(props:any) {
           return false;
         }
       } else if (props.RoleID === 6) {
-          if (props.STATUS === 3) {
-            return true;
-          } else {
-            return false;
-          }
-        
+        if (props.STATUS === 3) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -316,18 +298,11 @@ function Batlakh(props:any) {
   return (
     <div>
       <div className="flex">
-      
-         
-        
         {batlakhHuselt.REQUEST_TYPE === undefined ? null : (
           <div>
             <div>
               {checkConfirm(props.CREATED_BY) ? (
-                <Button
-                  Title={"Батлах"}
-                  
-                  action={() => setTsonkh(1)}
-                />
+                <Button Title={"Батлах"} action={() => setTsonkh(1)} />
               ) : null}
 
               {tsonkh > 0 ? (

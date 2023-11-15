@@ -1053,9 +1053,9 @@ type Stat_m9 = {
   HEREGJEEGUI_TAILBAR_SHALTGN_NOHTSOL: string;
 };
 
-function Mayagt_9(props:any) {
+function Mayagt_9(props: any) {
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -1386,7 +1386,9 @@ function Mayagt_9(props:any) {
         }}
       >
         <Title
-              title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"51rem"}
           widthL={"22rem"}
         />

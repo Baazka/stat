@@ -972,12 +972,12 @@ type Stat_m11 = {
   SANHUUGIIN_BUS_UR_OGOOJ_TOROL: string;
 };
 
-function Mayagt_11(props:any) {
+function Mayagt_11(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m11, any>[]>(
@@ -1389,7 +1389,9 @@ function Mayagt_11(props:any) {
         }}
       >
         <Title
-          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"20rem"}
           widthL={"10rem"}
         />

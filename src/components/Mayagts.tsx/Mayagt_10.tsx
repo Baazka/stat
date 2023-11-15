@@ -989,12 +989,12 @@ type Stat_m10 = {
   AUDIT_UILCHILGEE_TOLBOR_T: string;
 };
 
-function Mayagt_10(props:any) {
+function Mayagt_10(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
+  const userDetails = props.userDetails;
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const columns = React.useMemo<ColumnDef<Stat_m10, any>[]>(
@@ -1347,7 +1347,9 @@ function Mayagt_10(props:any) {
         }}
       >
         <Title
-               title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"40rem"}
           widthL={"22rem"}
         />

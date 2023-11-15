@@ -53,7 +53,7 @@ function CM(props: any) {
       // data: {
       //   FAS_AUDIT_ID: props.data.ID,
       //   DOCUMENT_ID: props.data.listID,
-      //   CREATED_BY: userDetils?.USER_ID,
+      //   CREATED_BY: userDetails?.USER_ID,
       //   CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
       //   IS_ACTIVE: 1,
       // },

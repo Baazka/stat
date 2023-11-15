@@ -30,7 +30,7 @@ import {
 } from "@tanstack/react-table";
 import DataRequest from "../../functions/make_Request";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
-import { read, writeFileXLSX,utils } from "xlsx";
+import { read, writeFileXLSX, utils } from "xlsx";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -54,13 +54,10 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-
-
-
 function Mayagt_1(props: any) {
   const mayagtData = props.mayagtData;
-  const userDetils = props.userDetils;
-  const [saveData,setSaveData] = useState(new Set())
+  const userDetails = props.userDetails;
+  const [saveData, setSaveData] = useState(new Set());
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -70,9 +67,9 @@ function Mayagt_1(props: any) {
     () => [
       {
         accessorFn: (row, index) => index + 1,
-        accessorKey:"№",
-        header:"№",
-        size:10
+        accessorKey: "№",
+        header: "№",
+        size: 10,
       },
       {
         accessorKey: "AUDIT_ON",
@@ -89,7 +86,7 @@ function Mayagt_1(props: any) {
         accessorKey: "AUDIT_NAME",
         header: "Аудитын нэр, сэдэв",
         cell: (info) => info.getValue(),
-        size:200
+        size: 200,
       },
       {
         accessorKey: "AUDIT_CODE",
@@ -104,7 +101,7 @@ function Mayagt_1(props: any) {
             ? ""
             : dateFormat(row.AKT_DATE, "yyyy-mm-dd");
         },
-    
+
         cell: (info) => info.getValue(),
       },
 
@@ -127,7 +124,7 @@ function Mayagt_1(props: any) {
         accessorKey: "ALD_SHORT_DESC",
         header: "Зөрчлийн товч утга",
         cell: (info) => info.getValue(),
-        size:500
+        size: 500,
       },
       {
         accessorKey: "IS_ERROR_CONFLICT_NAME",
@@ -138,7 +135,7 @@ function Mayagt_1(props: any) {
         accessorKey: "SOLUTION_ERROR_NAME",
         header: "Алдаа, зөрчлийн ангилал",
         cell: (info) => info.getValue(),
-        size:300
+        size: 300,
       },
       {
         accessorKey: "ALBAN_SHAARDLGIN_DUN_T",
@@ -236,14 +233,14 @@ function Mayagt_1(props: any) {
         header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
         accessorFn: (row, index) => (
           <div>
-         <CurrencyInput
+            <CurrencyInput
               id="input-example"
               defaultValue={row.TUL_AMOUNT}
               decimalsLimit={2}
               disabled
-              style={{ textAlign: "center",backgroundColor:'transparent' }}
-             />
-         </div>
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
         ),
         cell: (info) => info.getValue(),
       },
@@ -252,25 +249,22 @@ function Mayagt_1(props: any) {
         header: "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
         accessorFn: (row, index) => (
           <div>
-         <CurrencyInput
+            <CurrencyInput
               id="input-example"
               defaultValue={row.TOD_AMOUNT}
               decimalsLimit={2}
               disabled
-              style={{ textAlign: "center",backgroundColor:'transparent' }}
-             />
-         </div>
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
         ),
         cell: (info) => info.getValue(),
       },
     ],
     []
   );
-  
-
 
   const [data, loadData] = React.useState([]);
-
 
   const [filter, setFilter] = useState({
     Audit: {
@@ -290,7 +284,6 @@ function Mayagt_1(props: any) {
     state: {
       columnFilters,
       globalFilter,
-      
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -307,22 +300,21 @@ function Mayagt_1(props: any) {
     debugColumns: false,
   });
 
-  function Draw_input(param: any, cell: any, index: number,cell_all:any) {
+  function Draw_input(param: any, cell: any, index: number, cell_all: any) {
     return (
       <div>
         {cell.id === "ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH" ? (
           <select
             className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            value = {param.row.original[cell.id]}
+            value={param.row.original[cell.id]}
             onChange={(text) => {
               let temp = data;
-              temp[index][cell.id] = text.target.value
-              let tset = saveData
-              tset.add(index)
-              setSaveData(tset)
-              loadData([...temp])
-              
-           }}
+              temp[index][cell.id] = text.target.value;
+              let tset = saveData;
+              tset.add(index);
+              setSaveData(tset);
+              loadData([...temp]);
+            }}
           >
             <option className="font-medium" key={"Сонгоно уу"} value={0}>
               {"Сонгоно уу"}
@@ -343,17 +335,16 @@ function Mayagt_1(props: any) {
               let temp = data;
               //@ts-ignore
               temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-                             
-                let tset = saveData
-                tset.add(index)
-                setSaveData(tset)
+
+              let tset = saveData;
+              tset.add(index);
+              setSaveData(tset);
               // @ts-ignore
               loadData([...temp]);
             }}
           />
-        ) : flexRender(
-          cell_all.column.columnDef.cell,
-          cell_all.getContext()
+        ) : (
+          flexRender(cell_all.column.columnDef.cell, cell_all.getContext())
         )}
       </div>
     );
@@ -364,53 +355,50 @@ function Mayagt_1(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
-    
     DataRequest({
       url: Stat_Url + "BM5List",
       method: "POST",
-      data:{
-        ID : mayagtData.ID,
-        PERIOD_LABEL:mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID:mayagtData.DEPARTMENT_ID
-      }
+      data: {
+        ID: mayagtData.ID,
+        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
+        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+      },
     })
       .then(function (response) {
-     
-        if(response.data !== undefined && response.data.data.length >0){
-          loadData(response.data.data)
+        if (response.data !== undefined && response.data.data.length > 0) {
+          loadData(response.data.data);
         }
-      
       })
       .catch(function (error) {
-        console.log(error,'error');
+        console.log(error, "error");
         alert("Aмжилтгүй");
       });
   }
-  function saveToDB(){
-   let temp = []
- //  console.log(saveData,'saveData');
-    for(let i of saveData){
-       temp.push(data[i])
+  function saveToDB() {
+    let temp = [];
+    //  console.log(saveData,'saveData');
+    for (let i of saveData) {
+      temp.push(data[i]);
     }
-    console.log(temp,'save data');
-  DataRequest({
+    console.log(temp, "save data");
+    DataRequest({
       url: Stat_Url + "BM5IU",
       method: "POST",
-      data:{
+      data: {
         // STAT_ID : mayagtData.ID,
-       data:data,
-       log:data,
-       CREATED_BY:userDetils.USER_ID
-      }
+        data: data,
+        log: data,
+        CREATED_BY: userDetails.USER_ID,
+      },
     })
       .then(function (response) {
         console.log(response.data);
-        if(response?.data.message === 'Хадгаллаа.'){
-          alert('амжилттай хадгаллаа')
+        if (response?.data.message === "Хадгаллаа.") {
+          alert("амжилттай хадгаллаа");
         }
       })
       .catch(function (error) {
-        console.log(error,'error');
+        console.log(error, "error");
         alert("Aмжилтгүй");
       });
   }
@@ -424,34 +412,44 @@ function Mayagt_1(props: any) {
         }}
       >
         <Title
-          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          }
           widthS={"28rem"}
           widthL={"10rem"}
         />
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch  globalFilter={globalFilter} setGlobalFilter={(value)=> setGlobalFilter(value)}/>
+            <ButtonSearch
+              globalFilter={globalFilter}
+              setGlobalFilter={(value) => setGlobalFilter(value)}
+            />
             <button
-          onClick={() => {
-            getExportFileBlob(columns,data,'З-ТАББМ-5')
-          }}
-        className="inline-flex items-center rounded ml-2 py-1 h-7"
-        style={{
-          border: "1px solid #3cb371",
-        }}
-      >
-        <div className="bg-white">
-          <img src={excel} width="20px" height="20px" className="mx-1"></img>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#3cb371",
-          }}
-          className=" text-white rounded-r px-1 h-7"
-        >
-          Excel
-        </div>
-      </button>
+              onClick={() => {
+                getExportFileBlob(columns, data, "З-ТАББМ-5");
+              }}
+              className="inline-flex items-center rounded ml-2 py-1 h-7"
+              style={{
+                border: "1px solid #3cb371",
+              }}
+            >
+              <div className="bg-white">
+                <img
+                  src={excel}
+                  width="20px"
+                  height="20px"
+                  className="mx-1"
+                ></img>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#3cb371",
+                }}
+                className=" text-white rounded-r px-1 h-7"
+              >
+                Excel
+              </div>
+            </button>
           </div>
           <div className="flex">
             <ButtonRequest />
@@ -460,25 +458,27 @@ function Mayagt_1(props: any) {
         </div>
         <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
           <div className="h-2 mr-20" />
-          <table    {...{
-            style: {
-              width: table.getCenterTotalSize(),
-            },
-          }}>
+          <table
+            {...{
+              style: {
+                width: table.getCenterTotalSize(),
+              },
+            }}
+          >
             <thead className="TableHeadBackroundcolor">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
-                      {...{
-                        key: header.id,
-                        colSpan: header.colSpan,
-                        style: {
-                          width: header.getSize(),
-                        },
-                      }}
-                       >
+                        {...{
+                          key: header.id,
+                          colSpan: header.colSpan,
+                          style: {
+                            width: header.getSize(),
+                          },
+                        }}
+                      >
                         {header.isPlaceholder ? null : (
                           <>
                             <div
@@ -486,9 +486,10 @@ function Mayagt_1(props: any) {
                                 onMouseDown: header.getResizeHandler(),
                                 onTouchStart: header.getResizeHandler(),
                                 className: `resizer ${
-                                  header.column.getIsResizing() ? 'isResizing' : ''
+                                  header.column.getIsResizing()
+                                    ? "isResizing"
+                                    : ""
                                 }`,
-                                
                               }}
                             ></div>
                             <div
@@ -527,18 +528,26 @@ function Mayagt_1(props: any) {
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
-                        <td  {...{
-                          key: cell.id,
-                          style: {
-                            width: cell.column.getSize(),
-                          },
-                        }} className="p-2 ">
+                        <td
+                          {...{
+                            key: cell.id,
+                            style: {
+                              width: cell.column.getSize(),
+                            },
+                          }}
+                          className="p-2 "
+                        >
                           {index === 0
                             ? flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
                               )
-                            : Draw_input(cell.getContext(), cell.column, i,cell)}
+                            : Draw_input(
+                                cell.getContext(),
+                                cell.column,
+                                i,
+                                cell
+                              )}
                         </td>
                       );
                     })}
@@ -549,7 +558,7 @@ function Mayagt_1(props: any) {
           </table>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB = {()=>saveToDB()}/>
+          <ButtonSave saveToDB={() => saveToDB()} />
         </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
@@ -582,10 +591,11 @@ function Mayagt_1(props: any) {
               {">>"}
             </button>
             <span className="flex items-center gap-4">
-            <div>нийт:</div>
-            <span>{data.length}</span>
+              <div>нийт:</div>
+              <span>{data.length}</span>
               <strong>
-                {table.getState().pagination.pageIndex + 1}{" - "}
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
                 {table.getPageCount()}
               </strong>
             </span>
@@ -657,7 +667,5 @@ function Filter({
     </>
   );
 }
-
-
 
 export default Mayagt_1;

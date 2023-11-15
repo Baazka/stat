@@ -1,4 +1,4 @@
- import { Fragment } from "react";
+import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/zurag/logo.png";
 import imagebackground from "../assets/zurag/background.png";
@@ -23,16 +23,16 @@ function Header(props) {
   const [showDialogOpen, setShowDialogOpen] = useState(false);
   const [showDialogPass, setShowDialogPass] = useState(false);
   let navigate = useNavigate();
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const ref = useRef(null);
   const [data, loadData] = useState({
     ID: null,
-    ENT_ID: userDetils.ENT_ID,
+    ENT_ID: userDetails.ENT_ID,
     FIRST_NAME: null,
     LAST_NAME: null,
     POSTION_NAME: null,
     PHONE: null,
-    CREATED_BY: userDetils.USER_ID,
+    CREATED_BY: userDetails.USER_ID,
     IS_ACTIVE: 1,
   });
 
@@ -155,7 +155,9 @@ function Header(props) {
                         className="w-8 h-8 rounded-full shadow-lg"
                       />
                       <span className="ml-2 mr-1 HideOnMobile">
-                        {userDetils !== undefined ? userDetils?.USER_NAME : ""}{" "}
+                        {userDetails !== undefined
+                          ? userDetails?.USER_NAME
+                          : ""}{" "}
                       </span>
                       <img
                         src={DownIcon}
@@ -188,14 +190,14 @@ function Header(props) {
                               <img src={userPro} className="user_photo" />
                               <div className="break-all text-xs ml-4">
                                 <span className="font-bold">
-                                  {userDetils !== undefined
-                                    ? userDetils?.DEPARTMENT_NAME
+                                  {userDetails !== undefined
+                                    ? userDetails?.DEPARTMENT_NAME
                                     : ""}{" "}
                                 </span>
                                 <br />
                                 <span className="font-thin">
-                                  {userDetils !== undefined
-                                    ? userDetils?.USER_NAME
+                                  {userDetails !== undefined
+                                    ? userDetails?.USER_NAME
                                     : ""}{" "}
                                 </span>
                               </div>
@@ -205,8 +207,8 @@ function Header(props) {
                         <Menu.Item>
                           {({ active }) => (
                             <>
-                              {userDetils.USER_TYPE_NAME === "AKT_ORG" ||
-                              userDetils.USER_TYPE_NAME === "ADMIN" ? (
+                              {userDetails.USER_TYPE_NAME === "AKT_ORG" ||
+                              userDetails.USER_TYPE_NAME === "ADMIN" ? (
                                 <div
                                   className="py-1 px-2 flex text-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 justify-start dark:hover:text-white items-center ml-3"
                                   onClick={() => {

@@ -56,7 +56,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 function Burtgel(props: any) {
   const [tsonkh, setTsonkh] = useState(0);
   //@ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   let navigate = useNavigate();
   const { state } = useLocation();
   const [data, loadData] = useState({
@@ -76,7 +76,7 @@ function Burtgel(props: any) {
       // "IS_ACTIVE":1
       // }
     ],
-    CREATED_BY: userDetils.USER_ID,
+    CREATED_BY: userDetails.USER_ID,
   });
   const [drop, setDrop] = useState({
     drop1: [],
@@ -587,7 +587,7 @@ function Burtgel(props: any) {
 
 function Employee(props: any) {
   //@ts-ignore
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -700,8 +700,8 @@ function Employee(props: any) {
         url: Stat_Url + "refEmployee",
         method: "POST",
         data: {
-          DEPARTMENT_ID: userDetils.USER_DEPARTMENT_ID,
-          SUB_DEPARTMENT_ID: userDetils.USER_SUB_DEPARTMENT_ID,
+          DEPARTMENT_ID: userDetails.USER_DEPARTMENT_ID,
+          SUB_DEPARTMENT_ID: userDetails.USER_SUB_DEPARTMENT_ID,
         },
       })
         .then(function (response) {

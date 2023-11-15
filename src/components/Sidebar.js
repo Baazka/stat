@@ -17,7 +17,7 @@ import {
 } from "../assets/zurag";
 
 function Sidebar(props) {
-  const userDetils = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [style, setStyle] = useState("block");
   const Navigate = useNavigate();
   const [icons, setIcons] = useState({
@@ -56,10 +56,10 @@ function Sidebar(props) {
             className="mb-16 px-8 mt-20"
           >
             <div className="space-y-6">
-              {userDetils.USER_TYPE_NAME === "OT_CREATOR" ? (
-                //||userDetils.USER_TYPE_NAME === "OT_CHECK"
+              {userDetails.USER_TYPE_NAME === "OT_CREATOR" ? (
+                //||userDetails.USER_TYPE_NAME === "OT_CHECK"
                 <div className="dropdown  relative"></div>
-              ) : userDetils.USER_TYPE_NAME === "KHSHUDAG" ? (
+              ) : userDetails.USER_TYPE_NAME === "KHSHUDAG" ? (
                 <></>
               ) : (
                 <>
@@ -176,8 +176,8 @@ function Sidebar(props) {
             className="mb-8 px-4 mt-20"
           >
             <div className="space-y-6">
-              {userDetils.USER_TYPE_NAME === "OT_CREATOR" ? (
-                //||userDetils.USER_TYPE_NAME === "OT_CHECK"
+              {userDetails.USER_TYPE_NAME === "OT_CREATOR" ? (
+                //||userDetails.USER_TYPE_NAME === "OT_CHECK"
                 <div className="dropdown  relative ">
                   <div
                     onMouseOver={() => {
@@ -194,8 +194,7 @@ function Sidebar(props) {
                     }}
                   ></div>
                 </div>
-              ) 
-              // : userDetils.USER_TYPE_NAME === "KHSHUDAG" ? (
+              ) : // : userDetails.USER_TYPE_NAME === "KHSHUDAG" ? (
               //   <div
               //     onClick={() => SelectMenu(2)}
               //     className="w-full flex items-center  h-14 pl-1.5 hover:bg-white  cursor-pointer"
@@ -216,7 +215,7 @@ function Sidebar(props) {
               //     <img src={icons.menu2} width="60" height="52"></img>
               //   </div>
               // )
-               : userDetils.USER_TYPE_NAME === "AKT_ORG" ? (
+              userDetails.USER_TYPE_NAME === "AKT_ORG" ? (
                 <> </>
               ) : (
                 <>
