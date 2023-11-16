@@ -237,6 +237,7 @@ function Mayagt_1(props: any) {
               id="input-example"
               defaultValue={row.TUL_AMOUNT}
               decimalsLimit={2}
+              decimalScale={2}
               disabled
               style={{ textAlign: "center", backgroundColor: "transparent" }}
             />
@@ -253,6 +254,7 @@ function Mayagt_1(props: any) {
               id="input-example"
               defaultValue={row.TOD_AMOUNT}
               decimalsLimit={2}
+              decimalScale={2}
               disabled
               style={{ textAlign: "center", backgroundColor: "transparent" }}
             />

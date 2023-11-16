@@ -132,6 +132,7 @@ function Mayagt_3(props: any) {
               id="input-example"
               defaultValue={row.AMOUNT}
               decimalsLimit={2}
+              decimalScale={2}
               disabled
               style={{ textAlign: "center", backgroundColor: "transparent" }}
             />

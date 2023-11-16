@@ -112,8 +112,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HOSLUULAN_GUITSETGSN",
+        accessorKey: "HOSLUULAH",
         header: "Хослуулан гүйцэтгэсэн эсэх",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "UNDESLEL",
+        header: "Сэдвийн үндэслэл",
         cell: (info) => info.getValue(),
       },
 
@@ -123,12 +128,12 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HIIGGUI_SHALTGAAN",
+        accessorKey: "REASON_TYPE_NAME",
         header: "Аудит хийгээгүй шалтгаан",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "DUGNELT",
+        accessorKey: "CONCLUSION",
         header: "Дүгнэлт",
         cell: (info) => info.getValue(),
       },
@@ -172,6 +177,7 @@ function Mayagt_1(props: any) {
               id="input-example"
               defaultValue={row.TUL_BENEFIT}
               decimalsLimit={2}
+              decimalScale={2}
               disabled
               style={{ textAlign: "center", backgroundColor: "transparent" }}
             />
@@ -182,6 +188,18 @@ function Mayagt_1(props: any) {
         accessorKey: "TOD_BENEFIT",
         header: "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
         cell: (info) => info.getValue(),
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.TOD_BENEFIT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
         accessorKey: "AUDIT_ORG_TYPE",
