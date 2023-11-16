@@ -73,7 +73,7 @@ function Mayagt_1(props: any) {
         size: 10,
       },
       {
-        accessorKey: "AUDIT_ON",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -205,7 +205,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSA_TOLOW",
+        accessorKey: "HUGATSA_TOLOWss",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },
@@ -217,41 +217,6 @@ function Mayagt_1(props: any) {
       {
         accessorKey: "UR_UGUUJ_TYPE_NAME",
         header: "Үр өгөөжийн төрөл",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TUL_AMOUNT",
-        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TUL_AMOUNT}
-              decimalsLimit={2}
-              decimalScale={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
-        cell: (info) => info.getValue(),
-      },
-
-      {
-        accessorKey: "TOD_AMOUNT",
-        header: "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TOD_AMOUNT}
-              decimalsLimit={2}
-              decimalScale={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
         cell: (info) => info.getValue(),
       },
     ],
@@ -334,11 +299,12 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
+        console.log(response.data.data.length, "response.data.data.length");
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
         }
