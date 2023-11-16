@@ -381,6 +381,8 @@ function Home(props: any) {
         if (response.data !== undefined && response.data.length > 0) {
           setData([...response.data]);
           //setloaderSpinner(0);
+        }else{
+          setData([])
         }
       })
       .catch(function (error) {
@@ -555,10 +557,10 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: window.innerHeight-300}}>
+        <div style={{ maxHeight: window.innerHeight-300,width:'100%'}}>
           
 
-          <table>
+          <table className="w-full">
             <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} >
