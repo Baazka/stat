@@ -136,7 +136,7 @@ function Burtgel(props: any) {
       },
     })
       .then(function (resp) {
-        if (resp.data === false) {
+        if ((data.Audit.ID === null && !resp.data) || data.Audit.ID !== null) {
           DataRequest({
             url: Stat_Url + "statisticIU",
             method: "POST",
@@ -805,7 +805,7 @@ function Employee(props: any) {
                         key={header.id}
                         colSpan={header.colSpan}
                         style={{ verticalAlign: "bottom" }}
-                       >
+                      >
                         {header.isPlaceholder ? null : (
                           <>
                             <div
