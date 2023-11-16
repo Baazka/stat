@@ -170,12 +170,12 @@ function Mayagt_2(props: any) {
         footer: (info) => info.column.id,
       },
       {
-        accessorKey: "HOSLUULAN_GUITSETGEH_ESEH",
+        accessorKey: "HOSLUULAH",
         header: "Хослуулан гүйцэтгэсэн эсэх",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "SEDVIIN_UNDESLL",
+        accessorKey: "UNDESLEL",
         header: "Сэдвийн үндэслэл",
         cell: (info) => info.getValue(),
       },
@@ -200,7 +200,7 @@ function Mayagt_2(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "baiguulaga_turul",
+        accessorKey: "ORG_TYPE",
         header: "Байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
@@ -238,8 +238,8 @@ function Mayagt_2(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
