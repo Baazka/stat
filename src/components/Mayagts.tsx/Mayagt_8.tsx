@@ -71,7 +71,7 @@ function Mayagt_8(props: any) {
         size: 15,
       },
       {
-        accessorKey: "AUDIT_ON",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -123,8 +123,20 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUUL_HBSHA_DUN_T",
+        accessorKey: "AMOUNT",
         header: "Хууль хяналтын байгууллагад шилжүүлэх асуудлын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
@@ -310,8 +322,8 @@ function Mayagt_8(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
