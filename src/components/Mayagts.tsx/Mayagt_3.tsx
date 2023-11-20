@@ -181,8 +181,8 @@ function Mayagt_3(props: any) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
+    debugTable: false,
+    debugHeaders: false,
     debugColumns: false,
   });
   function saveToDB() {
@@ -486,8 +486,6 @@ function Mayagt_3(props: any) {
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
           padding: "0.5rem 0 0 1rem",
         }}
       >
@@ -532,11 +530,11 @@ function Mayagt_3(props: any) {
             </button>
           </div>
           <div className="flex">
-            <ButtonRequest />
+            {/* <ButtonRequest /> */}
             {/* <ButtonConfirm /> */}
           </div>
         </div>
-        <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
+        <div style={{ overflowY: "scroll" }}>
           <div className="h-2 mr-20" />
           <table>
             <thead className="TableHeadBackroundcolor gap-20">
@@ -600,11 +598,7 @@ function Mayagt_3(props: any) {
               })}
             </tbody>
           </table>
-        </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
-        </div>
-        <div style={{ justifyContent: "flex-end" }}>
+          <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
               className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
@@ -658,6 +652,11 @@ function Mayagt_3(props: any) {
             </select>
           </div>
         </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <ButtonSave saveToDB={() => saveToDB()} />
+        </div>
+        
         <div>
           <div className="text-base flex row">
             <FooterValue />

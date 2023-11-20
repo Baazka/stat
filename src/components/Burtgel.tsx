@@ -793,7 +793,7 @@ function Employee(props: any) {
           </div>
         </div>
 
-        <div style={{ maxHeight: "630px", overflow: "scroll" }}>
+        <div style={{ overflow: "scroll" }}>
           <div />
           <table>
             <thead className="TableHeadBackroundcolor">

@@ -14,6 +14,8 @@ import Mayagt_13 from "../components/Mayagts.tsx/Mayagt_13";
 import Mayagt_14 from "../components/Mayagts.tsx/Mayagt_14";
 import Mayagt_15 from "../components/Mayagts.tsx/Mayagt_15";
 import CM_1A from "../components/S_News.tsx/CM_1A";
+import Comments from "../components/comment";
+import Mayagt_files from '../components/Mayagt_files'
 
 function Mayagt() {
   // @ts-ignore
@@ -21,8 +23,10 @@ function Mayagt() {
   // @ts-ignore
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
+
   return (
-    <div>
+    <div className="overflow-scroll h-full" >
+    <div  className="flex flex-col" style={{height:window.innerHeight-125}}>
       {mayagtData.DOCUMENT_ID === 1 ? (
         <Mayagt_1 mayagtData={mayagtData} userDetails={userDetails} />
       ) : mayagtData.DOCUMENT_ID === 2 ? (
@@ -56,6 +60,18 @@ function Mayagt() {
       ) : mayagtData.DOCUMENT_ID === "З-ТАБСМ-1 А" ? (
         <CM_1A mayagtData={mayagtData} userDetails={userDetails} />
       ) : null}
+      <div className="p-1">
+        <Mayagt_files mayagtData={mayagtData} userDetails={userDetails}/>
+      </div>
+    <div className="p-2">
+      <Comments
+            audid={mayagtData.ID}
+            docid={mayagtData.DOCUMENT_ID}
+            // changeData={() => changeData()}
+            MODULE_ID={6}
+          />
+          </div>
+    </div>
     </div>
   );
 }

@@ -429,8 +429,7 @@ function Mayagt_1(props: any) {
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
-          padding: "0.5rem 0 0 1rem",
+             padding: "0.5rem 0 0 1rem",
         }}
       >
         <Title
@@ -505,7 +504,7 @@ function Mayagt_1(props: any) {
               />:null} */}
           </div>
         </div>
-        <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
+        <div >
           <div className="h-2 mr-20" />
           <table
             {...{
@@ -514,7 +513,7 @@ function Mayagt_1(props: any) {
               },
             }}
           >
-            <thead className="TableHeadBackroundcolor">
+            <thead className="TableHeadBackroundcolor sticky">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -606,11 +605,6 @@ function Mayagt_1(props: any) {
             </tbody>
           </table>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
-          <ButtonSave saveToDB={() => saveToDB()} />
-          {/* :null} */}
-        </div>
         <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
@@ -665,17 +659,19 @@ function Mayagt_1(props: any) {
             </select>
           </div>
         </div>
-        <div>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
+          <ButtonSave saveToDB={() => saveToDB()} />
+          {/* :null} */}
+        </div>
+     
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-          <div className="flex  items-end">
-            <Comment />
-          </div>
-        </div>
+        
       </div>
     </>
   );

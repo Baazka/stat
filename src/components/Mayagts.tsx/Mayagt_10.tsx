@@ -1100,8 +1100,8 @@ function Mayagt_10(props: any) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
+    debugTable: false,
+    debugHeaders: false,
     debugColumns: false,
   });
 
@@ -1363,7 +1363,7 @@ function Mayagt_10(props: any) {
             <ButtonConfirm />
           </div>
         </div>
-        <div style={{ maxHeight: "630px", overflowY: "scroll" }}>
+        <div style={{ overflowY: "scroll" }}>
           <table>
             <thead className="TableHeadBackroundcolor gap-20">
               {table.getHeaderGroups().map((headerGroup) => (

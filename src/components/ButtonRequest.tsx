@@ -87,7 +87,7 @@ function RequestButtonOT(props: any) {
           }
         })
         .catch(function (error) {
-          alert("Aмжилтгүй");
+          console.log(error,'OT_REQUEST_FOR_CONFIRM');
         });
     }
   }
@@ -114,7 +114,8 @@ function RequestButtonOT(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+        console.log(error,'ot_processChange');
+        // alert("Aмжилтгүй");
       });
   }
   return (
