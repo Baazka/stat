@@ -120,8 +120,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELELTIIN_TOOTSOH_OGNOO",
-        header: "Биелэлтийг тооцох огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {

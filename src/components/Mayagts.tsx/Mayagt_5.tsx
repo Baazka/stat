@@ -111,13 +111,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ZORCHIL_ARILGAH_OGNOO",
-        header: "Зөрчлийг арилгах огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -155,7 +155,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLOWLH_DANSNI_TOROL_TOGROG",
+        accessorKey: "ACCOUNT_TYPE_NAME",
         header: "Төвлөрүүлэх дансны төрөл (төгрөг)",
         cell: (info) => info.getValue(),
       },
@@ -175,7 +175,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "OWOG_NER",
+        accessorKey: "FULL_NAME",
         header: "Овог, нэр",
         cell: (info) => info.getValue(),
       },
@@ -200,8 +200,20 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELSEN_ALBAN_SHARDLGIN_DUN_T",
+        accessorKey: "MO_AMOUNT",
         header: "Биелсэн албан шаардлагын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {

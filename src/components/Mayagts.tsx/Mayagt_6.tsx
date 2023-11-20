@@ -73,7 +73,7 @@ function Mayagt_1(props: any) {
         size: 15,
       },
       {
-        accessorKey: "YEAR_LABELYEAR_LABEL",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -116,8 +116,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -131,7 +136,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_ANGILL",
+        accessorKey: "SOLUTION_ERROR_NAME",
         header: "Зөрчлийн ангилал",
         cell: (info) => info.getValue(),
       },
@@ -168,7 +173,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_GARGSAN_HATO_NER",
+        accessorKey: "FULL_NAME",
         header: "Зөрчил гаргасан албан тушаалтны овог, нэр",
         cell: (info) => info.getValue(),
       },

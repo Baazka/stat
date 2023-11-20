@@ -103,7 +103,7 @@ function Mayagt_8(props: any) {
         size: 800,
       },
       {
-        accessorKey: "ALDAA_ZORCHIL_ANGILL",
+        accessorKey: "SOLUTION_ERROR_NAME",
         header: "Алдаа, зөрчлийн ангилал",
         cell: (info) => info.getValue(),
       },
@@ -165,7 +165,7 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_GARGSAN_ATO_NER",
+        accessorKey: "FULL_NAME",
         header: "Зөрчил гаргасан албан тушаалтны овог, нэр",
         cell: (info) => info.getValue(),
       },

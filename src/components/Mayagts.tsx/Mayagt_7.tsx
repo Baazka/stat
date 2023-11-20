@@ -108,13 +108,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEENGEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TOLBORIIG_BARAGDUULH_OGNOO",
-        header: "Төлбөрийг барагдуулах огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -128,7 +128,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_ANGILL",
+        accessorKey: "SOLUTION_ERROR_NAME",
         header: "Алдаа, зөрчлийн ангилал",
         cell: (info) => info.getValue(),
       },
@@ -150,7 +150,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOWLORRULEH_DANSNI_TOROL_TOGROG",
+        accessorKey: "ACCOUNT_TYPE_NAME",
         header: "Төвлөрүүлэх дансны төрөл (төгрөг)",
         cell: (info) => info.getValue(),
       },
