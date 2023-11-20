@@ -178,7 +178,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_DATE",
+        accessorKey: "EXEC_DATE",
         header: "Зөрчлийг арилгасан баримтын огноо",
         accessorFn: (row, index) => {
           return row.MO_DATE === null
@@ -205,12 +205,24 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "DARAAGIIN_TAILMT_TIME",
+        accessorKey: "NEXT_AMOUNT",
         header: "Дараагийн тайлант хугацаанд шилжих үлдэгдлийн дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.NEXT_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSA_TOLOWss",
+        accessorKey: "TIME_STATUS",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },

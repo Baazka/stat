@@ -126,12 +126,18 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_DATE",
+        accessorKey: "ALD_SHORT_DESC",
+        header: "Зөрчлийн товч утга",
+        cell: (info) => info.getValue(),
+        size: 500,
+      },
+      {
+        accessorKey: "EXEC_DATE",
         header: "Зөрчлийг арилгасан баримтын огноо",
         accessorFn: (row, index) => {
-          return row.MO_DATE === null
+          return row.EXEC_DATE === null
             ? ""
-            : dateFormat(row.MO_DATE, "yyyy-mm-dd");
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
         },
         cell: (info) => info.getValue(),
       },
@@ -203,13 +209,20 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ALBAN_SHARDLGIN_BURN_H_TOO",
-        header: "Албан шаардлагын бүрэн хэрэгжээгүй тоо (төгрөг)",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ALBAN_SH_BURN_HERGJSN_DUN",
+        accessorKey: "MO_AMOUNT",
         header: "Албан шаардлагын бүрэн хэрэгжсэн дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
     ],

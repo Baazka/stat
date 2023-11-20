@@ -175,13 +175,8 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "FULL_NAME",
-        header: "Овог, нэр",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ALBAN_TUSHAAL",
-        header: "Албан тушаал",
+        accessorKey: "AUDITOR_NAME",
+        header: "Биелэлтийг хянасан аудитор",
         cell: (info) => info.getValue(),
       },
       {
@@ -190,12 +185,12 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_DATE",
+        accessorKey: "EXEC_DATE",
         header: "Зөрчлийг арилгасан баримтын огноо",
         accessorFn: (row, index) => {
-          return row.MO_DATE === null
+          return row.EXEC_DATE === null
             ? ""
-            : dateFormat(row.MO_DATE, "yyyy-mm-dd");
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
         },
         cell: (info) => info.getValue(),
       },
@@ -232,7 +227,24 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSAANII_TOLOWS",
+        accessorKey: "NEXT_AMOUNT",
+        header: "Дараагийн тайлант хугацаанд шилжих үлдэгдлийн дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.NEXT_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "TIME_STATUS",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },

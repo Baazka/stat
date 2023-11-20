@@ -175,18 +175,35 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDITR_CODE",
+        accessorKey: "AUDITOR_CODE",
         header: "Аудиторын код",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLBORIIN_BARIMT_OGNOO",
+        accessorKey: "EXEC_DATE",
         header: "Төлбөрийн баримтын огноо",
+        accessorFn: (row, index) => {
+          return row.EXEC_DATE === null
+            ? ""
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELSEN_TOLBORIIN_AKTIN_DUN_T",
+        accessorKey: "MO_AMOUNT",
         header: "Биелсэн төлбөрийн актын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
 
@@ -206,7 +223,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSAANII_TOLOWS",
+        accessorKey: "TIME_STATUS",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },
