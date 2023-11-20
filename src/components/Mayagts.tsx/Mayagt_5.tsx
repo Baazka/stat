@@ -72,7 +72,7 @@ function Mayagt_1(props: any) {
         size: 10,
       },
       {
-        accessorKey: "AUDIT_ON",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -111,13 +111,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ZORCHIL_ARILGAH_OGNOO",
-        header: "Зөрчлийг арилгах огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -138,12 +138,24 @@ function Mayagt_1(props: any) {
         size: 300,
       },
       {
-        accessorKey: "ALBAN_SHAARDLGIN_DUN_T",
+        accessorKey: "AMOUNT",
         header: "Албан шаардлагын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLOWLH_DANSNI_TOROL_TOGROG",
+        accessorKey: "ACCOUNT_TYPE_NAME",
         header: "Төвлөрүүлэх дансны төрөл (төгрөг)",
         cell: (info) => info.getValue(),
       },
@@ -163,13 +175,8 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "OWOG_NER",
-        header: "Овог, нэр",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ALBAN_TUSHAAL",
-        header: "Албан тушаал",
+        accessorKey: "AUDITOR_NAME",
+        header: "Биелэлтийг хянасан аудитор",
         cell: (info) => info.getValue(),
       },
       {
@@ -178,18 +185,30 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_DATE",
+        accessorKey: "EXEC_DATE",
         header: "Зөрчлийг арилгасан баримтын огноо",
         accessorFn: (row, index) => {
-          return row.MO_DATE === null
+          return row.EXEC_DATE === null
             ? ""
-            : dateFormat(row.MO_DATE, "yyyy-mm-dd");
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
         },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELSEN_ALBAN_SHARDLGIN_DUN_T",
+        accessorKey: "MO_AMOUNT",
         header: "Биелсэн албан шаардлагын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
@@ -208,7 +227,24 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSAANII_TOLOW",
+        accessorKey: "NEXT_AMOUNT",
+        header: "Дараагийн тайлант хугацаанд шилжих үлдэгдлийн дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.NEXT_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "TIME_STATUS",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },
@@ -217,47 +253,14 @@ function Mayagt_1(props: any) {
         header: "Эрх бүхий байгууллагад шилжүүлсэн эсэх",
         cell: (info) => info.getValue(),
       },
-
-      {
-        accessorKey: "UR_UGUUJ_TYPE_NAME",
-        header: "Үр өгөөжийн төрөл",
-        cell: (info) => info.getValue(),
-      },
       {
         accessorKey: "UR_UGUUJ_NAME",
         header: "Үр өгөөжөөр тооцсон эсэх",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TUL_AMOUNT",
-        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TUL_AMOUNT}
-              decimalsLimit={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TOD_AMOUNT",
-        header: "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TOD_AMOUNT}
-              decimalsLimit={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
+        accessorKey: "UR_UGUUJ_TYPE_NAME",
+        header: "Үр өгөөжийн төрөл",
         cell: (info) => info.getValue(),
       },
     ],
@@ -360,8 +363,8 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {

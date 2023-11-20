@@ -72,7 +72,7 @@ function Mayagt_1(props: any) {
         size: 15,
       },
       {
-        accessorKey: "AUDIT_ON",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -108,13 +108,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEENGEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TOLBORIIG_BARAGDUULH_OGNOO",
-        header: "Төлбөрийг барагдуулах огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
+        accessorFn: (row, index) => {
+          return row.COMPLETION_DATE === null
+            ? ""
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -123,22 +123,34 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOWCH_UTGA",
+        accessorKey: "ALD_SHORT_DESC",
         header: "Товч утга",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_ANGILL",
+        accessorKey: "SOLUTION_ERROR_NAME",
         header: "Алдаа, зөрчлийн ангилал",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLBORIIN_AKTIIN_TOGROG",
+        accessorKey: "AMOUNT",
         header: "Төлбөрийн актын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOWLORRULEH_DANSNI_TOROL_TOGROG",
+        accessorKey: "ACCOUNT_TYPE_NAME",
         header: "Төвлөрүүлэх дансны төрөл (төгрөг)",
         cell: (info) => info.getValue(),
       },
@@ -163,18 +175,35 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDITR_CODE",
+        accessorKey: "AUDITOR_CODE",
         header: "Аудиторын код",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TOLBORIIN_BARIMT_OGNOO",
+        accessorKey: "EXEC_DATE",
         header: "Төлбөрийн баримтын огноо",
+        accessorFn: (row, index) => {
+          return row.EXEC_DATE === null
+            ? ""
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
+        },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELSEN_TOLBORIIN_AKTIN_DUN_T",
+        accessorKey: "MO_AMOUNT",
         header: "Биелсэн төлбөрийн актын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
 
@@ -194,7 +223,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUGATSAANII_TOLOW",
+        accessorKey: "TIME_STATUS",
         header: "Хугацааны төлөв",
         cell: (info) => info.getValue(),
       },
@@ -203,48 +232,14 @@ function Mayagt_1(props: any) {
         header: "Эрх бүхий байгууллагад шилжүүлсэн эсэх",
         cell: (info) => info.getValue(),
       },
-
-      {
-        accessorKey: "UR_UGUUJ_TYPE_NAME",
-        header: "Үр өгөөжийн төрөл",
-        cell: (info) => info.getValue(),
-      },
       {
         accessorKey: "UR_UGUUJ_NAME",
         header: "Үр өгөөжөөр тооцсон эсэх",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TUL_AMOUNT",
-        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TUL_AMOUNT}
-              decimalsLimit={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
-        cell: (info) => info.getValue(),
-      },
-
-      {
-        accessorKey: "TOD_AMOUNT",
-        header: "Тодорхойлсон санхүүгийн үр өгөөжийн дүн (төгрөг)",
-        accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.TOD_AMOUNT}
-              decimalsLimit={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
-        ),
+        accessorKey: "UR_UGUUJ_TYPE_NAME",
+        header: "Үр өгөөжийн төрөл",
         cell: (info) => info.getValue(),
       },
     ],
@@ -343,8 +338,8 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {

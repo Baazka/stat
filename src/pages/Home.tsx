@@ -304,28 +304,27 @@ function Home(props: any) {
 
   function deletePlan(row) {
     if (window.confirm("Устгахдаа итгэлтэй байна уу?")) {
-      alert("хөгжүүлэлт хийгдэж байна.");
-      // DataRequest({
-      //   url: Stat_URl + "auditDelete/",
-      //   method: "POST",
-      //   data: {
-      //     FAS_AUDIT_ID: row.ID,
-      //     UPDATED_BY: userDetails.USER_ID,
-      //     UPDATED_DATE: dateFormat(new Date(), "yyyy-mm-dd"),
-      //   },
-      // })
-      //   .then(function (response) {
-      //     if (
-      //       response.data !== undefined &&
-      //       response.data.message === "success"
-      //     ) {
-      //       alert("устлаа");
-      //       fetchData();
-      //     } else alert(response.data.message);
-      //   })
-      //   .catch(function (error) {
-      //     alert("Aмжилтгүй");
-      //   });
+      //alert("хөгжүүлэлт хийгдэж байна.");
+      DataRequest({
+        url: Stat_URl + "statisticRemove/",
+        method: "POST",
+        data: {
+          ID: row.ID,
+          CREATED_BY: userDetails.USER_ID,
+        },
+      })
+        .then(function (response) {
+          if (
+            response.data !== undefined &&
+            response.data.message === "Хадгаллаа."
+          ) {
+            alert("Устлаа.");
+            fetchData();
+          } else alert(response.data.message);
+        })
+        .catch(function (error) {
+          alert("Aмжилтгүй");
+        });
     }
   }
 
@@ -381,8 +380,8 @@ function Home(props: any) {
         if (response.data !== undefined && response.data.length > 0) {
           setData([...response.data]);
           //setloaderSpinner(0);
-        }else{
-          setData([])
+        } else {
+          setData([]);
         }
       })
       .catch(function (error) {
@@ -557,13 +556,11 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: window.innerHeight-300,width:'100%'}}>
-          
-
+        <div style={{ maxHeight: window.innerHeight - 300, width: "100%" }}>
           <table className="w-full">
             <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} >
+                <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
@@ -604,7 +601,7 @@ function Home(props: any) {
                 </tr>
               ))}
             </thead>
-            <tbody  >
+            <tbody>
               {table.getRowModel().rows.map((row, i) => {
                 return (
                   <tr
@@ -681,7 +678,6 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        
       </div>
     </>
   );

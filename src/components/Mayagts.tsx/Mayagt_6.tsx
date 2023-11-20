@@ -73,7 +73,7 @@ function Mayagt_1(props: any) {
         size: 15,
       },
       {
-        accessorKey: "AUDIT_ON",
+        accessorKey: "YEAR_LABEL",
         cell: (info) => info.getValue(),
         header: "Аудитын он",
         footer: (props) => props.column.id,
@@ -116,28 +116,51 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HULEEN_OGSON_OGNOO",
-        header: "Хүлээлгэн өгсөн огноо",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "MO_DATE",
-        header: "Зөрчлийг арилгасан баримтын огноо",
+        accessorKey: "COMPLETION_DATE",
+        header: "Биелэлтийн огноо",
         accessorFn: (row, index) => {
-          return row.MO_DATE === null
+          return row.COMPLETION_DATE === null
             ? ""
-            : dateFormat(row.MO_DATE, "yyyy-mm-dd");
+            : dateFormat(row.COMPLETION_DATE, "yyyy-mm-dd");
         },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_ANGILL",
+        accessorKey: "ALD_SHORT_DESC",
+        header: "Зөрчлийн товч утга",
+        cell: (info) => info.getValue(),
+        size: 500,
+      },
+      {
+        accessorKey: "EXEC_DATE",
+        header: "Зөрчлийг арилгасан баримтын огноо",
+        accessorFn: (row, index) => {
+          return row.EXEC_DATE === null
+            ? ""
+            : dateFormat(row.EXEC_DATE, "yyyy-mm-dd");
+        },
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "SOLUTION_ERROR_NAME",
         header: "Зөрчлийн ангилал",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ALBAN_SHARDLGIN_TOGROG",
+        accessorKey: "AMOUNT",
         header: "Албан шаардлагын дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
       {
@@ -156,7 +179,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_GARGSAN_HATO_NER",
+        accessorKey: "FULL_NAME",
         header: "Зөрчил гаргасан албан тушаалтны овог, нэр",
         cell: (info) => info.getValue(),
       },
@@ -186,13 +209,20 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ALBAN_SHARDLGIN_BURN_H_TOO",
-        header: "Албан шаардлагын бүрэн хэрэгжээгүй тоо (төгрөг)",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ALBAN_SH_BURN_HERGJSN_DUN",
+        accessorKey: "MO_AMOUNT",
         header: "Албан шаардлагын бүрэн хэрэгжсэн дүн (төгрөг)",
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.MO_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
         cell: (info) => info.getValue(),
       },
     ],
@@ -245,8 +275,8 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {

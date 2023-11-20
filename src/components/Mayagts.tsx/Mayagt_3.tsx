@@ -108,11 +108,11 @@ function Mayagt_3(props: any) {
         header: "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
       },
-      {
-        accessorKey: "IS_ERROR_CONFLICT_NAME",
-        header: "Тухайн үр дүнг алдаа зөрчилд тооцох эсэх",
-        cell: (info) => info.getValue(),
-      },
+      // {
+      //   accessorKey: "IS_ERROR_CONFLICT_NAME",
+      //   header: "Тухайн үр дүнг алдаа зөрчилд тооцох эсэх",
+      //   cell: (info) => info.getValue(),
+      // },
       {
         accessorKey: "IS_ZALRUULAH_NAME",
         header: "Алдааг залруулсан эсэх",
@@ -132,6 +132,7 @@ function Mayagt_3(props: any) {
               id="input-example"
               defaultValue={row.AMOUNT}
               decimalsLimit={2}
+              decimalScale={2}
               disabled
               style={{ textAlign: "center", backgroundColor: "transparent" }}
             />
@@ -468,8 +469,8 @@ function Mayagt_3(props: any) {
       method: "POST",
       data: {
         ID: mayagtData.ID,
-        PERIOD_LABEL: mayagtData.PERIOD_YEAR, //PERIOD_LABEL
-        DEPARTMENT_ID: mayagtData.DEPARTMENT_ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
       },
     })
       .then(function (response) {
