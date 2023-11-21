@@ -109,21 +109,6 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "IS_TRANSFER",
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн эсэх",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TRANSFER_AMOUNT",
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн (төгрөг)",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "TRANSFER_DESC",
-        header: "Хууль хяналтын байгууллагад шилжүүлээгүй шалтгаан",
-        cell: (info) => info.getValue(),
-      },
-      {
         accessorKey: "AMOUNT",
         header: "Хууль хяналтын байгууллагад шилжүүлэх асуудлын дүн (төгрөг)",
         accessorFn: (row, index) => (
@@ -140,6 +125,22 @@ function Mayagt_8(props: any) {
         ),
         cell: (info) => info.getValue(),
       },
+      {
+        accessorKey: "IS_TRANSFER",
+        header: "Хууль хяналтын байгууллагад шилжүүлсэн эсэх",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "TRANSFER_AMOUNT",
+        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн (төгрөг)",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "TRANSFER_DESC",
+        header: "Хууль хяналтын байгууллагад шилжүүлээгүй шалтгаан",
+        cell: (info) => info.getValue(),
+      },
+      
       {
         accessorKey: "TRANSFER_ORG",
         header: "Шилжүүлсэн байгууллагын нэр",
