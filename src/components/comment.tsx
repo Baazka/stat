@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import fasUrl from "../fasURL";
+import statURL from '../Stat_URL'
 import { DataRequest } from "../functions/DataApi";
-const axios = require("axios");
-var dateFormat = require("dateformat");
+import dateFormat, { masks } from "dateformat";
+
+
 
 function Comments(props:any) {
   const userDetils = props.userDetails;
@@ -12,32 +14,32 @@ function Comments(props:any) {
   const [commentText, setCommentText] = useState("");
   async function fetchData() {
 
-    DataRequest({
-      url: fasUrl +
-      "comment/" +
-      props.audid +
-      "/" +
-      props.docid +
-      "/" +
-      props.MODULE_ID,
-      method: "GET",
-      data: {},
-    })
-      .then(function (response) {
-        loadData(response.data);
-        
-      })
-      .catch(function (error) {
-       console.log(error,'comment');
-      });
+  
       DataRequest({
-        url:fasUrl + "process/" + props.audid + "/" + props.docid,
-        method: "GET",
-        data: {},
+        url:statURL + "getProcess",
+        method: "POST",
+        data: {ID:mayagtData?.ID},
       })
         .then(function (response) {
+          console.log(response,'statisticProcess');
+          if(response.data !== undefined && response.data.length >0){
           setStatus(response.data);
-          
+
+          DataRequest({
+            url: statURL +
+            "CommentList?ProcessID=" +response.data.ID,
+            method: "GET",
+            data: {},
+          })
+            .then(function (res) {
+              console.log(res,'comment get');
+              loadData(res.data);
+              
+            })
+            .catch(function (error) {
+             console.log(error,'comment');
+            });
+          }
         })
         .catch(function (error) {
          console.log(error,'url:fasUrl + process/');
@@ -56,8 +58,9 @@ function Comments(props:any) {
   }, [props.mayagtData]);
 
   function comment() {
+   
     DataRequest({
-      url: fasUrl + "comment/" + props.audid + "/" + props.docid,
+      url: statURL + "CommentInsert" ,
       method: "POST",
       data: {
         MODULE_ID: props.MODULE_ID,
@@ -65,22 +68,14 @@ function Comments(props:any) {
         COMMENT_TEXT: commentText,
         CREATED_BY: userDetils?.USER_ID,
         ID: null,
-
-        // FAS_AUDIT_ID: props.audID,
-        // DOCUMENT_ID: props.docID,
-        // CREATED_BY: userDetils?.USER_ID,
-        // CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
+      
+       
       },
     })
       .then(function (response) {
-        if (
-          (response.data?.code === 405 &&
-            response.data?.result?.errorNum === 6502) ||
-          (response.data?.code === 405 &&
-            response.data?.result?.errorNum === 1461)
-        ) {
-          alert("сэтгэгдэлийн тэмдэгт хэтэрсэн байна");
-        } else if (response?.data?.message === "success") {
+       
+        
+        if (response?.data?.status === 200) {
           fetchData();
           // props.changeData();
           setCommentText("");
@@ -94,21 +89,17 @@ function Comments(props:any) {
   function deleteComment(value) {
     if (window.confirm("Устгахдаа итгэлтэй байна уу?"))
       DataRequest({
-        url: fasUrl + "commentDelete/",
+        url: statURL + "CommentRemove/",
         method: "POST",
         data: {
           ID: value.ID,
-          CREATED_BY: userDetils.USER_ID,
-          CREATED_DATE: dateFormat(new Date(), "dd-mmm-yyyy hh:MM:ss"),
-          MODULE_ID: props.MODULE_ID,
-          // FAS_AUDIT_ID: props.audID,
-          // DOCUMENT_ID: props.docID,
-          // CREATED_BY: userDetils?.USER_ID,
-          // CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
+          UPDATED_BY: userDetils.USER_ID,
+          
+         
         },
       })
         .then(function (response) {
-          if (response?.data?.message === "success") {
+          if (response?.data?.status === 200) {
             fetchData();
             // props.changeData();
           }

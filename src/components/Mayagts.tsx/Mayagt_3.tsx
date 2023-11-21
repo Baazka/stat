@@ -13,6 +13,7 @@ import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
 import Stat_URL from "../../Stat_URL";
 import CurrencyInput from "react-currency-input-field";
+import {check_save}from '../../functions/Tools'
 import {
   Column,
   Table,
@@ -161,6 +162,7 @@ function Mayagt_3(props: any) {
   );
 
   const [data, setData] = React.useState([]);
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
 
   const table = useReactTable({
     data,
@@ -199,7 +201,7 @@ function Mayagt_3(props: any) {
       data: {
         // STAT_ID : mayagtData.ID,
         data: data,
-        log: data,
+       
         CREATED_BY: userDetails.USER_ID,
       },
     })
@@ -207,6 +209,7 @@ function Mayagt_3(props: any) {
         console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
+          fetchData()
         }
       })
       .catch(function (error) {
@@ -475,8 +478,15 @@ function Mayagt_3(props: any) {
     })
       .then(function (response) {
         console.log(response);
-        if (response.data !== undefined && response?.data.data.length > 0) {
+        if (response.data !== undefined && response.data.data.length > 0) {
           setData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
         }
       })
       .catch(function (error) {
@@ -535,7 +545,8 @@ function Mayagt_3(props: any) {
             {/* <ButtonConfirm /> */}
           </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
+        <div >
+        <div className="overflow-y-scroll">
           <div className="h-2 mr-20" />
           <table>
             <thead className="TableHeadBackroundcolor gap-20">
@@ -599,6 +610,7 @@ function Mayagt_3(props: any) {
               })}
             </tbody>
           </table>
+          </div>
           <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
@@ -655,14 +667,15 @@ function Mayagt_3(props: any) {
         </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
+        {check_save(status)?
+          <ButtonSave saveToDB={() => saveToDB()} />:null}
         </div>
         
-        <div>
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
           <div className="flex  items-end">

@@ -67,6 +67,8 @@ function Mayagt() {
       <Comments
             audid={mayagtData.ID}
             docid={mayagtData.DOCUMENT_ID}
+            mayagtData={mayagtData} 
+            userDetails={userDetails}
             // changeData={() => changeData()}
             MODULE_ID={6}
           />

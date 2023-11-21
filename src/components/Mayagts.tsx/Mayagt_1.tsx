@@ -31,6 +31,7 @@ import DataRequest from "../../functions/make_Request";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import fasUrl from "../../fasURL";
 import UserPremission from "../../functions/userPermission";
+import {check_save}from '../../functions/Tools'
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -228,7 +229,7 @@ function Mayagt_1(props: any) {
         wraptext: true,
       },
     ],
-    []
+    [status]
   );
 
   const [data, loadData] = React.useState([]);
@@ -281,16 +282,16 @@ function Mayagt_1(props: any) {
               let tset = saveData;
               tset.add(index);
               setSaveData(tset);
-              loadData([...temp]);
+              loadData(temp);
             }}
           >
-            <option className="font-medium" key={"Сонгоно уу"} value={999}>
+            <option key={index+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
               {"Сонгоно уу"}
             </option>
-            <option className="font-medium" key={"Тийм"} value={1}>
+            <option key={index+'1'} className="font-medium" key={"Тийм"} value={1}>
               {"Тийм"}
             </option>
-            <option className="font-medium" key={"Үгүй"} value={0}>
+            <option key={index+'2'} className="font-medium" key={"Үгүй"} value={0}>
               {"Үгүй"}
             </option>
           </select>
@@ -318,7 +319,7 @@ function Mayagt_1(props: any) {
               tset.add(index);
               setSaveData(tset);
 
-              loadData([...temp]);
+              loadData(temp);
             }}
           />
         ) : (
@@ -327,6 +328,7 @@ function Mayagt_1(props: any) {
       </div>
     );
   }
+  
 
   useEffect(() => {
     fetchData();
@@ -344,7 +346,7 @@ function Mayagt_1(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response, "mayagt1 response");
+      
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
@@ -354,6 +356,7 @@ function Mayagt_1(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+     
         }
       })
       .catch(function (error) {
@@ -383,7 +386,7 @@ function Mayagt_1(props: any) {
   }
 
   function saveToDB() {
-    console.log("count");
+    
     let temp = [];
     //  console.log(saveData,'saveData');
     for (let i of saveData) {
@@ -396,36 +399,27 @@ function Mayagt_1(props: any) {
       data: {
         // STAT_ID : mayagtData.ID,
         data: temp,
-        log: temp,
         CREATED_BY: userDetails.USER_ID,
       },
     })
       .then(function (response) {
-        console.log(
-          {
-            ID: status.STATUS.ID,
-            STAT_AUDIT_ID: mayagtData.ID,
-            ACTION_ID: status.ROLE.ROLE_ID, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
-            ACTION_DESC: "mayagt hadgallaa",
-            CREATED_BY: userDetails.USER_ID,
-          },
-          "test"
-        );
-        if (response?.data.message === "Хадгаллаа.") {
+       
+        console.log(response?.data,'response1');
+        if (response?.data.status === 200) {
           DataRequest({
-            url: Stat_Url + "BM1IU",
+            url: Stat_Url + "statisticProcessChange",
             method: "POST",
             data: {
               ID: status.STATUS.ID,
               STAT_AUDIT_ID: mayagtData.ID,
-              ACTION_ID: status.ROLE.ROLE_ID, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
+              ACTION_ID: 0, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
               ACTION_DESC: "mayagt hadgallaa",
               CREATED_BY: userDetails.USER_ID,
             },
           })
             .then(function (response) {
-              console.log(response.data);
-              if (response?.data.message === "Хадгаллаа.") {
+              console.log(response.data,'response2');
+              if (response?.data.status === 200) {
                 alert("амжилттай хадгаллаа");
 
                 fetchData();
@@ -433,13 +427,13 @@ function Mayagt_1(props: any) {
             })
             .catch(function (error) {
               console.log(error, "error");
-              alert("Aмжилтгүй");
+              ;
             });
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+     
       });
   }
 
@@ -522,7 +516,8 @@ function Mayagt_1(props: any) {
               />:null} */}
           </div>
         </div>
-        <div >
+        
+        <div className="overflow-y-scroll">
           <div className="h-2 mr-20" />
           <table
             {...{
@@ -624,7 +619,7 @@ function Mayagt_1(props: any) {
           </table>
         </div>
         <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+          <div className="justify-end flex items-center gap-1 mt-5 mr-2 sticky">
             <button
               className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
               onClick={() => table.setPageIndex(0)}
@@ -676,10 +671,13 @@ function Mayagt_1(props: any) {
               ))}
             </select>
           </div>
+             { check_save(status)?  
+            <ButtonSave saveToDB={() => saveToDB()} />
+             :null}
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
           {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
-          <ButtonSave saveToDB={() => saveToDB()} />
+        
           {/* :null} */}
         </div>
      

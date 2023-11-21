@@ -8,6 +8,7 @@ import ButtonRequest from "../ButtonRequest";
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
+import {check_save}from '../../functions/Tools'
 import { excel } from "../../assets/zurag";
 import CurrencyInput from "react-currency-input-field";
 import { getExportFileBlob } from "../../functions/excel_export";
@@ -30,7 +31,7 @@ import {
 } from "@tanstack/react-table";
 import DataRequest from "../../functions/make_Request";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
-import { read, writeFileXLSX, utils } from "xlsx";
+
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -62,7 +63,7 @@ function Mayagt_1(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(
     () => [
       {
@@ -129,7 +130,7 @@ function Mayagt_1(props: any) {
         accessorKey: "ALD_SHORT_DESC",
         header: "Зөрчлийн товч утга",
         cell: (info) => info.getValue(),
-        size: 500,
+        size: 700,
       },
       {
         accessorKey: "EXEC_DATE",
@@ -226,7 +227,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
     ],
-    []
+    [status]
   );
 
   const [data, loadData] = React.useState([]);
@@ -282,6 +283,13 @@ function Mayagt_1(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
         }
       })
       .catch(function (error) {
@@ -302,7 +310,7 @@ function Mayagt_1(props: any) {
       data: {
         // STAT_ID : mayagtData.ID,
         data: data,
-        log: data,
+      
         CREATED_BY: userDetails.USER_ID,
       },
     })
@@ -310,6 +318,7 @@ function Mayagt_1(props: any) {
         console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
+          fetchData()
         }
       })
       .catch(function (error) {
@@ -322,7 +331,6 @@ function Mayagt_1(props: any) {
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
           padding: "0.5rem 0 0 1rem",
         }}
       >
@@ -371,8 +379,9 @@ function Mayagt_1(props: any) {
             {/* <ButtonConfirm /> */}
           </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
+        <div >
           <div className="h-2 mr-20" />
+          <div className="overflow-y-scroll">
           <table
             {...{
               style: {
@@ -464,6 +473,7 @@ function Mayagt_1(props: any) {
               })}
             </tbody>
           </table>
+          </div>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
               className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
@@ -518,16 +528,17 @@ function Mayagt_1(props: any) {
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
+        {check_save(status)?
+          <ButtonSave saveToDB={() => saveToDB()} />:null}
         </div>
         <div style={{ justifyContent: "flex-end" }}>
        
         </div>
-        <div>
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
           <div className="flex  items-end">

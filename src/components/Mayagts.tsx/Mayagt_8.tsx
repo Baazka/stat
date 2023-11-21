@@ -5,6 +5,7 @@ import Comment from "../comment";
 import FooterValue from "../Footervalue";
 import ButtonConfirm from "../ButtonConfirm";
 import ButtonRequest from "../ButtonRequest";
+import {check_save}from '../../functions/Tools'
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
@@ -61,7 +62,7 @@ function Mayagt_8(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(
     () => [
       {
@@ -108,17 +109,17 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBSHE",
+        accessorKey: "IS_TRANSFER",
         header: "Хууль хяналтын байгууллагад шилжүүлсэн эсэх",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBSHA_DUN_T",
+        accessorKey: "TRANSFER_AMOUNT",
         header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн (төгрөг)",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBSH_SHALTGAAN",
+        accessorKey: "TRANSFER_DESC",
         header: "Хууль хяналтын байгууллагад шилжүүлээгүй шалтгаан",
         cell: (info) => info.getValue(),
       },
@@ -140,12 +141,12 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "SHILJUULSEN_BAIGUULGGIN_NER",
+        accessorKey: "TRANSFER_ORG",
         header: "Шилжүүлсэн байгууллагын нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ALBAN_BICHGIIN_DUGR",
+        accessorKey: "TRANSFER_DOC_NO",
         header: "Албан бичгийн дугаар",
         cell: (info) => info.getValue(),
       },
@@ -170,28 +171,28 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ZORCHIL_GHA_TUSHAAL",
+        accessorKey: "PERSON_POSITION",
         header: "Зөрчил гаргасан хүний албан тушаал",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBBSH_DUN_TOG",
+        accessorKey: "LAW_FULL_AMOUNT",
         header:
           "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн дүн (төгрөг)",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBHB_DUN_TOG",
+        accessorKey: "LAW_UNDER_AMOUNT",
         header: "Хууль хяналтын байгууллагаар хянагдаж байгаа дүн (төгрөг)",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBHBD_TOG",
+        accessorKey: "LAW_REJECTED_AMOUNT",
         header: "Хууль хяналтын байгууллагаар хэрэгсэхгүй болсон дүн (төгрөг)",
         cell: (info) => info.getValue(),
       },
     ],
-    []
+    [status]
   );
 
   const [data, loadData] = React.useState([]);
@@ -233,52 +234,51 @@ function Mayagt_8(props: any) {
   function Draw_input(param: any, cell: any, index: number, cell_all: any) {
     return (
       <div>
-        {cell.id === "HUULI_HBSHE" ? (
-          <select
-            className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-            value={param.row.original[cell.id]}
-            onChange={(text) => {
-              let temp = data;
-              temp[index][cell.id] = text.target.value;
-              let tset = saveData;
-              tset.add(index);
-              setSaveData(tset);
-              loadData([...temp]);
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-            {/* <option className="font-medium" key={"Тийм"} value={0}>
-              {"тийм"}
-            </option>
-            <option className="font-medium" key={"Үгүй"} value={1}>
-              {"Үгүй"}
-            </option> */}
-          </select>
-        ) : //  : cell.id === "" ? (
-        //   <input
-        //     type="date"
-        //     className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-        //     value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
-        //       onChange={(e) => {
-        //         let temp = data;
-        //         //@ts-ignore
-        //         temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-
-        //           let tset = saveData
-        //           tset.add(index)
-        //           setSaveData(tset)
-        //         // @ts-ignore
-        //         loadData([...temp]);
-        //       }}
-        //   />
-        // )
-        cell.id === "HUULI_HBSHA_DUN_T" ||
+        {cell.id === "IS_TRANSFER" ? (
+         <select
+         className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+         value={param.row.original[cell.id]}
+         onChange={(text) => {
+           let temp = data;
+           temp[index][cell.id] = text.target.value;
+           let tset = saveData;
+           tset.add(index);
+           setSaveData(tset);
+           loadData(temp);
+         }}
+       >
+         <option key={index+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
+           {"Сонгоно уу"}
+         </option>
+         <option key={index+'1'} className="font-medium" key={"Тийм"} value={1}>
+           {"Тийм"}
+         </option>
+         <option key={index+'2'} className="font-medium" key={"Үгүй"} value={0}>
+           {"Үгүй"}
+         </option>
+       </select>
+        ) :cell.id === 'TRANSFER_AMOUNT' || cell.id === 'LAW_FULL_AMOUNT' || cell.id === 'TRANSFER_AMOUNT' || cell.id === 'LAW_UNDER_AMOUNT' ||cell.id === 'LAW_REJECTED_AMOUNT'?
+        <CurrencyInput
+        id="input-example"
+        defaultValue={param.row.original[cell.id]}
+        decimalsLimit={2}
+        decimalScale={2}
+        onChange={(text)=> {
+          let temp = data;
+           temp[index][cell.id] = text.target.value;
+           let tset = saveData;
+           tset.add(index);
+           setSaveData(tset);
+           loadData(temp);
+        }}
+        style={{ backgroundColor: "transparent", textAlign: 'right' ,border:'1px solid black'}}
+      />
+        :
+        cell.id === "TRANSFER_DESC" ||
           cell.id === "HUULI_HBSH_SHALTGAAN" ||
-          cell.id === "HUUL_HBSHA_DUN_T" ||
-          cell.id === "SHILJUULSEN_BAIGUULGGIN_NER" ||
-          cell.id === "ALBAN_BICHGIIN_DUGR" ||
+          cell.id === "TRANSFER_ORG" ||
+          cell.id === "TRANSFER_DOC_NO" ||
+          cell.id === "PERSON_POSITION" ||
           cell.id === "ZORCHIL_GHA_TUSHAAL" ||
           cell.id === "HUULI_HBBSH_DUN_TOG" ||
           cell.id === "HUULI_HBHB_DUN_TOG" ||
@@ -286,8 +286,8 @@ function Mayagt_8(props: any) {
           <textarea
             className={
               index % 2 > 0
-                ? "flex text-center h-8 bg-gray-100"
-                : "flex text-center h-8"
+                ? "flex  h-8 bg-gray-100"
+                : "flex  h-8"
             }
             style={{
               minHeight: "33px",
@@ -302,7 +302,7 @@ function Mayagt_8(props: any) {
               let tset = saveData;
               tset.add(index);
               setSaveData(tset);
-              loadData([...temp]);
+              loadData(temp);
             }}
           />
         ) : (
@@ -329,6 +329,13 @@ function Mayagt_8(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
         }
       })
       .catch(function (error) {
@@ -348,8 +355,8 @@ function Mayagt_8(props: any) {
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
-        data: data,
-        log: data,
+        data: temp,
+      
         CREATED_BY: userDetails.USER_ID,
       },
     })
@@ -357,6 +364,7 @@ function Mayagt_8(props: any) {
         console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
+          fetchData()
         }
       })
       .catch(function (error) {
@@ -369,7 +377,7 @@ function Mayagt_8(props: any) {
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
+       
           padding: "0.5rem 0 0 1rem",
         }}
       >
@@ -418,8 +426,9 @@ function Mayagt_8(props: any) {
             {/* <ButtonConfirm /> */}
           </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
+        <div >
           <div className="h-2 mr-20" />
+          <div className="overflow-y-scroll">
           <table
             {...{
               style: {
@@ -518,6 +527,7 @@ function Mayagt_8(props: any) {
               })}
             </tbody>
           </table>
+          </div>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
               className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
@@ -572,16 +582,17 @@ function Mayagt_8(props: any) {
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
+        {check_save(status)?
+          <ButtonSave saveToDB={() => saveToDB()} />:null}
         </div>
         <div style={{ justifyContent: "flex-end" }}>
          
         </div>
-        <div>
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
           <div className="flex  items-end">

@@ -14,6 +14,7 @@ import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
+import {check_save}from '../../functions/Tools'
 import Stat_Url from "../../Stat_URL";
 import {
   Column,
@@ -317,7 +318,6 @@ function Mayagt_2(props: any) {
       data: {
         // STAT_ID : mayagtData.ID,
         data: data,
-        log: data,
         CREATED_BY: userDetails.USER_ID,
       },
     })
@@ -385,6 +385,7 @@ function Mayagt_2(props: any) {
           </div>
         </div>
         <div style={{ overflowY: "scroll" }}>
+        <div className="overflow-y-scroll">
           <div className="h-2 mr-20" />
           <table>
             <thead className="TableHeadBackroundcolor gap-20">
@@ -448,6 +449,7 @@ function Mayagt_2(props: any) {
               })}
             </tbody>
           </table>
+          </div>
           <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
@@ -504,12 +506,13 @@ function Mayagt_2(props: any) {
         </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
+          {check_save(status)?
+          <ButtonSave saveToDB={() => saveToDB()} />:null}
         </div>
         
         <div>
           <div className="text-base flex row">
-            <FooterValue />
+            {/* <FooterValue /> */}
           </div>
         </div>
 

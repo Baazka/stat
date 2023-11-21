@@ -104,16 +104,16 @@ function Mayagt_files(props) {
             </div>
             { userDetils.USER_TYPE_NAME === "ADMIN" ? 
                 <form
-                  class="uploadButton mr-3"
+                  className="uploadButton mr-3"
                   method="POST"
                   accept=".pdf"
                   enctype="multipart/form-data"
                 >
                   <label
                     for="file-upload"
-                    class="custom-file-upload text-white"
+                    className="custom-file-upload text-white"
                   >
-                    <i class="fa fa-cloud-upload"></i> Хавсралт оруулах
+                    <i className="fa fa-cloud-upload"></i> Хавсралт оруулах
                   </label>
                   <input
                     id="file-upload"
@@ -131,7 +131,7 @@ function Mayagt_files(props) {
                   "uploads" +
                   fileAdd?.FILE_PATH.replace("uploads", "")
                 }
-                without
+              
                 rel="noopener noreferrer"
                 target="_blank"
                 className="inline-flex mb-2 items-center "

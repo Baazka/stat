@@ -5,6 +5,7 @@ import Comment from "../comment";
 import FooterValue from "../Footervalue";
 import ButtonConfirm from "../ButtonConfirm";
 import ButtonRequest from "../ButtonRequest";
+import {check_save}from '../../functions/Tools'
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
@@ -62,7 +63,7 @@ function Mayagt_1(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(
     () => [
       {
@@ -228,7 +229,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH",
+        accessorKey: "IS_TRANSFER",
         header: "Эрх бүхий байгууллагад шилжүүлсэн эсэх",
         cell: (info) => info.getValue(),
       },
@@ -243,7 +244,7 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
     ],
-    []
+    [status]
   );
 
   const [data, loadData] = React.useState([]);
@@ -286,23 +287,29 @@ function Mayagt_1(props: any) {
     return (
       <div>
         <div>
-          {cell.id === "ERH_BUHII_BAIGUULLGD_SHILJUULH_ESEH" ? (
-            <select
-              className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-              value={param.row.original[cell.id]}
-              onChange={(text) => {
-                let temp = data;
-                temp[index][cell.id] = text.target.value;
-                let tset = saveData;
-                tset.add(index);
-                setSaveData(tset);
-                loadData([...temp]);
-              }}
-            >
-              <option className="font-medium" key={"Сонгоно уу"} value={0}>
-                {"Сонгоно уу"}
-              </option>
-            </select>
+          {cell.id === "IS_TRANSFER" ? (
+           <select
+           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+           value={param.row.original[cell.id]}
+           onChange={(text) => {
+             let temp = data;
+             temp[index][cell.id] = text.target.value;
+             let tset = saveData;
+             tset.add(index);
+             setSaveData(tset);
+             loadData(temp);
+           }}
+         >
+           <option key={index+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
+             {"Сонгоно уу"}
+           </option>
+           <option key={index+'1'} className="font-medium" key={"Тийм"} value={1}>
+             {"Тийм"}
+           </option>
+           <option key={index+'2'} className="font-medium" key={"Үгүй"} value={0}>
+             {"Үгүй"}
+           </option>
+         </select>
           ) : cell.id === "HUGATSAANII_TOLOW" ? (
             <input
               type="date"
@@ -345,11 +352,18 @@ function Mayagt_1(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+       
       });
   }
   function saveToDB() {
@@ -364,8 +378,8 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
-        data: data,
-        log: data,
+        data: temp,
+        
         CREATED_BY: userDetails.USER_ID,
       },
     })
@@ -373,6 +387,7 @@ function Mayagt_1(props: any) {
         console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
+          fetchData()
         }
       })
       .catch(function (error) {
@@ -385,7 +400,7 @@ function Mayagt_1(props: any) {
     <>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
+          
           padding: "0.5rem 0 0 1rem",
         }}
       >
@@ -434,8 +449,9 @@ function Mayagt_1(props: any) {
             {/* <ButtonConfirm /> */}
           </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
+        <div >
           <div className="h-2 mr-20" />
+          <div className="overflow-y-scroll">
           <table
             {...{
               style: {
@@ -534,6 +550,7 @@ function Mayagt_1(props: any) {
               })}
             </tbody>
           </table>
+          </div>
           <div style={{ justifyContent: "flex-end" }}>
           <div className="justify-end flex items-center gap-1 mt-5 mr-2">
             <button
@@ -590,14 +607,15 @@ function Mayagt_1(props: any) {
         </div>
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave saveToDB={() => saveToDB()} />
+        {check_save(status)?
+          <ButtonSave saveToDB={() => saveToDB()} />:null}
         </div>
        
-        <div>
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
           <div className="flex  items-end">

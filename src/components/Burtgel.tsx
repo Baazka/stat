@@ -67,22 +67,16 @@ function Burtgel(props: any) {
       DOCUMENT_ID: 999,
       CONFIRM_DATE: new Date(),
     },
-    Team: [
-      // {
-      // "ID":null,
-      // "STAT_AUDIT_ID":null,
-      // "AUDITOR_ID":55,
-      // "ROLE_ID":1,
-      // "IS_ACTIVE":1
-      // }
-    ],
+    Team: [],
     CREATED_BY: userDetails.USER_ID,
   });
+
   const [drop, setDrop] = useState({
     drop1: [],
     drop2: [],
     drop3: [],
   });
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -124,8 +118,34 @@ function Burtgel(props: any) {
       setDrop({ ...temp });
     }
   }
+  function requiredField(){
+    
+   if(data.Audit.PERIOD_ID === 999){
+    alert('Тайлант хугацаа сонгоно уу')
+    return false;
+   }else if(data.Audit.DEPARTMENT_ID === 999){
+    alert('Төрийн аудитын байгууллага сонгоно уу')
+    return false;
+   }else if(data.Audit.DOCUMENT_ID === 999){
+    alert('Маягтын дугаар сонгоно уу')
+    return false;
+   }
+   else if(data.Team.find(a=>a.ROLE_ID === 1) ===undefined ){
+    alert('Багийн гишүүн сонгоно уу')
+    return false;
+   }else if(data.Team.find(a=>a.ROLE_ID === 2) ===undefined ){
+    alert('Батлах хэрэглэгч 1 сонгоно уу')
+    return false;
+   }else if(data.Team.find(a=>a.ROLE_ID === 3) ===undefined ){
+    alert('Батлах хэрэглэгч 2 сонгоно уу')
+    return false;
+   }else {
+    return true
+   }
+  }
 
   function savetoDB() {
+    
     DataRequest({
       url: Stat_Url + "statisticCheck",
       method: "POST",
@@ -136,7 +156,9 @@ function Burtgel(props: any) {
       },
     })
       .then(function (resp) {
+       
         if ((data.Audit.ID === null && !resp.data) || data.Audit.ID !== null) {
+          if(requiredField()){
           DataRequest({
             url: Stat_Url + "statisticIU",
             method: "POST",
@@ -151,6 +173,7 @@ function Burtgel(props: any) {
             .catch(function (error) {
               alert("Aмжилтгүй");
             });
+          }
         } else {
           alert("Хувиар давхардаж байна!!!");
         }

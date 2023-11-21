@@ -116,11 +116,11 @@ function Header(props) {
                             setNotification(true);
                           }}
                         >
-                          <div class="messages">
+                          <div className="messages">
                             {notificationData.filter((a) => a.IS_SHOW === 0)
                               .length > 0 ? (
-                              <div class="badge">
-                                <div class="message-count">
+                              <div className="badge">
+                                <div className="message-count">
                                   {notificationData.filter(
                                     (a) => a.IS_SHOW === 0
                                   ).length >= 1000
