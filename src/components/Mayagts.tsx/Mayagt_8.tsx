@@ -108,21 +108,6 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "HUULI_HBSHE",
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн эсэх",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "HUULI_HBSHA_DUN_T",
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн (төгрөг)",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "HUULI_HBSH_SHALTGAAN",
-        header: "Хууль хяналтын байгууллагад шилжүүлээгүй шалтгаан",
-        cell: (info) => info.getValue(),
-      },
-      {
         accessorKey: "AMOUNT",
         header: "Хууль хяналтын байгууллагад шилжүүлэх асуудлын дүн (төгрөг)",
         accessorFn: (row, index) => (
@@ -137,6 +122,21 @@ function Mayagt_8(props: any) {
             />
           </div>
         ),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "HUULI_HBSHE",
+        header: "Хууль хяналтын байгууллагад шилжүүлсэн эсэх",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "HUULI_HBSHA_DUN_T",
+        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн (төгрөг)",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "HUULI_HBSH_SHALTGAAN",
+        header: "Хууль хяналтын байгууллагад шилжүүлээгүй шалтгаан",
         cell: (info) => info.getValue(),
       },
       {
@@ -574,9 +574,7 @@ function Mayagt_8(props: any) {
         <div style={{ display: "flex", justifyContent: "end" }}>
           <ButtonSave saveToDB={() => saveToDB()} />
         </div>
-        <div style={{ justifyContent: "flex-end" }}>
-         
-        </div>
+        <div style={{ justifyContent: "flex-end" }}></div>
         <div>
           <div className="text-base flex row">
             <FooterValue />
