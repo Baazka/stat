@@ -509,7 +509,7 @@ function Mayagt_1(props: any) {
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
-        data: data,
+        data: data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),
         CREATED_BY: userDetails.USER_ID,
       },
     })

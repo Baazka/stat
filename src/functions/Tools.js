@@ -36,21 +36,21 @@ const checkNullDate = function (value) {
   else if (value === NaN) return null;
   else return dateFormat(value, "yyyy-mm-dd");
 };
-const check_save = function (status){
+const check_save = function (statusROLE){
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
  
-  if(status.STATUS?.STATUS === 0 || status.STATUS?.STATUS === null || status.STATUS?.STATUS === undefined || status.STATUS?.STATUS === ""){
-    console.log(status.STATUS?.STATUS,'statusFILE');
+  if(statusROLE.STATUS?.STATUS === 0 || statusROLE.STATUS?.STATUS === null || statusROLE.STATUS?.STATUS === undefined || statusROLE.STATUS?.STATUS === ""){
+    console.log(statusROLE.STATUS?.STATUS,'statusFILE');
 
  console.log(userDetails.USER_TYPE_NAME === 'ADMIN',"userDetails.USER_TYPE_NAME === 'ADMIN' ");
-    if(userDetails.USER_TYPE_NAME === 'ADMIN' || status.ROLE?.ROLE_ID === 1){
+    if(userDetails.USER_TYPE_NAME === 'ADMIN' || statusROLE.ROLE?.ROLE_ID === 1){
 
       return true;
       
     }else{ 
      return false;
     }
-  }else if(status.STATUS?.STATUS > 0){
+  }else if(statusROLE.STATUS?.STATUS > 0){
       return false
   }
    
