@@ -39,13 +39,17 @@ const checkNullDate = function (value) {
 const check_save = function (status){
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
  
-  if(status.STATUS?.STATUS ===0 || status.STATUS?.STATUS === null || status.STATUS?.STATUS === undefined ||status.STATUS?.STATUS === ""){
-    if(status.ROLE?.ROLE_ID === 1){
-      return true
-    }else if(userDetails.USER_TYPE_NAME === 'ADMIN'){
-      return true
-    }else
-    return false
+  if(status.STATUS?.STATUS === 0 || status.STATUS?.STATUS === null || status.STATUS?.STATUS === undefined || status.STATUS?.STATUS === ""){
+    console.log(status.STATUS?.STATUS,'statusFILE');
+
+ console.log(userDetails.USER_TYPE_NAME === 'ADMIN',"userDetails.USER_TYPE_NAME === 'ADMIN' ");
+    if(userDetails.USER_TYPE_NAME === 'ADMIN' || status.ROLE?.ROLE_ID === 1){
+
+      return true;
+      
+    }else{ 
+     return false;
+    }
   }else if(status.STATUS?.STATUS > 0){
       return false
   }

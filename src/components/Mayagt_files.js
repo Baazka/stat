@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import fasUrl from "../fasURL";
 import statUrl from '../Stat_URL'
 import { DataRequest } from "../functions/DataApi";
 import { attach } from "../assets/zurag";
 import axios from "axios";
+import { check_save } from "../functions/Tools";
 
-var dateFormat = require("dateformat");
+
 
 function Mayagt_files(props) {
   const userDetils = props.userDetails
   const mayagtData = props.mayagtData
   const [fileAdd, setFiles] = useState({});
+  const [statusRole, setStatusRole] = useState(false);
   async function fetchData() {
 
-    
     DataRequest({
       url: statUrl +
       "getFile?StatID=" +mayagtData.ID,
@@ -26,10 +26,30 @@ function Mayagt_files(props) {
         
       })
       .catch(function (error) {
-        alert("системийн алдаа");
+        
       });
-    
+      DataRequest({
+        url:statUrl + "getProcess",
+        method: "POST",
+        data: {ID:mayagtData.ID},
+      })
+        .then(function (response) {
+          console.log(check_save({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
+            (a) => a.AUDITOR_ID === userDetils.USER_ID)}),'statisticProcessfile');
+          if(response.data !== undefined ){
+           
+            setStatusRole(()=>({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
+              (a) => a.AUDITOR_ID === userDetils.USER_ID)}));
+     
+             
+          }
+        })
+        .catch(function (error) {
+         console.log(error,'url:fasUrl + process/');
+        });
+   
   }
+
 
 
   useEffect(() => {
@@ -102,7 +122,8 @@ function Mayagt_files(props) {
             <div className=" uppercase  mr-1">
                Хавсралт оруулах:
             </div>
-            { userDetils.USER_TYPE_NAME === "ADMIN" ? 
+          
+            {statusRole?  
                 <form
                   className="uploadButton mr-3"
                   method="POST"

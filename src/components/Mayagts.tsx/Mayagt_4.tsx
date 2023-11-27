@@ -367,7 +367,7 @@ function Mayagt_1(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+       
       });
   }
 

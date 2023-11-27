@@ -323,7 +323,7 @@ function Home(props: any) {
           } else alert(response.data.message);
         })
         .catch(function (error) {
-          alert("Aмжилтгүй");
+       
         });
     }
   }
@@ -399,7 +399,7 @@ function Home(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+       
       });
   }
 
@@ -419,7 +419,7 @@ function Home(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+        
       });
   }
 

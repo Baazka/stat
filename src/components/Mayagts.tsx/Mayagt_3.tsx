@@ -490,7 +490,7 @@ function Mayagt_3(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+        
       });
   }
   return (
@@ -548,8 +548,8 @@ function Mayagt_3(props: any) {
         <div >
         <div className="overflow-y-scroll">
           <div className="h-2 mr-20" />
-          <table>
-            <thead className="TableHeadBackroundcolor gap-20">
+          <table className="w-full">
+            <thead className="TableHeadBackroundcolor gap-20 ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

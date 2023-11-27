@@ -294,7 +294,7 @@ function Mayagt_1(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+       
       });
   }
   function saveToDB() {
@@ -323,7 +323,7 @@ function Mayagt_1(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+       
       });
   }
 

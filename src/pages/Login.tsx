@@ -77,12 +77,13 @@ function Login(props: any) {
                 } else navigate("/web/Home/Audit");
               })
               .catch(function(error) {
-                alert("Aмжилтгүй");
+                
+                console.log(error);
               });
           } else alert("Хэрэглэгчийн нэвтрэх нэр, нууц үг буруу байна!!!");
         })
         .catch(function(error) {
-          alert("Aмжилтгүй");
+         console.log(error);
         });
     }
   }

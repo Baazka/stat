@@ -329,7 +329,7 @@ function Mayagt_2(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+       
       });
   }
   return (
