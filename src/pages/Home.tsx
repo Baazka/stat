@@ -353,9 +353,9 @@ function Home(props: any) {
     debugColumns: false,
   });
 
-  useEffect(() => {
-    fetchData();
-  }, [props]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [props]);
 
   useEffect(() => {
     fetchData();
