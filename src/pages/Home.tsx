@@ -556,7 +556,7 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: window.innerHeight - 300, width: "100%" }}>
+        <div style={{ maxHeight: window.innerHeight - 230, width: "100%" }}>
           <table className="w-full">
             <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (
