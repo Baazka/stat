@@ -4,7 +4,7 @@ import { DataRequest } from "../functions/DataApi";
 import { attach } from "../assets/zurag";
 import axios from "axios";
 import { check_save } from "../functions/Tools";
-
+import { RevolvingDot } from "react-loader-spinner";
 
 
 function Mayagt_files(props) {
@@ -12,6 +12,7 @@ function Mayagt_files(props) {
   const mayagtData = props.mayagtData
   const [fileAdd, setFiles] = useState({});
   const [statusRole, setStatusRole] = useState(false);
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   async function fetchData() {
 
     DataRequest({
@@ -58,7 +59,7 @@ function Mayagt_files(props) {
 
   async function saveAvatar(file) {
 
-      
+    setloaderSpinner(1)
       const formData = new FormData();
    
       formData.append("file", file.target.files[0]);
@@ -78,6 +79,7 @@ function Mayagt_files(props) {
         }});
         if(resultUplaod.data.message ==='Хадгаллаа.'){
             alert('амжилттай хадгаллаа')
+            setloaderSpinner(0)
             deleteComment()
           
         }else{
@@ -118,12 +120,19 @@ function Mayagt_files(props) {
 
   return (
     <div>
+       {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "40%", paddingTop: "10%" }}>
+          <RevolvingDot color="#2684fe" height={100} width={100} />
+        </div>):
   <div className="flex flex-row">
+ :
+            
             <div className=" uppercase  mr-1">
                Хавсралт оруулах:
             </div>
           
             {statusRole?  
+            
                 <form
                   className="uploadButton mr-3"
                   method="POST"
@@ -145,6 +154,7 @@ function Mayagt_files(props) {
                 </form>
               
              : null}
+            
             {fileAdd?.FILE_PATH !== undefined && fileAdd?.FILE_PATH !== "" ? (
               <a
                 href={
@@ -174,7 +184,8 @@ function Mayagt_files(props) {
             ) : <div className=" text-black pr-2">Хавсралт оруулаагүй байна!</div>}
          
           </div>
-         
+}
+          
     </div>
   );
 }
