@@ -66,7 +66,12 @@ function Mayagt_files(props) {
 
      
     let  resultFile = await axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData);
-    console.log(resultFile.status,'gg');
+    console.log(resultFile,'gg');
+    if(resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!')
+    {
+      alert('файл 100MB-с их хэмжээтэй байна')
+      setloaderSpinner(0)
+    }else 
     if(resultFile.data.filePath !== undefined){
        
         let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
@@ -121,8 +126,8 @@ function Mayagt_files(props) {
   return (
     <div>
        {loaderSpinner === 1 || loaderSpinner === undefined ? (
-        <div style={{ paddingLeft: "40%", paddingTop: "10%" }}>
-          <RevolvingDot color="#2684fe" height={100} width={100} />
+        <div style={{ paddingLeft: "40%",}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
         </div>):
   <div className="flex flex-row">
  :

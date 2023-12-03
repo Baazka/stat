@@ -233,6 +233,7 @@ function Burtgel(props: any) {
                   <div className="w-6/12 ">
                     <select
                       className="rounded text-sm focus:outline-none"
+                      disabled ={data.Audit.ID !== null?true:false}
                       style={{
                         height: 45,
                         width: 170,
@@ -300,6 +301,7 @@ function Burtgel(props: any) {
                   <div className="w-6/12">
                     <select
                       className="rounded text-sm focus:outline-none"
+                      disabled ={data.Audit.ID !== null?true:false}
                       style={{
                         width: 170,
                         height: 45,
@@ -336,6 +338,7 @@ function Burtgel(props: any) {
                   <div className="w-6/12">
                     <select
                       className="rounded text-sm focus:outline-none "
+                      disabled ={data.Audit.ID !== null?true:false}
                       style={{
                         width: 170,
                         height: 45,

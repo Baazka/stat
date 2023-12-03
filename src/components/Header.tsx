@@ -212,44 +212,44 @@ function Header(props) {
     if (localStorage.getItem("userDetails") !== undefined) {
       let userDetils = JSON.parse(localStorage.getItem("userDetails"));
       if (userDetils !== undefined && userDetils.USER_ID !== undefined) {
-        DataRequest({
-          url: fasUrl + "OT_REQUEST_FOR_CONFIRM_ONE/",
-          method: "POST",
-          data: {
-            AUDIT_CODE: notfilter.AUDIT_CODE,
-            USER_ID: userDetils.USER_ID,
-            MODULE_TYPE:6
-          },
-        }).then((response) => {
-          // if (response?.data !== undefined && response.data.length > 0) {
-          //   let temp = [];
-          //   for (let i = 0; i < response.data.length; i++) {
-          //     if (
-          //       response.data[i].REQUEST_TYPE === 1
-          //         ? checkRoleBatlakh(
-          //             response.data[i].ROLE_ID,
-          //             response.data[i].LEVEL_ID,
-          //             response.data[i].MODULE_TYPE,
-          //             response.data[i].CREATED_BY
-          //           )
-          //         : checkRoleTsutslah(
-          //             response.data[i].ROLE_ID,
-          //             response.data[i].LEVEL_ID,
-          //             response.data[i].MODULE_TYPE,
-          //             response.data[i].CREATED_BY
-          //           )
-          //     ) {
-          //       temp = temp.filter((a) => a.ID !== response.data[i].ID);
-          //       temp.push(response.data[i]);
-          //     }
-          //   }
-          //   setNotificationData(temp);
-          //   setloaderSpinner(0);
-          // } else {
-          //   setNotificationData([]);
-          //   setloaderSpinner(0);
-          // }
-        });
+        // DataRequest({
+        //   url: fasUrl + "OT_REQUEST_FOR_CONFIRM_ONE/",
+        //   method: "POST",
+        //   data: {
+        //     AUDIT_CODE: notfilter.AUDIT_CODE,
+        //     USER_ID: userDetils.USER_ID,
+        //     MODULE_TYPE:6
+        //   },
+        // }).then((response) => {
+        //   // if (response?.data !== undefined && response.data.length > 0) {
+        //   //   let temp = [];
+        //   //   for (let i = 0; i < response.data.length; i++) {
+        //   //     if (
+        //   //       response.data[i].REQUEST_TYPE === 1
+        //   //         ? checkRoleBatlakh(
+        //   //             response.data[i].ROLE_ID,
+        //   //             response.data[i].LEVEL_ID,
+        //   //             response.data[i].MODULE_TYPE,
+        //   //             response.data[i].CREATED_BY
+        //   //           )
+        //   //         : checkRoleTsutslah(
+        //   //             response.data[i].ROLE_ID,
+        //   //             response.data[i].LEVEL_ID,
+        //   //             response.data[i].MODULE_TYPE,
+        //   //             response.data[i].CREATED_BY
+        //   //           )
+        //   //     ) {
+        //   //       temp = temp.filter((a) => a.ID !== response.data[i].ID);
+        //   //       temp.push(response.data[i]);
+        //   //     }
+        //   //   }
+        //   //   setNotificationData(temp);
+        //   //   setloaderSpinner(0);
+        //   // } else {
+        //   //   setNotificationData([]);
+        //   //   setloaderSpinner(0);
+        //   // }
+        // });
       }
     }
 
