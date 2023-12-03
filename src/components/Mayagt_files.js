@@ -67,7 +67,7 @@ function Mayagt_files(props) {
      
     let  resultFile = await axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData);
     console.log(resultFile,'gg');
-    if(resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!')
+    if((resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!') || resultFile.status === 413)
     {
       alert('файл 100MB-с их хэмжээтэй байна')
       setloaderSpinner(0)
