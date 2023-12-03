@@ -40,9 +40,7 @@ const check_save = function (statusROLE){
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
  
   if(statusROLE.STATUS?.STATUS === 0 || statusROLE.STATUS?.STATUS === null || statusROLE.STATUS?.STATUS === undefined || statusROLE.STATUS?.STATUS === ""){
-    console.log(statusROLE.STATUS?.STATUS,'statusFILE');
-
- console.log(userDetails.USER_TYPE_NAME === 'ADMIN',"userDetails.USER_TYPE_NAME === 'ADMIN' ");
+   
     if(userDetails.USER_TYPE_NAME === 'ADMIN' || statusROLE.ROLE?.ROLE_ID === 1){
 
       return true;
