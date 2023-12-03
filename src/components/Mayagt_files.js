@@ -58,41 +58,55 @@ function Mayagt_files(props) {
   }, [props]);
 
   async function saveAvatar(file) {
-
     setloaderSpinner(1)
+    console.log(file.target.files[0].size,'file.target.files[0].size');
+    if(file.target.files[0].size > 100000000){
+      alert('файл 100MB-с их хэмжээтэй байна')
+            setloaderSpinner(0)
+    }else {
       const formData = new FormData();
    
-      formData.append("file", file.target.files[0]);
-
-     
-    let  resultFile = await axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData);
-    console.log(resultFile,'gg');
-    if((resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!') || resultFile.status === 413)
-    {
-      alert('файл 100MB-с их хэмжээтэй байна')
-      setloaderSpinner(0)
-    }else 
-    if(resultFile.data.filePath !== undefined){
-       
-        let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
-            ID:null,
-            STAT_AUDIT_ID:mayagtData.ID,
-            FILE_NAME:file.target.files[0].name,
-            FILE_PATH:resultFile.data.filePath,
-            IS_ACTIVE:1,
-            CREATED_BY:userDetils.USER_ID
-        }});
-        if(resultUplaod.data.message ==='Хадгаллаа.'){
-            alert('амжилттай хадгаллаа')
+          formData.append("file", file.target.files[0]);
+    
+        
+        axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData).then(async function (resultFile) {
+          console.log(resultFile,'resultFile');
+          if((resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!') || resultFile.status === 413)
+          {
+            alert('файл 100MB-с их хэмжээтэй байна')
             setloaderSpinner(0)
-            deleteComment()
-          
-        }else{
-          alert(resultUplaod.data.message)
-        }
-
+          }else 
+          if(resultFile.data.filePath !== undefined){
+             
+              let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
+                  ID:null,
+                  STAT_AUDIT_ID:mayagtData.ID,
+                  FILE_NAME:file.target.files[0].name,
+                  FILE_PATH:resultFile.data.filePath,
+                  IS_ACTIVE:1,
+                  CREATED_BY:userDetils.USER_ID
+              }});
+              if(resultUplaod.data.message ==='Хадгаллаа.'){
+                  alert('амжилттай хадгаллаа')
+                  setloaderSpinner(0)
+                  deleteComment()
+                
+              }else{
+                alert(resultUplaod.data.message)
+              }
+      
+             
+          }
+        })
+        .catch(function (error) {
+          console.log(error,'error');
+          setloaderSpinner(0)
+        });;
        
+       
+   
     }
+
     
   }
 
@@ -102,7 +116,7 @@ function Mayagt_files(props) {
    
     if(fileAdd.FILE_PATH !== undefined){
   let  resultFile = await axios.delete(statUrl + "removeFile/"+mayagtData.ID+'/'+fileAdd.FILE_NAME, {});
-  console.log(resultFile,'resultFile');
+  
   if( resultFile.data.message === "Файлыг устгалаа."){
       
       let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
