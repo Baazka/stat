@@ -19,6 +19,8 @@ function RequestButtonOT(props: any) {
     LEVEL_ID: props.STATUS,
   });
 
+  
+
   useEffect(() => {
     loadData(props.batlakhHuselt);
   }, [props]);
@@ -72,6 +74,7 @@ function RequestButtonOT(props: any) {
           //     ? 0
           //     : props.STATUS,
           MODULE_TYPE: props.MODULE_TYPE,
+
           PERIOD_TYPE: props.PERIOD_TYPE,
         },
       })
@@ -120,7 +123,7 @@ function RequestButtonOT(props: any) {
   }
   return (
     <div>
-      {/* <button
+      <button
         onClick={() => setTsonkh(1)}
         className="inline-flex mb-2 items-center rounded ml-2"
         style={{
@@ -156,7 +159,7 @@ function RequestButtonOT(props: any) {
       </button>
       {tsonkh > 0 ? (
         <div
-          className="fixed z-10  overflow-y-auto bottom-24 right-96   sm:bottom-20 sm:right-80"
+          className="fixed z-10   bottom-20 right-44 top-20  sm:bottom-20 sm:right-80"
           aria-labelledby="modal-title"
           role="dialog"
           aria-modal="true"
@@ -238,7 +241,7 @@ function RequestButtonOT(props: any) {
             </div>
           </div>
         </div>
-      ) : null} */}
+      ) : null}
     </div>
   );
 }

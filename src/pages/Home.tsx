@@ -323,7 +323,7 @@ function Home(props: any) {
           } else alert(response.data.message);
         })
         .catch(function (error) {
-          alert("Aмжилтгүй");
+       
         });
     }
   }
@@ -353,9 +353,9 @@ function Home(props: any) {
     debugColumns: false,
   });
 
-  useEffect(() => {
-    fetchData();
-  }, [props]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [props]);
 
   useEffect(() => {
     fetchData();
@@ -399,7 +399,7 @@ function Home(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+       
       });
   }
 
@@ -419,7 +419,7 @@ function Home(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+        
       });
   }
 
@@ -556,7 +556,7 @@ function Home(props: any) {
             </div>
           </div>
         </div>
-        <div style={{ maxHeight: window.innerHeight - 300, width: "100%" }}>
+        <div style={{ maxHeight: window.innerHeight - 230, width: "100%" }}>
           <table className="w-full">
             <thead className="TableHeadBackroundcolor ">
               {table.getHeaderGroups().map((headerGroup) => (

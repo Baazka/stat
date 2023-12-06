@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Footer from "./components/Footer.js";
 import Sidebar from "./components/Sidebar.js";
-import Header from "./components/Header.js";
+import Header from "./components/Header";
 import { createHashRouter, RouterProvider, Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";

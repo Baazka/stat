@@ -68,7 +68,7 @@ function CM(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Aмжилтгүй");
+       
       });
   }
   return (

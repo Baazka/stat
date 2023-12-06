@@ -38,7 +38,7 @@ function Batlakh(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-        alert("Aмжилтгүй");
+      
       });
     // let listbatlakhHuselt = await axios(
     //   fasUrl +

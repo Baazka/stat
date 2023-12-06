@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import fasUrl from "../fasURL";
 import statUrl from '../Stat_URL'
 import { DataRequest } from "../functions/DataApi";
 import { attach } from "../assets/zurag";
 import axios from "axios";
+import { check_save } from "../functions/Tools";
+import { RevolvingDot } from "react-loader-spinner";
 
-var dateFormat = require("dateformat");
 
 function Mayagt_files(props) {
   const userDetils = props.userDetails
   const mayagtData = props.mayagtData
   const [fileAdd, setFiles] = useState({});
+  const [statusRole, setStatusRole] = useState(false);
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   async function fetchData() {
 
-    
     DataRequest({
       url: statUrl +
       "getFile?StatID=" +mayagtData.ID,
@@ -26,10 +27,30 @@ function Mayagt_files(props) {
         
       })
       .catch(function (error) {
-        alert("системийн алдаа");
+        
       });
-    
+      DataRequest({
+        url:statUrl + "getProcess",
+        method: "POST",
+        data: {ID:mayagtData.ID},
+      })
+        .then(function (response) {
+          console.log(check_save({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
+            (a) => a.AUDITOR_ID === userDetils.USER_ID)}),'statisticProcessfile');
+          if(response.data !== undefined ){
+           
+            setStatusRole(()=>({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
+              (a) => a.AUDITOR_ID === userDetils.USER_ID)}));
+     
+             
+          }
+        })
+        .catch(function (error) {
+         console.log(error,'url:fasUrl + process/');
+        });
+   
   }
+
 
 
   useEffect(() => {
@@ -37,35 +58,55 @@ function Mayagt_files(props) {
   }, [props]);
 
   async function saveAvatar(file) {
-
-      
+    setloaderSpinner(1)
+    console.log(file.target.files[0].size,'file.target.files[0].size');
+    if(file.target.files[0].size > 100000000){
+      alert('файл 100MB-с их хэмжээтэй байна')
+            setloaderSpinner(0)
+    }else {
       const formData = new FormData();
    
-      formData.append("file", file.target.files[0]);
-
-     
-    let  resultFile = await axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData);
-    console.log(resultFile.status,'gg');
-    if(resultFile.data.filePath !== undefined){
+          formData.append("file", file.target.files[0]);
+    
+        
+        axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData).then(async function (resultFile) {
+          console.log(resultFile,'resultFile');
+          if((resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!') || resultFile.status === 413)
+          {
+            alert('файл 100MB-с их хэмжээтэй байна')
+            setloaderSpinner(0)
+          }else 
+          if(resultFile.data.filePath !== undefined){
+             
+              let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
+                  ID:null,
+                  STAT_AUDIT_ID:mayagtData.ID,
+                  FILE_NAME:file.target.files[0].name,
+                  FILE_PATH:resultFile.data.filePath,
+                  IS_ACTIVE:1,
+                  CREATED_BY:userDetils.USER_ID
+              }});
+              if(resultUplaod.data.message ==='Хадгаллаа.'){
+                  alert('амжилттай хадгаллаа')
+                  setloaderSpinner(0)
+                  deleteComment()
+                
+              }else{
+                alert(resultUplaod.data.message)
+              }
+      
+             
+          }
+        })
+        .catch(function (error) {
+          console.log(error,'error');
+          setloaderSpinner(0)
+        });;
        
-        let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
-            ID:null,
-            STAT_AUDIT_ID:mayagtData.ID,
-            FILE_NAME:file.target.files[0].name,
-            FILE_PATH:resultFile.data.filePath,
-            IS_ACTIVE:1,
-            CREATED_BY:userDetils.USER_ID
-        }});
-        if(resultUplaod.data.message ==='Хадгаллаа.'){
-            alert('амжилттай хадгаллаа')
-            deleteComment()
-          
-        }else{
-          alert(resultUplaod.data.message)
-        }
-
        
+   
     }
+
     
   }
 
@@ -75,7 +116,7 @@ function Mayagt_files(props) {
    
     if(fileAdd.FILE_PATH !== undefined){
   let  resultFile = await axios.delete(statUrl + "removeFile/"+mayagtData.ID+'/'+fileAdd.FILE_NAME, {});
-  console.log(resultFile,'resultFile');
+  
   if( resultFile.data.message === "Файлыг устгалаа."){
       
       let  resultUplaod = await axios.post(statUrl + "postFile/", {file:{
@@ -98,11 +139,19 @@ function Mayagt_files(props) {
 
   return (
     <div>
+       {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "40%",}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
   <div className="flex flex-row">
+ :
+            
             <div className=" uppercase  mr-1">
                Хавсралт оруулах:
             </div>
-            { userDetils.USER_TYPE_NAME === "ADMIN" ? 
+          
+            {statusRole?  
+            
                 <form
                   className="uploadButton mr-3"
                   method="POST"
@@ -124,6 +173,7 @@ function Mayagt_files(props) {
                 </form>
               
              : null}
+            
             {fileAdd?.FILE_PATH !== undefined && fileAdd?.FILE_PATH !== "" ? (
               <a
                 href={
@@ -153,7 +203,8 @@ function Mayagt_files(props) {
             ) : <div className=" text-black pr-2">Хавсралт оруулаагүй байна!</div>}
          
           </div>
-         
+}
+          
     </div>
   );
 }
