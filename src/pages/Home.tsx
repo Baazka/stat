@@ -389,7 +389,7 @@ function Home(props: any) {
       });
 
     DataRequest({
-      url: Stat_URl + "refDepartment",
+      url: Stat_URl + "refDepartment?DepType=1",
       method: "GET",
       data: {},
     })
