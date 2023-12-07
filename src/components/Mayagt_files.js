@@ -144,8 +144,7 @@ function Mayagt_files(props) {
           <RevolvingDot color="#2684fe" height={50} width={50} />
         </div>):
   <div className="flex flex-row">
- :
-            
+ 
             <div className=" uppercase  mr-1">
                Хавсралт оруулах:
             </div>
