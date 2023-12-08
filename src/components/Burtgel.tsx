@@ -99,7 +99,7 @@ function Burtgel(props: any) {
         });
     }
 
-    let listItems = await axios(Stat_Url + "refDepartment");
+    let listItems = await axios(Stat_Url + "refDepartment?DepType=1");
     if (listItems.data !== undefined && listItems.data.length > 0) {
       let temp = drop;
       temp.drop1 = listItems.data;
@@ -118,34 +118,31 @@ function Burtgel(props: any) {
       setDrop({ ...temp });
     }
   }
-  function requiredField(){
-    
-   if(data.Audit.PERIOD_ID === 999){
-    alert('Тайлант хугацаа сонгоно уу')
-    return false;
-   }else if(data.Audit.DEPARTMENT_ID === 999){
-    alert('Төрийн аудитын байгууллага сонгоно уу')
-    return false;
-   }else if(data.Audit.DOCUMENT_ID === 999){
-    alert('Маягтын дугаар сонгоно уу')
-    return false;
-   }
-   else if(data.Team.find(a=>a.ROLE_ID === 1) ===undefined ){
-    alert('Багийн гишүүн сонгоно уу')
-    return false;
-   }else if(data.Team.find(a=>a.ROLE_ID === 2) ===undefined ){
-    alert('Батлах хэрэглэгч 1 сонгоно уу')
-    return false;
-   }else if(data.Team.find(a=>a.ROLE_ID === 3) ===undefined ){
-    alert('Батлах хэрэглэгч 2 сонгоно уу')
-    return false;
-   }else {
-    return true
-   }
+  function requiredField() {
+    if (data.Audit.PERIOD_ID === 999) {
+      alert("Тайлант хугацаа сонгоно уу");
+      return false;
+    } else if (data.Audit.DEPARTMENT_ID === 999) {
+      alert("Төрийн аудитын байгууллага сонгоно уу");
+      return false;
+    } else if (data.Audit.DOCUMENT_ID === 999) {
+      alert("Маягтын дугаар сонгоно уу");
+      return false;
+    } else if (data.Team.find((a) => a.ROLE_ID === 1) === undefined) {
+      alert("Багийн гишүүн сонгоно уу");
+      return false;
+    } else if (data.Team.find((a) => a.ROLE_ID === 2) === undefined) {
+      alert("Батлах хэрэглэгч 1 сонгоно уу");
+      return false;
+    } else if (data.Team.find((a) => a.ROLE_ID === 3) === undefined) {
+      alert("Батлах хэрэглэгч 2 сонгоно уу");
+      return false;
+    } else {
+      return true;
+    }
   }
 
   function savetoDB() {
-    
     DataRequest({
       url: Stat_Url + "statisticCheck",
       method: "POST",
@@ -156,23 +153,22 @@ function Burtgel(props: any) {
       },
     })
       .then(function (resp) {
-       
         if ((data.Audit.ID === null && !resp.data) || data.Audit.ID !== null) {
-          if(requiredField()){
-          DataRequest({
-            url: Stat_Url + "statisticIU",
-            method: "POST",
-            data: data,
-          })
-            .then(function (response) {
-              if (response?.data.message === "Хадгаллаа.") {
-                alert("амжилттай хадгаллаа");
-                navigate("/web/Home/Audit");
-              }
+          if (requiredField()) {
+            DataRequest({
+              url: Stat_Url + "statisticIU",
+              method: "POST",
+              data: data,
             })
-            .catch(function (error) {
-              alert("Aмжилтгүй");
-            });
+              .then(function (response) {
+                if (response?.data.message === "Хадгаллаа.") {
+                  alert("амжилттай хадгаллаа");
+                  navigate("/web/Home/Audit");
+                }
+              })
+              .catch(function (error) {
+                alert("Aмжилтгүй");
+              });
           }
         } else {
           alert("Хувиар давхардаж байна!!!");
