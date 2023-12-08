@@ -207,8 +207,7 @@ function Header(props) {
     []
   );
   function checkNotification() {
-    console.log(notificationData);
-    setloaderSpinner(1);
+     setloaderSpinner(1);
     if (localStorage.getItem("userDetails") !== undefined) {
       let userDetils = JSON.parse(localStorage.getItem("userDetails"));
       if (userDetils !== undefined && userDetils.USER_ID !== undefined) {

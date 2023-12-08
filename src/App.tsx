@@ -10,6 +10,7 @@ import Mayagt from "./pages/Mayagt";
 import Burtgel from "./components/Burtgel";
 import CM from "./pages/CM";
 import News from "./pages/News";
+import Mayagt_9_Create from "./components/Mayagts.tsx/Mayagt_9_Create";
 interface Web_Value {
   sidebarSize: boolean;
   setSidebarSize: (params: boolean) => void;
@@ -56,6 +57,10 @@ function App() {
         {
           path: "/web/Home/Nemeh/:id?",
           element: <Burtgel />,
+        },
+        {
+          path: "/web/Home/m9/create/:id?",
+          element: <Mayagt_9_Create />,
         },
       ],
     },
