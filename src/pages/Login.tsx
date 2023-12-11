@@ -25,7 +25,7 @@ function Login(props: any) {
   async function nevtrekh() {
     if (ner !== undefined && nuutsUg !== undefined) {
       DataRequest({
-        url: "http://stat.audit.mn/reg/api/v1/login/",
+        url: "https://stat.audit.mn/reg/api/v1/login/",
         method: "POST",
         data: {
           username: ner,
@@ -51,7 +51,7 @@ function Login(props: any) {
             }
             DataRequest({
               url:
-                "http://stat.audit.mn/reg/api/v1/profile/" +
+                "https://stat.audit.mn/reg/api/v1/profile/" +
                 response.data.USER_ID +
                 "/" +
                 2,
