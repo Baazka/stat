@@ -8,6 +8,7 @@ import ButtonRequest from "../ButtonRequest";
 import {check_save}from '../../functions/Tools'
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
+import { RevolvingDot } from "react-loader-spinner";
 import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import CurrencyInput from "react-currency-input-field";
@@ -166,6 +167,7 @@ function Mayagt_8(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
@@ -475,8 +477,8 @@ function Mayagt_8(props: any) {
       });
   }
   function saveToDB() {
-  
-    console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)), "save data");
+    setloaderSpinner(1)
+    
     DataRequest({
       url: Stat_Url + "BM8IU",
       method: "POST",
@@ -492,10 +494,12 @@ function Mayagt_8(props: any) {
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0)
        
       });
   }

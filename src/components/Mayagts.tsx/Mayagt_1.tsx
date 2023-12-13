@@ -33,6 +33,7 @@ import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import fasUrl from "../../fasURL";
 import UserPremission from "../../functions/userPermission";
 import {check_save}from '../../functions/Tools'
+import { RevolvingDot } from "react-loader-spinner";
 
 
 declare module '@tanstack/react-table' {
@@ -324,6 +325,7 @@ function Mayagt_1(props: any) {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [data, loadData] = React.useState([]);
   const [batlakhHuselt, setBatlakhHuselt] = useState({});
+  const [loaderSpinner, setloaderSpinner] = useState(0);
 
   const [filter, setFilter] = useState({
     Audit: {
@@ -502,7 +504,7 @@ function Mayagt_1(props: any) {
     
     let temp = [];
       console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'saveData');
-  
+    setloaderSpinner(1)
 
     DataRequest({
       url: Stat_Url + "BM1IU",
@@ -532,12 +534,13 @@ function Mayagt_1(props: any) {
               console.log(response.data,'response2');
               if (response?.data.status === 200) {
                 alert("амжилттай хадгаллаа");
-
+                setloaderSpinner(0)
                 fetchData();
               }
             })
             .catch(function (error) {
               console.log(error, "error");
+              setloaderSpinner(0)
               ;
             });
         }
@@ -550,6 +553,10 @@ function Mayagt_1(props: any) {
 
   return (
     <>
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
              padding: "0.5rem 0 0 1rem",
@@ -794,6 +801,7 @@ function Mayagt_1(props: any) {
 
         
       </div>
+}
     </>
   );
 }

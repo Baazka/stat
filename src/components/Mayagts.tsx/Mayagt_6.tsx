@@ -8,6 +8,7 @@ import ButtonRequest from "../ButtonRequest";
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
+import { RevolvingDot } from "react-loader-spinner";
 import {check_save}from '../../functions/Tools'
 import { excel } from "../../assets/zurag";
 import CurrencyInput from "react-currency-input-field";
@@ -62,6 +63,7 @@ function Mayagt_1(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(
@@ -304,6 +306,7 @@ function Mayagt_1(props: any) {
     //        temp.push(data[i])
     //     }
     //     console.log(temp,'save data');
+    setloaderSpinner(1)
     DataRequest({
       url: Stat_Url + "BM6IU",
       method: "POST",
@@ -319,16 +322,22 @@ function Mayagt_1(props: any) {
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0)
        
       });
   }
 
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
           padding: "0.5rem 0 0 1rem",
@@ -545,7 +554,7 @@ function Mayagt_1(props: any) {
             <Comment />
           </div>
         </div>
-      </div>
+      </div>}
     </>
   );
 }

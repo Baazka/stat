@@ -14,6 +14,7 @@ import DataRequest from "../../functions/make_Request";
 import Stat_URL from "../../Stat_URL";
 import CurrencyInput from "react-currency-input-field";
 import {check_save}from '../../functions/Tools'
+import { RevolvingDot } from "react-loader-spinner";
 import {
   Column,
   Table,
@@ -65,7 +66,7 @@ function Mayagt_3(props: any) {
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const columns = React.useMemo(
     () => [
       {
@@ -195,6 +196,7 @@ function Mayagt_3(props: any) {
     //       temp.push(data[i])
     //    }
     //    console.log(temp,'save data');
+    setloaderSpinner(1)
     DataRequest({
       url: Stat_URL + "BM3IU",
       method: "POST",
@@ -210,257 +212,16 @@ function Mayagt_3(props: any) {
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
         alert("Aмжилтгүй");
+        setloaderSpinner(0)
       });
   }
 
-  // function Draw_input(param: any, cell: any, index: number) {
-  //   return (
-  //     <div>
-  //       {cell.id === "AUDIT_TOROL" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Санхүүгийн тайлант аудит"}
-  //             value={1}
-  //           >
-  //             {"Санхүүгийн тайлант аудит"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Гүйцэтгэлийн аудит"}
-  //             value={2}
-  //           >
-  //             {"Гүйцэтгэлийн аудит"}
-  //           </option>
-  //           <option className="font-medium" key={"Нийцлийн аудит"} value={3}>
-  //             {"Нийцлийн аудит"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "AUDIT_HH_HELBER" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Санал дүгнэлт гаргах"}
-  //             value={1}
-  //           >
-  //             {"Санал дүгнэлт гаргах"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Үе шатны ажлыг хэсэгчлэн хийх"}
-  //             value={2}
-  //           >
-  //             {"Үе шатны ажлыг хэсэгчлэн хийх"}
-  //           </option>
-  //           <option className="font-medium" key={"Аудит хийхгээгүй"} value={3}>
-  //             {"Аудит хийхгээгүй"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "TOSOW_ZAHIRGCH_ANGILL" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option className="font-medium" key={"ТЕЗ"} value={1}>
-  //             {"ТЕЗ"}
-  //           </option>
-  //           <option className="font-medium" key={"ТТЗ"} value={2}>
-  //             {"ТТЗ"}
-  //           </option>
-  //           <option className="font-medium" key={"ТШЗ"} value={3}>
-  //             {"ТШЗ"}
-  //           </option>
-  //           <option className="font-medium" key={"Төсөл, хөтөлбөр"} value={4}>
-  //             {"Төсөл, хөтөлбөр"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Засгийн газрын тусгай сан"}
-  //             value={5}
-  //           >
-  //             {"Засгийн газрын тусгай сан"}
-  //           </option>
-  //           <option className="font-medium" key={"ТБОНӨҮГ"} value={6}>
-  //             {"ТБОНӨҮГ"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "TUHAIN_UR_DUNG_AZTE" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option className="font-medium" key={"Үгүй"} value={1}>
-  //             {"Үгүй"}
-  //           </option>
-  //           <option className="font-medium" key={"Алдаа"} value={2}>
-  //             {"Алдаа"}
-  //           </option>
-  //           <option className="font-medium" key={"Зөрчил"} value={3}>
-  //             {"Зөрчил"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "ALDAAG_ZALRUULSAN_ESEH" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option className="font-medium" key={"Залруулсан"} value={1}>
-  //             {"Залруулсан"}
-  //           </option>
-  //           <option className="font-medium" key={"Залруулаагүй"} value={2}>
-  //             {"Залруулаагүй"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "ALDAA_ZORCHILIIN_DED_ANGI" ? (
-  //         <select
-  //           className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Математик тооцоололтой холбоотой"}
-  //             value={0}
-  //           >
-  //             {"Математик тооцоололтой холбоотой"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"НББ-ийн бодлогын буруу хэрэгжүүлсэнтэй холбоотой"}
-  //             value={1}
-  //           >
-  //             {"НББ-ийн бодлогын буруу хэрэгжүүлсэнтэй холбоотой"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Мэдээллийг тусгахгүй орхигдуулсантай холбоотой"}
-  //             value={2}
-  //           >
-  //             {"Мэдээллийг тусгахгүй орхигдуулсантай холбоотой"}
-  //           </option>
-  //           <option
-  //             className="font-medium"
-  //             key={"Буруу тусган илэрхийлсэнтэй холбоотой"}
-  //             value={1}
-  //           >
-  //             {"Буруу тусган илэрхийлсэнтэй холбоотой"}
-  //           </option>
-  //           <option className="font-medium" key={"Бусад"} value={2}>
-  //             {"Бусад"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "UR_OGOOJ_TOOTSOH_ESEH" ? (
-  //         <select
-  //           className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option className="font-medium" key={"Тийм"} value={0}>
-  //             {"Тийм"}
-  //           </option>
-  //           <option className="font-medium" key={"Үгүй"} value={1}>
-  //             {"Үгүй"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "UR_OGOOJIIN_TOROL" ? (
-  //         <select
-  //           className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-  //           onChange={(text) => {
-  //             let any = setFilter;
-  //           }}
-  //         >
-  //           <option className="font-medium" key={"Сонгоно уу"} value={0}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option className="font-medium" key={"Санхүүгийн"} value={0}>
-  //             {"Санхүүгийн"}
-  //           </option>
-  //           <option className="font-medium" key={"Санхүүгийн бус"} value={1}>
-  //             {"Санхүүгийн бус"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "" || cell.id === "" ? (
-  //         <input
-  //           type="date"
-  //           value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
-  //           onChange={(e) => {
-  //             let temp = data;
-  //             //@ts-ignore
-  //             temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-  //             // @ts-ignore
-  //             setData([...temp]);
-  //           }}
-  //         />
-  //       ) : cell.id === "" ? (
-  //         <textarea
-  //           value={param.row.original[cell.id]}
-  //           className={
-  //             index % 2 > 0
-  //               ? "flex text-center h-8 bg-gray-100"
-  //               : "flex text-center h-8"
-  //           }
-  //           style={{
-  //             minHeight: "33px",
-  //             border: "1px solid",
-  //             borderRadius: "4px",
-  //             color: "gray",
-  //           }}
-  //           onChange={(e) => {
-  //             let temp = data;
-  //             //@ts-ignore
-  //             temp[index][cell.id] = e.target.value;
-  //             // @ts-ignore
-  //             setData([...temp]);
-  //           }}
-  //         />
-  //       ) : null}
-  //     </div>
-  //   );
-  // }
 
   useEffect(() => {
     fetchData();
@@ -495,6 +256,10 @@ function Mayagt_3(props: any) {
   }
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
           padding: "0.5rem 0 0 1rem",
@@ -683,6 +448,7 @@ function Mayagt_3(props: any) {
           </div>
         </div>
       </div>
+    }
     </>
   );
 }

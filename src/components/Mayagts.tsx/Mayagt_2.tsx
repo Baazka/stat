@@ -35,6 +35,7 @@ import {
   flexRender,
   FilterFns,
 } from "@tanstack/react-table";
+import { RevolvingDot } from "react-loader-spinner";
 
 import {
   RankingInfo,
@@ -69,75 +70,7 @@ const fuzzyFilter: FilterFn<any> = (
   return itemRank.passed;
 };
 
-const data = [
-  [
-    {
-      value: "№",
-      fontWeight: "bold",
-      align: "center",
-      backgroundColor: "#aabbcc",
-      position: "sticky",
-      style: { width: { wpx: 200 } },
-    },
-    {
-      width: "60px",
 
-      value: "배송 무게(Kg)",
-      position: "sticky",
-      fontWeight: "bold",
-      align: "center",
-
-      backgroundColor: "#aabbcc",
-    },
-    {
-      value: "배송비",
-      position: "sticky",
-      fontWeight: "bold",
-      align: "center",
-
-      backgroundColor: "#aabbcc",
-    },
-    {
-      value: "배송 무게(Kg)",
-      position: "sticky",
-      fontWeight: "bold",
-      align: "center",
-      wrap: true,
-
-      backgroundColor: "#aabbcc",
-    },
-
-    {
-      value: "배송비",
-      position: "sticky",
-      fontWeight: "bold",
-      align: "center",
-
-      backgroundColor: "#aabbcc",
-    },
-  ],
-  [
-    {
-      value: 20,
-      width: "60px",
-      align: "center",
-    },
-    {
-      value: 6600,
-      width: 500,
-      align: "center",
-    },
-    {
-      value: 2000,
-
-      align: "center",
-    },
-    {
-      value: 660,
-      align: "center",
-    },
-  ],
-];
 
 function Mayagt_2(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -229,6 +162,7 @@ function Mayagt_2(props: any) {
     ],
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   useEffect(() => {
     fetchData();
   }, [props.mayagtData]);
@@ -311,7 +245,7 @@ function Mayagt_2(props: any) {
     //    for(let i of saveData){
     //       temp.push(data[i])
     //    }
-    console.log(data, "save data");
+    setloaderSpinner(1)
     DataRequest({
       url: Stat_Url + "BM2IU",
       method: "POST",
@@ -325,15 +259,20 @@ function Mayagt_2(props: any) {
         console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-       
+        setloaderSpinner(0)
       });
   }
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
           padding: "0.5rem 0 0 1rem",
@@ -522,6 +461,7 @@ function Mayagt_2(props: any) {
           </div>
         </div>
       </div>
+    }
     </>
   );
 }

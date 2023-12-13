@@ -23,7 +23,7 @@ function Mayagt() {
   // @ts-ignore
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-
+  console.log(mayagtData.DOCUMENT_ID,'mayagtData.document');
   return (
     <div className="overflow-scroll h-full" >
     <div  className="flex flex-col" style={{height:window.innerHeight-125}}>

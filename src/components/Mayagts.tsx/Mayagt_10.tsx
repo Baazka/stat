@@ -33,6 +33,7 @@ import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import fasUrl from "../../fasURL";
 import UserPremission from "../../functions/userPermission";
 import {check_save}from '../../functions/Tools'
+import { RevolvingDot } from "react-loader-spinner";
 
 
 declare module '@tanstack/react-table' {
@@ -40,72 +41,11 @@ declare module '@tanstack/react-table' {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void
   }
 }
-let Data = {}
-// Give our default column cell renderer editing superpowers!
-const defaultColumn: Partial<ColumnDef<Data>> = {
-  cell: function Cell ({ getValue, row: { index }, column: { id }, table }){
-    const initialValue = getValue()
-    // We need to keep and update the state of the cell normally
-    const [value, setValue] = React.useState(initialValue)
-
-    // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = () => {
-      table.options.meta?.updateData(index, id, value)
-    }
-
-    // If the initialValue is changed external, sync it up with our state
-    React.useEffect(() => {
-      setValue(initialValue)
-    }, [initialValue])
-
-    if(id === "IS_EXPERT_ATTEND" || id === "IS_PRESS_REPORT"){
-      return <select
-                className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-                value={value}
-                onChange={
-                  e => setValue(e.target.value)
-                }
-                onBlur={onBlur}
-              >
-                <option key={id+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
-                  {"Сонгоно уу"}
-                </option>
-                <option key={id+'1'} className="font-medium" key={"Тийм"} value={1}>
-                  {"Тийм"}
-                </option>
-                <option key={id+'21'} className="font-medium" key={"Үгүй"} value={0}>
-                  {"Үгүй"}
-                </option>
-              </select>
-     } else if(id === "WORK_PEOPLE" ||
-     id === "WORK_DAY" ||
-     id === "WORK_TIME" ){
-             return  <input
-                value={value}
-                type="number"
-                className="bg-transparent"
-                style={{
-                  minHeight: "33px",
-                  border: "1px solid",
-                  borderRadius: "4px",
-                  color: "gray",
-                }}
-                onChange={
-                  e => setValue(e.target.value)
-                }
-                onBlur={onBlur}
-              />
-              }
-      
-      // <input
-      // value={value as string}
-      // onChange={e => setValue(e.target.value)}
-      // onBlur={onBlur}
-    // /> 
-   
-    
-  },
+let Data = {
+  drop:{drop1:[],drop2:[]}
 }
+// Give our default column cell renderer editing superpowers!
+
 
 
 
@@ -154,6 +94,214 @@ function Mayagt_10(props: any) {
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
+  const [drop,setDrop] = useState({
+    drop1:[],
+    drop2:[]
+  })
+  const [loaderSpinner, setloaderSpinner] = useState(0);
+  
+  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [data, loadData] = React.useState([]);
+  const [batlakhHuselt, setBatlakhHuselt] = useState({});
+ 
+  const [filter, setFilter] = useState({
+    Audit: {
+      PERIOD_ID: 4,
+      DEPARTMENT_ID: 999,
+      BUDGET_TYPE_ID: 999,
+      PARENT_BUDGET_ID: 999,
+      TYPE: 0,
+    },
+  });
+  const defaultColumn ={
+    cell: function Cell ({ getValue, row: { index }, column: { id }, table }){
+      const initialValue = getValue()
+      // We need to keep and update the state of the cell normally
+      const [value, setValue] = React.useState(initialValue)
+  
+      // When the input is blurred, we'll call our table meta's updateData function
+      const onBlur = () => {
+        table.options.meta?.updateData(index, id, value)
+      }
+  
+      // If the initialValue is changed external, sync it up with our state
+      React.useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+  
+      if(id === "EXPERT_TYPE_NAME" || id === "EXPERT_TYPE_NAME"){
+        return <select
+                  className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+                  value={value}
+                  onChange={
+                    e => setValue(e.target.value)
+                  }
+                  onBlur={onBlur}
+                >
+                    <option className="text-center" value={999}>
+                        Сонгоно уу 
+                      </option>
+                      {drop.drop1.map((nation, index) => (
+                        <option
+                          className="font-semibold"
+                          key={nation.EXPERT_TYPE_NAME}
+                          value={nation.EXPERT_TYPE_ID}
+                        >
+                          {nation.EXPERT_TYPE_NAME}
+                        </option>
+                         ))}
+
+                </select>
+       } else if(id === "WORK_PEOPLE" ||
+       id === "WORK_DAY" ||
+       id === "WORK_TIME" ){
+               return  <input
+                  value={value}
+                  type="number"
+                  className="bg-transparent"
+                  style={{
+                    minHeight: "33px",
+                    border: "1px solid",
+                    borderRadius: "4px",
+                    color: "gray",
+                  }}
+                  onChange={
+                    e => setValue(e.target.value)
+                  }
+                  onBlur={onBlur}
+                />
+                }
+        
+        // <input
+        // value={value as string}
+        // onChange={e => setValue(e.target.value)}
+        // onBlur={onBlur}
+      // /> 
+     
+      
+    },
+  }
+
+  function CustomCell ({ getValue, row, column: { id }, table,drop:{drop1:[],drop2:[]},rowValue}){
+    const initialValue = getValue()
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue)
+    
+
+    // When the input is blurred, we'll call our table meta's updateData function
+    const onBlur = () => {
+      table.options.meta?.updateData(row.index, id, value)
+    }
+
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+      setValue(initialValue)
+    }, [initialValue])
+
+    if(id === "EXPERT_TYPE_ID" ){
+      return <select
+                className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+                value={value}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              >
+                  <option   className="font-semibold" value={999}>
+                      Сонгоно уу 
+                    </option>
+                    {drop.drop1.map((nation, index) => (
+                      <option
+                        className="font-semibold"
+                        key={nation.EXPERT_TYPE_NAME}
+                        value={nation.EXPERT_TYPE_ID}
+                      >
+                        {nation.EXPERT_TYPE_NAME}
+                      </option>
+                       ))}
+
+              </select>
+     } else  if(id === "EXPERT_REASON_ID" ){
+      return <select
+                className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+                value={value}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              >
+                  <option   className="font-semibold" value={999}>
+                      Сонгоно уу 
+                    </option>
+                    {drop.drop2.map((nation, index) => (
+                      <option
+                        className="font-semibold"
+                        key={nation.EXPERT_REASON_NAME}
+                        value={nation.EXPERT_REASON_ID}
+                      >
+                        {nation.EXPERT_REASON_NAME}
+                      </option>
+                       ))}
+
+              </select>
+     }
+     
+    else if(id === "EXPERT_NAME" ||
+     id === "EXPERT_REASON_NAME" ||
+     id === "INVOLVED_DIRECTION" ){
+             return  <textarea
+                value={value}
+                className="bg-transparent"
+                style={{
+                  minHeight: "33px",
+                  border: "1px solid",
+                  borderRadius: "4px",
+                  color: "gray",
+                }}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              />
+        }else if(id === "WORK_MOUNT"  ){
+                      return  <input
+                         value={value}
+                         type = 'number'
+                         className="bg-transparent"
+                         style={{
+                           minHeight: "33px",
+                           border: "1px solid",
+                           borderRadius: "4px",
+                           color: "gray",
+                         }}
+                         onChange={
+                           e => setValue(e.target.value)
+                         }
+                         onBlur={onBlur}
+                       />
+                       }
+                       else if(id === "EXPERT_AMOUNT" || id === 'AUDIT_AMOUNT'){
+                        return <CurrencyInput
+                        className="bg-transparent text-end p-1"
+                        style={{
+                          minHeight: "33px",
+                          border: "1px solid",
+                          borderRadius: "4px",
+                          color: "gray",
+                        }}
+                      value={value}
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      onValueChange={(value, name) => 
+                        setValue(value)
+                      }
+                      onBlur={onBlur}
+
+                    />
+                         }
+      
+     
+  }
   const columns = React.useMemo(
     () => [
     {
@@ -175,7 +323,7 @@ function Mayagt_10(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "",
+        accessorKey: "sedev",
         header: "Сэдвийн үндэслэл",
         cell: (info) => info.getValue(),
       },
@@ -186,64 +334,51 @@ function Mayagt_10(props: any) {
       },
 
       {
-        accessorKey: "EXPERT_TYPE_NAME",
+        accessorKey: "EXPERT_TYPE_ID",
         header: "Шинжээчийн төрөл",
         width: 200,
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
+        
       },
       {
-        accessorKey: "EXPERT_DEPARTMENT_NAME",
+        accessorKey: "EXPERT_REASON_ID",
         header: "Аудитын хуулийн этгээдийн нэр",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
       {
         accessorKey: "EXPERT_NAME",
         header: "Шинжээчийн нэр",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
       {
         accessorKey: "EXPERT_REASON_NAME",
         header: "Шинжээч ажиллуулах үндэслэл",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
       {
         accessorKey: "INVOLVED_DIRECTION",
         header: "Оролцсон чиглэл",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
       {
         accessorKey: "WORK_MOUNT",
         header: "Ажилласан хугацаа (сараар)",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
       {
         accessorKey: "EXPERT_AMOUNT",
         header: "Шинжээчийн зардал (төгрөг)",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
 
       {
         accessorKey: "AUDIT_AMOUNT",
         header: "Аудитын үйлчилгээний төлбөр  (төгрөг)",
-        cell: (info) => info.getValue(),
+        cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
       },
     ],
-    []
+    [drop]
   );
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
-  const [data, loadData] = React.useState([]);
-  const [batlakhHuselt, setBatlakhHuselt] = useState({});
-
-  const [filter, setFilter] = useState({
-    Audit: {
-      PERIOD_ID: 4,
-      DEPARTMENT_ID: 999,
-      BUDGET_TYPE_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
-    },
-  });
-
   const table = useReactTable({
     data,
     columns,
@@ -324,8 +459,42 @@ function Mayagt_10(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
-       
       });
+      DataRequest({
+        url: Stat_Url + "refExpertReason",
+        method: "GET",
+        data: {
+        },
+      })
+        .then(function (refExpertReason) {
+          if (refExpertReason.data !== undefined && refExpertReason.data.length > 0) {
+            DataRequest({
+              url: Stat_Url + "refExpertType",
+              method: "GET",
+              data: {
+              
+              },
+            })
+              .then(function (refExpertType) {
+                if (refExpertType.data !== undefined && refExpertType.data.length > 0) {
+                  let temp = drop
+                  temp.drop1 = refExpertType?.data
+                  temp.drop2 = refExpertReason?.data
+                  setDrop({...temp})
+                  console.log(refExpertType?.data,'refExpertType?.data');
+            
+                }
+              })
+              .catch(function (error) {
+                console.log(error, "error");
+              });
+            
+       
+          }
+        })
+        .catch(function (error) {
+          console.log(error, "error");
+        });
 
     // DataRequest({
     //   url:
@@ -349,13 +518,13 @@ function Mayagt_10(props: any) {
   }
 
   function saveToDB() {
-    
+    setloaderSpinner(1)
     let temp = [];
       console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'saveData');
   
 
     DataRequest({
-      url: Stat_Url + "BM1IU",
+      url: Stat_Url + "BM10IU",
       method: "POST",
       data: {
         // STAT_ID : mayagtData.ID,
@@ -384,22 +553,29 @@ function Mayagt_10(props: any) {
                 alert("амжилттай хадгаллаа");
 
                 fetchData();
+                setloaderSpinner(0)
               }
             })
             .catch(function (error) {
               console.log(error, "error");
+              setloaderSpinner(0)
               ;
             });
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0)
      
       });
   }
 
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
              padding: "0.5rem 0 0 1rem",
@@ -644,7 +820,7 @@ function Mayagt_10(props: any) {
         </div> */}
 
         
-      </div>
+      </div>}
     </>
   );
 }

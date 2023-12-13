@@ -11,6 +11,7 @@ import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
 import { excel } from "../../assets/zurag";
 import CurrencyInput from "react-currency-input-field";
+import { RevolvingDot } from "react-loader-spinner";
 import { getExportFileBlob } from "../../functions/excel_export";
 import dateFormat from "dateformat";
 import {
@@ -129,6 +130,7 @@ function Mayagt_1(props: any) {
   const mayagtData = props.mayagtData;
   const userDetails = props.userDetails;
   const [saveData, setSaveData] = useState(new Set());
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -463,7 +465,7 @@ function Mayagt_1(props: any) {
       });
   }
   function saveToDB() {
-
+    setloaderSpinner(1)
     DataRequest({
       url: Stat_Url + "BM7IU",
       method: "POST",
@@ -479,16 +481,21 @@ function Mayagt_1(props: any) {
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-     
+        setloaderSpinner(0)
       });
   }
 
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
           
@@ -707,7 +714,7 @@ function Mayagt_1(props: any) {
             <Comment />
           </div>
         </div>
-      </div>
+      </div>}
     </>
   );
 }
