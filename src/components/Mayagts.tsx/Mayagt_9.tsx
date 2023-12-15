@@ -546,7 +546,10 @@ function Mayagt_9(props: any) {
             </button>
             { check_save(status)?  
                ( <button
-                  onClick={() => Navigate("/web/Home/m9/create/null")}
+                  onClick={() =>{
+                    localStorage.removeItem("stat_bm9");
+                    Navigate("/web/Home/m9/create/null")
+                  }}
                   className="inline-flex items-center rounded ml-2 py-1 h-7"
                   style={{
                     border: "1px solid #2684fe",

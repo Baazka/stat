@@ -496,25 +496,6 @@ function Mayagt_10(props: any) {
           console.log(error, "error");
         });
 
-    // DataRequest({
-    //   url:
-    //     fasUrl +
-    //     "OT_REQUEST_FOR_CONFIRM/" +
-    //     mayagtData.ID +
-    //     "/" +
-    //     mayagtData.DOCUMENT_ID +
-    //     "/" +
-    //     6,
-    //   method: "GET",
-    //   data: {},
-    // })
-    //   .then(function (response) {
-    //     setBatlakhHuselt(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error, "error");
-      
-    //   });
   }
 
   function saveToDB() {

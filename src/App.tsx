@@ -12,6 +12,8 @@ import CM from "./pages/CM";
 import News from "./pages/News";
 import Mayagt_9_Create from "./components/Mayagts.tsx/Mayagt_9_Create";
 import Mayagt_11_Create from "./components/Mayagts.tsx/Mayagt_11_Create";
+import Mayagt_13_Create from "./components/Mayagts.tsx/Mayagt_13_Create";
+
 interface Web_Value {
   sidebarSize: boolean;
   setSidebarSize: (params: boolean) => void;
@@ -66,6 +68,10 @@ function App() {
         {
           path: "/web/Home/bm8a/create",
           element: <Mayagt_11_Create />,
+        },
+        {
+          path: "/web/Home/bm13/create",
+          element: <Mayagt_13_Create />,
         },
       ],
     },
