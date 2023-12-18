@@ -220,6 +220,68 @@ function Mayagt_15(props: any) {
         header: "Зөвлөмжийн хэрэгжээгүй шалтгаан тайлбар",
         cell: (info) => info.getValue(),
       },
+      {
+        header: "Үйлдэл",
+        cell: (info) => info.getValue(),
+        accessorFn: (row, index) => (
+          <div className="flex justify-start" style={{ width: "80px" }}>
+              { check_save(status)?
+             <>
+                <button
+                  className="bg-transparent text-xs"
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={editPencil}
+                    onClick={() => {
+                      localStorage.removeItem("stat_bm15");
+                      Navigate("/web/Home/bm15/create");
+                      localStorage.setItem("stat_bm15", JSON.stringify(row));
+                    }}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+                <button
+                  className="bg-transparent text-xs"
+                  onClick={() => {
+                    let temp = deleteDesc
+                    temp.ID = row.ID
+                    setDeleteDesc({...temp})
+                    setShowDialogOpen(true)
+                  }}
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={xIcon}
+                    // onClick={() => {
+                    //   row;
+                    // }}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+              
+              
+              </>
+            :null}
+          </div>
+        ),
+      },
     ],
     []
   );
@@ -327,7 +389,7 @@ function Mayagt_15(props: any) {
   function deletePlan() {
     
           DataRequest({
-            url: Stat_Url + "BM8ARemove",
+            url: Stat_Url + "BM11Remove",
             method: "POST",
             data: {
               ID: deleteDesc.ID,
@@ -399,7 +461,10 @@ function Mayagt_15(props: any) {
             </button>
             { check_save(status)?  
                ( <button
-                  onClick={() => Navigate("/web/Home/bm8a/create")}
+                  onClick={() =>{
+                    localStorage.removeItem("stat_bm15");
+                    Navigate("/web/Home/bm15/create")
+                  } }
                   className="inline-flex items-center rounded ml-2 py-1 h-7"
                   style={{
                     border: "1px solid #2684fe",
