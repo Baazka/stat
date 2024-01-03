@@ -14,6 +14,7 @@ import Mayagt_9_Create from "./components/Mayagts.tsx/Mayagt_9_Create";
 import Mayagt_11_Create from "./components/Mayagts.tsx/Mayagt_11_Create";
 import Mayagt_13_Create from "./components/Mayagts.tsx/Mayagt_13_Create";
 import Mayagt_15_Create from "./components/Mayagts.tsx/Mayagt_15_Create";
+import Mayagt_14_Create from "./components/Mayagts.tsx/Mayagt_14_Create"
 
 interface Web_Value {
   sidebarSize: boolean;
@@ -77,6 +78,10 @@ function App() {
         {
           path: "/web/Home/bm15/create",
           element: <Mayagt_15_Create />,
+        },
+        {
+          path: "/web/Home/bm9c/create",
+          element: <Mayagt_14_Create />,
         },
       ],
     },

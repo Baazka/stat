@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Title from "../Title";
 import "../../pages/Home.css";
 import Comment from "../comment";
 import FooterValue from "../Footervalue";
-import dateFormat, { masks } from "dateformat";
-import ButtonConfirm from "../ButtonConfirm";
 import ButtonRequest from "../ButtonRequest";
+import ButtonConfirm from "../ButtonConfirm";
+import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
-import { excel } from "../../assets/zurag";
-import writeXlsxFile from "write-excel-file";
+import { excel ,addIcon,editPencil,xIcon} from "../../assets/zurag";
+import CurrencyInput from "react-currency-input-field";
+import { getExportFileBlob } from "../../functions/excel_export";
+import { useNavigate } from "react-router-dom";
 import {
   Column,
   Table,
@@ -26,17 +27,107 @@ import {
   FilterFn,
   ColumnDef,
   flexRender,
+  RowData,
 } from "@tanstack/react-table";
-
+import DataRequest from "../../functions/make_Request";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
-declare module "@tanstack/table-core" {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
+import fasUrl from "../../fasURL";
+import UserPremission from "../../functions/userPermission";
+import {check_save}from '../../functions/Tools'
+import { RevolvingDot } from "react-loader-spinner";
+
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void
   }
 }
+let Data = {}
+// Give our default column cell renderer editing superpowers!
+const defaultColumn: Partial<ColumnDef<Data>> = {
+  cell: function Cell ({ getValue, row: { index }, column: { id }, table }){
+    const initialValue = getValue()
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue)
+
+    // When the input is blurred, we'll call our table meta's updateData function
+    const onBlur = () => {
+      table.options.meta?.updateData(index, id, value)
+    }
+
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+      setValue(initialValue)
+    }, [initialValue])
+
+    if(id === "IS_EXPERT_ATTEND" || id === "IS_PRESS_REPORT"){
+      return <select
+                className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+                value={value}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              >
+                <option key={id+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
+                  {"Сонгоно уу"}
+                </option>
+                <option key={id+'1'} className="font-medium" key={"Тийм"} value={1}>
+                  {"Тийм"}
+                </option>
+                <option key={id+'21'} className="font-medium" key={"Үгүй"} value={0}>
+                  {"Үгүй"}
+                </option>
+              </select>
+     } else if(id === "WORK_PEOPLE" ||
+     id === "WORK_DAY" ||
+     id === "WORK_TIME" ){
+             return  <input
+                value={value}
+                type="number"
+                className="bg-transparent"
+                style={{
+                  minHeight: "33px",
+                  border: "1px solid",
+                  borderRadius: "4px",
+                  color: "gray",
+                }}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              />
+              }
+      
+      // <input
+      // value={value as string}
+      // onChange={e => setValue(e.target.value)}
+      // onBlur={onBlur}
+    // /> 
+   
+    
+  },
+}
+
+
+
+function useSkipper() {
+  const shouldSkipRef = React.useRef(true)
+  const shouldSkip = shouldSkipRef.current
+
+  // Wrap a function with this to skip a pagination reset temporarily
+  const skip = React.useCallback(() => {
+    shouldSkipRef.current = false
+  }, [])
+
+  React.useEffect(() => {
+    shouldSkipRef.current = true
+  })
+
+  return [shouldSkip, skip] as const
+}
+
+
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -50,126 +141,295 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void
+  }
+}
 
-type Stat_m15 = {
-  AUDIT_TOROL: string;
-  MEDEELLIIN_TOROL: string;
-  TORIIN_AUDIT_BAI: string;
-  ZOHION_BAI_BUTETS_NEGJ_NR: string;
-  AUDIT_KOD: string;
-  TAILANGIIN_HUUDASNI_TOO: string;
-  HEVELSEN_TOO: string;
-  TSAHIMAAR_MEDEELSEN_ESEH: string;
-};
-
-function Mayagt_15(mayagtData,userDetails) {
+function Mayagt_14(props: any) {
+  const mayagtData = props.mayagtData;
+  const userDetails = props.userDetails;
+  const [saveData, setSaveData] = useState(new Set());
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const columns = React.useMemo<ColumnDef<Stat_m15, any>[]>(
+  const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
+  const [drop,setDrop] = useState({
+    drop1:[],
+    drop2:[],
+    drop3:[],
+    drop4:[]
+  })
+  const Navigate = useNavigate();
+  function CustomCell ({ getValue, row, column: { id }, table,drop:{drop1:[],drop2:[]},rowValue}){
+    const initialValue = getValue()
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue)
+
+  
+  
+    // When the input is blurred, we'll call our table meta's updateData function
+    const onBlur = () => {
+      table.options.meta?.updateData(row.index, id, value)
+    }
+  
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+      setValue(initialValue)
+    }, [initialValue])
+  
+    if(id === "REPORTED_ABSTRACT_ID" || id === 'REPORTED_VISUAL_ID' || id === 'REPORTED_MORE_ID'){
+      return <select
+                disabled={row.original.BM1_ID ===null?true:false}
+                className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+                value={value}
+                onChange={
+                  e => setValue(e.target.value)
+                }
+                onBlur={onBlur}
+              >
+                  <option   className="font-semibold" value={999}>
+                      Сонгоно уу 
+                    </option>
+                    {drop.drop1.map((nation, index) => (
+                      <option
+                        className="font-semibold"
+                        key={nation.REPORT_ETYPE_NAME}
+                        value={nation.REPORT_ETYPE_ID}
+                      >
+                        {nation.REPORT_ETYPE_NAME}
+                      </option>
+                       ))}
+  
+              </select>
+     }else if(id === "PAGE_ABSTRACT_COUNT" || id === 'PAGE_MORE_COUNT' || id === 
+     'PAGE_VISUAL_COUNT' || id === 'PRINT_ABSTRACT_COUNT' || id === 'PRINT_MORE_COUNT' || id === 'PRINT_VISUAL_COUNT'){
+                        return <CurrencyInput
+                        className="bg-transparent text-end p-1"
+                        disabled={row.original.BM1_ID ===null?true:false}
+                        style={{
+                          minHeight: "33px",
+                          border: "1px solid",
+                          borderRadius: "4px",
+                          color: "gray",
+                        }}
+                      value={value}
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      onValueChange={(value, name) => 
+                        setValue(value)
+                      }
+                      onBlur={onBlur}
+  
+                    />
+                         }
+      
+     
+  }
+  function deleteRowFunc(indexParam, value){
+   if (window.confirm("Устгахдаа итгэлтэй байна уу?")) {
+        let valueC = value;
+  
+        if (value?.ID !== null) {
+          valueC.IS_ACTIVE = 0;
+          DataRequest({
+            url: Stat_Url + "BM9CIU",
+            method: "POST",
+            data: {
+              data: [valueC],
+              CREATED_BY: userDetails.USER_ID,
+            },
+          })
+            .then(function (response) {
+              if (response?.data?.message === "success") {
+                alert("Aмжилттай устлаа");
+              }
+            })
+            .catch(function (error) {
+              alert("устгаж чадсангүй");
+            });
+        }
+        loadData(data.filter((element, index) => index !== indexParam));
+      }
+    
+  }
+  const columns = React.useMemo(
     () => [
-      {
+     {
         accessorFn: (row, index) => index + 1,
-        id: "№",
+        accessorKey: "№",
+        header: "№",
+        size: 10,
+        cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_TOROL",
+        accessorKey: "AUDIT_TYPE_NAME",
         cell: (info) => info.getValue(),
         header: "Аудитын төрөл",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "MEDEELLIIN_TOROL",
+        accessorKey: "REPORT_TYPE_NAME",
         cell: (info) => info.getValue(),
         header: "Мэдээллийн төрөл",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "TORIIN_AUDIT_BAI",
+        accessorKey: "DEPARTMENT_NAME",
         cell: (info) => info.getValue(),
         header: "Төрийн аудитын байгууллага",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "ZOHION_BAI_BUTETS_NEGJ_NR",
+        accessorKey: "SUB_DEPARTMENT_NAME",
         header: "Зохион байгуулалтын бүтцийн нэгжийн нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "SHALGAGDAGCH_BAI_NER",
+        accessorKey: "ENT_NAME",
         header: "Шалгагдагч байгууллагын нэр",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_KOD",
+        accessorKey: "AUDIT_CODE",
         header: "Аудитын код",
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "TAILANGIIN_HUUDASNI_TOO",
         header: "Тайлангийн хуудасны тоо",
-        cell: (info) => info.getValue(),
         columns: [
           {
-            accessorKey: "HURAANGUI1",
+            accessorKey: "PAGE_ABSTRACT_COUNT",
             header: "Хураангуй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "DELGERENGUI1",
+            accessorKey: "PAGE_MORE_COUNT",
             header: "Дэлгэрэнгүй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "VIZUAL1",
+            accessorKey: "PAGE_VISUAL_COUNT",
             header: "Визуал",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
         ],
       },
       {
         accessorKey: "HEVELSEN_TOO",
         header: "Хэвлэсэн тоо",
-        cell: (info) => info.getValue(),
         columns: [
           {
-            accessorKey: "HURAANGUI2",
+            accessorKey: "PRINT_ABSTRACT_COUNT",
             header: "Хураангуй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "DELGERENGUI2",
+            accessorKey: "PRINT_MORE_COUNT",
             header: "Дэлгэрэнгүй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "VIZUAL2",
+            accessorKey: "PRINT_VISUAL_COUNT",
             header: "Визуал",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
         ],
       },
       {
         accessorKey: "TSAHIMAAR_MEDEELSEN_ESEH",
         header: "Цахимаар мэдээлсэн эсэх",
-        cell: (info) => info.getValue(),
+       
         columns: [
           {
-            accessorKey: "HURAANGUI3",
+            accessorKey: "REPORTED_ABSTRACT_ID",
             header: "Хураангуй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "DELGERENGUI3",
+            accessorKey: "REPORTED_MORE_ID",
             header: "Дэлгэрэнгүй",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
           {
-            accessorKey: "VIZUAL3",
+            accessorKey: "REPORTED_VISUAL_ID",
             header: "Визуал",
+            cell:({ getValue, row, column: { id }, table }) =>CustomCell({ getValue, row, column: { id }, table,drop })
           },
         ],
+      },
+      {
+        header: "Үйлдэл",
+        cell: (info) => info.getValue(),
+        accessorFn: (row, index) => (
+          row.BM1_ID === null?
+          <div className="flex justify-start" style={{ width: "80px" }}>
+              { check_save(status)?
+             <>
+                <button
+                  className="bg-transparent text-xs"
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={editPencil}
+                    onClick={() => {
+                      localStorage.removeItem("stat_bm9c");
+                      Navigate("/web/Home/bm9c/create");
+                      localStorage.setItem("stat_bm9c", JSON.stringify(row));
+                    }}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+                <button
+                  className="bg-transparent text-xs"
+                  onClick={() => 
+                    deleteRowFunc(index,row)
+                
+                  }
+                  type="button"
+                  style={{
+                    padding: "2px",
+                    boxShadow: "0px 0px 0px 1px rgba(	38,132,254,0.3)",
+                    borderRadius: "4px",
+                    marginRight: "6px",
+                  }}
+                >
+                  <img
+                    src={xIcon}
+                    // onClick={() => {
+                    //   row;
+                    // }}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                  />
+                </button>
+              
+              
+              </>
+            :null}
+          </div>:null
+        ),
       },
     ],
     []
   );
-  let Stat_m15 = [{}];
-  const [data, setData] = React.useState<Stat_m15[]>(Stat_m15);
-  const Navigate = useNavigate();
-  const refreshData = () => setData((old) => []);
+  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [data, loadData] = React.useState([]);
+  const [batlakhHuselt, setBatlakhHuselt] = useState({});
+  const [loaderSpinner, setloaderSpinner] = useState(0);
+
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 4,
@@ -183,6 +443,7 @@ function Mayagt_15(mayagtData,userDetails) {
   const table = useReactTable({
     data,
     columns,
+    defaultColumn,
     filterFns: {
       fuzzy: fuzzyFilter,
     },
@@ -193,328 +454,307 @@ function Mayagt_15(mayagtData,userDetails) {
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
+    
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    getSortedRowModel: getSortedRowModel(),
+
+   
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    autoResetPageIndex,
+    meta: {
+      updateData: (rowIndex, columnId, value) => {
+        // Skip page index reset until after next rerender
+        skipAutoResetPageIndex()
+        loadData(old =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex]!,
+                [columnId]: value,
+                EDITED:true
+              }
+            }
+            return row
+          })
+        )
+      },
+    },
     debugTable: false,
     debugHeaders: false,
     debugColumns: false,
   });
 
-  function Draw_input(param: any, cell: any, index: number) {
-    return (
-      <div>
-        {cell.id === "TORIIN_AUDIT_BAI" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Үндэсний аудитын газар"}
-              value={1}
-            >
-              {"Үндэсний аудитын газар"}
-            </option>
-            <option className="font-medium" key={"Нийслэл дэх ТАГ"} value={2}>
-              {"Нийслэл дэх ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Архангай аймаг дахь ТАГ"}
-              value={3}
-            >
-              {"Архангай аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Баян-Өлгий аймаг дахь ТАГ"}
-              value={4}
-            >
-              {"Баян-Өлгий аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Баянхонгор аймаг дахь ТАГ"}
-              value={5}
-            >
-              {"Баянхонгор аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Булган аймаг дахь ТАГ"}
-              value={6}
-            >
-              {"Булган аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Говь-алтай аймаг дахь ТАГ"}
-              value={7}
-            >
-              {"Говь-алтай аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Говьсүмбэр аймаг дахь ТАГ"}
-              value={8}
-            >
-              {"Говьсүмбэр аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Дархан-Уул аймаг дахь ТАГ"}
-              value={9}
-            >
-              {"Дархан-Уул аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Дорноговь аймаг дахь ТАГ"}
-              value={10}
-            >
-              {"Дорноговь аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Дундговь аймаг дахь ТАГ"}
-              value={11}
-            >
-              {"Дундговь аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Дорнод аймаг дахь ТАГ"}
-              value={12}
-            >
-              {"Дорнод аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Завхан аймаг дахь ТАГ"}
-              value={13}
-            >
-              {"Завхан аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Орхон аймаг дахь ТАГ"}
-              value={14}
-            >
-              {"Орхон аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Өвөрхангай аймаг дахь ТАГ"}
-              value={15}
-            >
-              {"Өвөрхангай аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Өмнөговь аймаг дахь ТАГ"}
-              value={16}
-            >
-              {"Өмнөговь аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Сүхбаатар аймаг дахь ТАГ"}
-              value={17}
-            >
-              {"Сүхбаатар аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Сэлэнгэ аймаг дахь ТАГ"}
-              value={18}
-            >
-              {"Сэлэнгэ аймаг дахь ТАГ"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Төв аймаг дахь ТАГ"}
-              value={19}
-            >
-              {"Төв аймаг дахь ТАГ"}
-            </option>
-          </select>
-        ) : cell.id === "AUDIT_TOROL" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-            {/* <option
-              className="font-medium"
-              key={"Санхүүгийн тайлангийн аудит"}
-              value={1}
-            >
-              {"Санхүүгийн тайлангийн аудит"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Гүйцэтгэлийн аудит"}
-              value={2}
-            >
-              {"Гүйцэтгэлийн аудит"}
-            </option>
-            <option className="font-medium" key={"Нийцлийн аудит"} value={3}>
-              {"Нийцлийн аудит"}
-            </option> */}
-          </select>
-        ) : cell.id === "MEDEELLIIN_TOROL" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-            {/* <option className="font-medium" key={"Аудитын тайлан"} value={1}>
-              {"Аудитын тайлан"}
-            </option>
-            <option
-              className="font-medium"
-              key={"Үйл ажилгааны мэдээлэл"}
-              value={2}
-            >
-              {"Үйл ажилгааны мэдээлэл"}
-            </option>
-            <option className="font-medium" key={"Бусад"} value={2}>
-              {"Бусад"}
-            </option> */}
-          </select>
-        ) : cell.id === "HURAANGUI3" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-          </select>
-        ) : cell.id === "DELGERENGUI3" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-          </select>
-        ) : cell.id === "VIZUAL3" ? (
-          <select
-            className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-            onChange={(text) => {
-              let any = setFilter;
-            }}
-          >
-            <option className="font-medium" key={"Сонгоно уу"} value={0}>
-              {"Сонгоно уу"}
-            </option>
-          </select>
-        ) : cell.id === "" || cell.id === "" ? (
-          <input
-            type="date"
-            className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-            value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
-            onChange={(e) => {
-              let temp = data;
-              //@ts-ignore
-              temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-              // @ts-ignore
-              setData([...temp]);
-            }}
-          />
-        ) : (
-          <textarea
-            value={param.row.original[cell.id]}
-            className={
-              index % 2 > 0
-                ? "flex text-center h-8 bg-gray-100"
-                : "flex text-center h-8"
-            }
-            style={{
-              minHeight: "33px",
-              border: "1px solid",
-              borderRadius: "4px",
-              color: "gray",
-            }}
-            onChange={(e) => {
-              let temp = data;
-              //@ts-ignore
-              temp[index][cell.id] = e.target.value;
-              // @ts-ignore
-              setData([...temp]);
-            }}
-          />
-        )}
-      </div>
-    );
+ 
+  
+
+  useEffect(() => {
+    fetchData();
+  }, [props.mayagtData]);
+
+  async function fetchData() {
+   DataRequest({
+      url: Stat_Url + "BM9CList",
+      method: "POST",
+      data: {
+        ID: mayagtData.ID,
+        USER_ID: userDetails.USER_ID,
+        USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
+      },
+    })
+      .then(function (response) {
+      
+        if (response.data !== undefined && response.data.data.length > 0) {
+          loadData(response.data.data);
+          if (response?.data.role.length > 0)
+            setStatus({
+              STATUS: response?.data.status,
+              ROLE: response?.data.role.find(
+                (a) => a.AUDITOR_ID === userDetails.USER_ID
+              ),
+            });
+     
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+       
+      });
+      DataRequest({
+          url:
+            Stat_Url +
+            "refReportEType/" ,
+          method: "GET",
+          data: {},
+        })
+          .then(function (response) {
+            let temp = drop
+            temp.drop1 = response.data
+            setDrop(temp);
+          })
+          .catch(function (error) {
+            console.log(error, "error");
+          
+          });
+
+    // DataRequest({
+    //   url:
+    //     fasUrl +
+    //     "OT_REQUEST_FOR_CONFIRM/" +
+    //     mayagtData.ID +
+    //     "/" +
+    //     mayagtData.DOCUMENT_ID +
+    //     "/" +
+    //     6,
+    //   method: "GET",
+    //   data: {},
+    // })
+    //   .then(function (response) {
+    //     setBatlakhHuselt(response.data);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error, "error");
+      
+    //   });
+  }
+
+  function saveToDB() {
+    
+    let temp = [];
+      console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'saveData');
+    setloaderSpinner(1)
+
+    DataRequest({
+      url: Stat_Url + "BM9CIU",
+      method: "POST",
+      data: {
+        // STAT_ID : mayagtData.ID,
+        data: data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),
+        CREATED_BY: userDetails.USER_ID,
+      },
+    })
+      .then(function (response) {
+       
+        console.log(response?.data,'response1');
+        if (response?.data.status === 200) {
+          DataRequest({
+            url: Stat_Url + "statisticProcessChange",
+            method: "POST",
+            data: {
+              ID: status.STATUS.ID,
+              STAT_AUDIT_ID: mayagtData.ID,
+              ACTION_ID: 0, //0-HAD, 1-BAT1, 2-BAT2, 3-BAT3
+              ACTION_DESC: "mayagt hadgallaa",
+              CREATED_BY: userDetails.USER_ID,
+            },
+          })
+            .then(function (response) {
+              console.log(response.data,'response2');
+              if (response?.data.status === 200) {
+                alert("амжилттай хадгаллаа");
+                setloaderSpinner(0)
+                fetchData();
+              }
+            })
+            .catch(function (error) {
+              console.log(error, "error");
+              setloaderSpinner(0)
+              ;
+            });
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+     
+      });
   }
 
   return (
     <>
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>):
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
-          padding: "0.5rem 0 0 1rem",
+             padding: "0.5rem 0 0 1rem",
         }}
       >
         <Title
-          title={mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME} 
-          widthS={"33rem"}
-          widthL={"17rem"}
+          title={
+            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+          } //"ТАЙЛАНТ ОНД ГҮЙЦЭТГЭСЭН АУДИТЫН БҮРТГЭЛ З-ТАББМ-1"
+          widthS={"28rem"}
+          widthL={"10rem"}
         />
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch />
-          
+            <ButtonSearch
+              globalFilter={globalFilter}
+              setGlobalFilter={(value) => setGlobalFilter(value)}
+            />
+            <button
+              onClick={() => {
+                getExportFileBlob(columns, data, "З-ТАББМ-1");
+              }}
+              className="inline-flex items-center rounded ml-2 py-1 h-7"
+              style={{
+                border: "1px solid #3cb371",
+              }}
+            >
+              <div className="bg-white">
+                <img
+                  src={excel}
+                  width="20px"
+                  height="20px"
+                  className="mx-1"
+                ></img>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#3cb371",
+                }}
+                className=" text-white rounded-r px-1 h-7"
+              >
+                Excel
+              </div>
+            </button>
+            { check_save(status)?  
+               ( <button
+                  onClick={() => {
+                    localStorage.removeItem("stat_bm9c");
+                    Navigate("/web/Home/bm9c/create")
+                  }}
+                  className="inline-flex items-center rounded ml-2 py-1 h-7"
+                  style={{
+                    border: "1px solid #2684fe",
+                  }}
+                >
+                  <div className="bg-white px-1 ">
+                    <img src={addIcon} width="18px" height="10px "></img>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: "#2684fe",
+                    }}
+                    className=" text-white rounded-r px-1 h-7"
+                  >
+                    нэмэх
+                  </div>
+                </button>
+              ) : null}
           </div>
-          <div className="flex">
-            <ButtonRequest />
-            <ButtonConfirm />
+
+          <div className="flex mr-4">
+            {/* {
+            status?.STATUS.STATUS !== null &&
+            status?.STATUS.STATUS !== undefined ? (
+             <ButtonRequest
+                audID={mayagtData.ID}
+                docId={mayagtData.DOCUMENT_ID}
+                STATUS={status.STATUS?.STATUS}
+                RoleID={status.ROLE?.ROLE_ID}
+                statusID={status.STATUS.ID}
+                Title="Хүсэлт илгээх"
+                batlakhHuselt={batlakhHuselt}
+                MODULE_TYPE={6}
+                PERIOD_TYPE ={0}
+              /> ):null} */}
+            {/* {status.ROLE?.AUDITOR_ID !== undefined?
+            <ButtonConfirm     
+              STATUS={status?.STATUS}
+              data={mayagtData}
+              Title={mayagtData.DOCUMENT_SHORT_NAME}
+              RoleID={status?.ROLE.ROLE_ID}
+              statusID={status?.STATUS.ID}
+              fetchData={() => fetchData()}
+              CREATED_BY={{
+                APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+              }}
+              />:null} */}
           </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
+        
+        <div className="overflow-y-scroll">
           <div className="h-2 mr-20" />
-          <table>
-            <thead className="TableHeadBackroundcolor gap-20">
+          <table
+            {...{
+              style: {
+                width: table.getCenterTotalSize(),
+              },
+            }}
+          >
+            <thead className="TableHeadBackroundcolor sticky">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{ width: 250, borderTop: "1px solid white" }}
+                        {...{
+                          key: header.id,
+                          colSpan: header.colSpan,
+                          style: {
+                            width: header.getSize(),
+                          },
+                        }}
                       >
                         {header.isPlaceholder ? null : (
                           <>
                             <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
+                              {...{
+                                onMouseDown: header.getResizeHandler(),
+                                onTouchStart: header.getResizeHandler(),
+                                className: `resizer ${
+                                  header.column.getIsResizing()
+                                    ? "isResizing"
+                                    : ""
+                                }`,
+                              }}
                             ></div>
                             <div
                               {...{
@@ -552,13 +792,20 @@ function Mayagt_15(mayagtData,userDetails) {
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
-                        <td key={cell.id} className="p-2 ">
-                          {index === 0
-                            ? flexRender(
+                        <td
+                          {...{
+                            key: cell.id,
+                            style: {
+                              width: cell.column.getSize(),
+                            },
+                          }}
+                          className="p-2 "
+                        >
+                          {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
                               )
-                            : Draw_input(cell.getContext(), cell.column, i)}
+                          } 
                         </td>
                       );
                     })}
@@ -568,11 +815,8 @@ function Mayagt_15(mayagtData,userDetails) {
             </tbody>
           </table>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          <ButtonSave />
-        </div>
         <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+          <div className="justify-end flex items-center gap-1 mt-5 mr-2 sticky">
             <button
               className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
               onClick={() => table.setPageIndex(0)}
@@ -602,9 +846,11 @@ function Mayagt_15(mayagtData,userDetails) {
               {">>"}
             </button>
             <span className="flex items-center gap-4">
-              <div>нийт</div>
+              <div>нийт:</div>
+              <span>{data.length}</span>
               <strong>
-                {table.getState().pagination.pageIndex + 1}{" "}
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
                 {table.getPageCount()}
               </strong>
             </span>
@@ -622,19 +868,25 @@ function Mayagt_15(mayagtData,userDetails) {
               ))}
             </select>
           </div>
+             { check_save(status)?  
+            <ButtonSave saveToDB={() => saveToDB()} />
+             :null}
         </div>
-        <div>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
+        
+          {/* :null} */}
+        </div>
+     
+        {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-          <div className="flex  items-end">
-            <Comment />
-          </div>
-        </div>
+        
       </div>
+}
     </>
   );
 }
@@ -676,4 +928,5 @@ function Filter({
     </>
   );
 }
-export default Mayagt_15;
+
+export default Mayagt_14;
