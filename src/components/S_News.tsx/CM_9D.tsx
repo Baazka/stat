@@ -132,13 +132,13 @@ function CM_9D() {
         header: "ҮАГ зохион байгуулсан үндсэн цахим сургалтын нийт тоо",
         footer: (props) => props.column.id,
       },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "ҮАГ зохион байгуулсан цахим сургалт, үндсэн хамрагдсан албан хаагчдын тоо",
-        footer: (props) => props.column.id,
-      },
+      // {
+      //   accessorKey: "AUDIT_KOD",
+      //   cell: (info) => info.getValue(),
+      //   header:
+      //     "ҮАГ зохион байгуулсан цахим сургалт, үндсэн хамрагдсан албан хаагчдын тоо",
+      //   footer: (props) => props.column.id,
+      // },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
@@ -165,13 +165,13 @@ function CM_9D() {
         header: "ҮАГ зохион байгуулсан хөгжлийн цахим сургалтын хандалтын тоо",
         footer: (props) => props.column.id,
       },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "ҮАГ зохион байгуулсан танхимын сургалт, хамрагдсан албан хаагчдын тоо",
-        footer: (props) => props.column.id,
-      },
+      // {
+      //   accessorKey: "AUDIT_KOD",
+      //   cell: (info) => info.getValue(),
+      //   header:
+      //     "ҮАГ зохион байгуулсан танхимын сургалт, хамрагдсан албан хаагчдын тоо",
+      //   footer: (props) => props.column.id,
+      // },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
