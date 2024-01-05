@@ -181,7 +181,7 @@ function CM_2B() {
       },
       {
         accessorKey: "BIELLTIIN_HERGJELTIIN_BUH_DUN",
-        header: "Нийт хэрэгжилтийн тоо",
+        header: "Нийт хэрэгжилтийн дүн",
         cell: (info) => info.getValue(),
       },
       {
@@ -242,7 +242,7 @@ function CM_2B() {
       },
       {
         accessorKey: "ETSSIIN_ULDEGDEL_DUN",
-        header: "Эцсийн үлдэгдлийн тоо",
+        header: "Эцсийн үлдэгдлийн дүн",
         cell: (info) => info.getValue(),
       },
       {
