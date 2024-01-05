@@ -150,17 +150,31 @@ function CM_5E() {
         size: 250,
       },
       {
-        accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_TOO",
+        accessorKey: "TBONOHB_TOGTOOMJ HUULI_BUSAAR_ASHIGLASAN_TOO",
         cell: (info) => info.getValue(),
         header:
           "Төрийн болон орон нутгийн өмч, хөрөнгийг дутаасан, үрэгдүүлсэн, хууль бусаар ашигласан тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_DUN",
+        accessorKey: "TBONOHB_TOGTOOMJ HUULI_BUSAAR_ASHIGLASAN_DUN",
         cell: (info) => info.getValue(),
         header:
           "Төрийн болон орон нутгийн өмч, хөрөнгийг дутаасан, үрэгдүүлсэн, хууль бусаар ашигласан дүн",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_TOO",
+        cell: (info) => info.getValue(),
+        header:
+          "Төрийн болон орон нутгийн өмчийн хөрөнгөөр бараа, ажил, үйлчилгээ худалдан авах тухай хууль тогтоомж зөрчсөн тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_DUN",
+        cell: (info) => info.getValue(),
+        header:
+          "Төрийн болон орон нутгийн өмчийн хөрөнгөөр бараа, ажил, үйлчилгээ худалдан авах тухай хууль тогтоомж зөрчсөн дүн",
         footer: (props) => props.column.id,
       },
       {

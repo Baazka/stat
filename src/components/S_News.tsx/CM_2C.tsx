@@ -214,8 +214,8 @@ function CM_2C() {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "BIELLT_TOWLORUULSEN_DANNII_TOROL_BUSAD_TOO",
-        header: "Бусад дансанд төвлөрүүлсэн тоо",
+        accessorKey: "BIELLT_TOWLORUULSEN_DANNII_TOROL_BUSAD_DUN",
+        header: "Бусад дансанд төвлөрүүлсэн дүн",
         cell: (info) => info.getValue(),
       },
       {

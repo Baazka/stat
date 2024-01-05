@@ -118,12 +118,12 @@ function CM_2B() {
         header: "Үзүүлэлт",
         getGroupingValue: (row) => row.UZUULLT,
       },
-      {
-        accessorKey: "SHIIDWERLELT",
-        id: "baiguulaga",
-        header: "Шийдвэрлэлт",
-        cell: (info) => info.getValue(),
-      },
+      // {
+      //   accessorKey: "SHIIDWERLELT",
+      //   id: "baiguulaga",
+      //   header: "Шийдвэрлэлт",
+      //   cell: (info) => info.getValue(),
+      // },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),
