@@ -110,19 +110,13 @@ function CM_9A() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "50-54 насны албан хаагчид",
+        header: "Төрийн аудитын байгууллагын нийт эмэгтэй албан хаагчид",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header: "25 хүртэлх насны албан хаагчид",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "Насны бүлэг 25 хүртэлх эмэгтэй",
         footer: (props) => props.column.id,
       },
       {

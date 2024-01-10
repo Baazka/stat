@@ -92,7 +92,7 @@ function CM_11() {
       {
         accessorKey: "AUDIT_GAZAR",
         cell: (info) => info.getValue(),
-        header: "Үзүүлэлт",
+        header: "Аудитын газар",
         footer: (props) => props.column.id,
       },
       {
@@ -152,7 +152,7 @@ function CM_11() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Тайлант оны зөвлөмжийн биелэлт",
+        header: "Зөвлөмжийн биелэлтийн тайлант он",
         footer: (props) => props.column.id,
       },
       {

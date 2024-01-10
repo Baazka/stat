@@ -118,12 +118,12 @@ function CM_2B() {
         header: "Үзүүлэлт",
         getGroupingValue: (row) => row.UZUULLT,
       },
-      {
-        accessorKey: "SHIIDWERLELT",
-        id: "baiguulaga",
-        header: "Шийдвэрлэлт",
-        cell: (info) => info.getValue(),
-      },
+      // {
+      //   accessorKey: "SHIIDWERLELT",
+      //   id: "baiguulaga",
+      //   header: "Шийдвэрлэлт",
+      //   cell: (info) => info.getValue(),
+      // },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),
@@ -181,7 +181,7 @@ function CM_2B() {
       },
       {
         accessorKey: "BIELLTIIN_HERGJELTIIN_BUH_DUN",
-        header: "Нийт хэрэгжилтийн тоо",
+        header: "Нийт хэрэгжилтийн дүн",
         cell: (info) => info.getValue(),
       },
       {
@@ -242,7 +242,7 @@ function CM_2B() {
       },
       {
         accessorKey: "ETSSIIN_ULDEGDEL_DUN",
-        header: "Эцсийн үлдэгдлийн тоо",
+        header: "Эцсийн үлдэгдлийн дүн",
         cell: (info) => info.getValue(),
       },
       {
