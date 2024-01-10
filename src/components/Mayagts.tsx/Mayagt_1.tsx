@@ -324,7 +324,16 @@ function Mayagt_1(props: any) {
   );
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [data, loadData] = React.useState([]);
-  const [batlakhHuselt, setBatlakhHuselt] = useState({});
+  const [batlakhHuselt, setBatlakhHuselt] = useState({
+    AUDIT_ID: mayagtData.ID,
+    DOCUMENT_ID: mayagtData.Document_ID,
+    REQUEST_TYPE: 1,
+    LEVEL_ID: props.STATUS,
+    MODULE_ID:6,
+    DESCRIPTION: "",
+    CREATED_BY: userDetails.USER_ID,
+    
+  });
   const [loaderSpinner, setloaderSpinner] = useState(0);
 
   const [filter, setFilter] = useState({
@@ -385,65 +394,7 @@ function Mayagt_1(props: any) {
     debugColumns: false,
   });
 
-  // function Draw_input(param: any, cell: any, index: number, cell_all) {
-  //   return (
-  //     <div key = {cell.id + index}>
-  //       {cell.id === "IS_EXPERT_ATTEND" || cell.id === "IS_PRESS_REPORT" ? (
-  //         <select
-  //           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-  //           value={param.row.original[cell.id]}
-  //           onChange={(text) => {
-  //             let temp = data;
-  //             temp[index][cell.id] = text.target.value;
-  //             temp[index].EDITED = true    
-  //             // let tset = saveData;
-  //             // tset.add(index);
-  //             // setSaveData(tset);
-  //             loadData([...temp]);
-  //             skipAutoResetPageIndex()
-  //           }}
-  //         >
-  //           <option key={cell.id+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
-  //             {"Сонгоно уу"}
-  //           </option>
-  //           <option key={cell.id+'1'} className="font-medium" key={"Тийм"} value={1}>
-  //             {"Тийм"}
-  //           </option>
-  //           <option key={cell.id+'21'} className="font-medium" key={"Үгүй"} value={0}>
-  //             {"Үгүй"}
-  //           </option>
-  //         </select>
-  //       ) : cell.id === "WORK_PEOPLE" ||
-  //         cell.id === "WORK_DAY" ||
-  //         cell.id === "WORK_TIME" ? (
-  //         <input
-  //           value={param.row.original[cell.id]}
-  //           type="number"
-  //           className={
-  //             index % 2 > 0
-  //               ? "flex text-center h-8 bg-gray-100"
-  //               : "flex text-center h-8"
-  //           }
-  //           style={{
-  //             minHeight: "33px",
-  //             border: "1px solid",
-  //             borderRadius: "4px",
-  //             color: "gray",
-  //           }}
-  //           onChange={(e) => {
-  //             let temp = data;
-  //             temp[index][cell.id] = e.target.value;
-  //             temp[index].EDITED = true            
-  //             skipAutoResetPageIndex()
-  //             loadData([...temp]);
-  //           }}
-  //         />
-  //       ) : (
-  //         flexRender(cell_all.column.columnDef.cell, cell_all.getContext())
-  //       )}
-  //     </div>
-  //   );
-  // }
+ 
   
 
   useEffect(() => {
@@ -461,7 +412,8 @@ function Mayagt_1(props: any) {
       },
     })
       .then(function (response) {
-      
+        console.log(response.data,'mayagt1');
+        console.log(userDetails.USER_ID,'userDetails.USER_ID');
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
@@ -479,25 +431,25 @@ function Mayagt_1(props: any) {
        
       });
 
-    // DataRequest({
-    //   url:
-    //     fasUrl +
-    //     "OT_REQUEST_FOR_CONFIRM/" +
-    //     mayagtData.ID +
-    //     "/" +
-    //     mayagtData.DOCUMENT_ID +
-    //     "/" +
-    //     6,
-    //   method: "GET",
-    //   data: {},
-    // })
-    //   .then(function (response) {
-    //     setBatlakhHuselt(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error, "error");
+    DataRequest({
+      url:
+        Stat_Url +
+        "NotificationList/",
+      method: "POST",
+      data: {
+        AUDIT_ID:mayagtData.ID,
+        USER_ID:userDetails.USER_ID
+      },
+    })
+      .then(function (response) {
+        if(response.data !== undefined && response?.data.length>0){
+        setBatlakhHuselt(response.data[0]);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
       
-    //   });
+      });
   }
 
   function saveToDB() {
@@ -604,7 +556,7 @@ function Mayagt_1(props: any) {
           </div>
 
           <div className="flex mr-4">
-            {/* {
+            {
             status?.STATUS.STATUS !== null &&
             status?.STATUS.STATUS !== undefined ? (
              <ButtonRequest
@@ -615,12 +567,11 @@ function Mayagt_1(props: any) {
                 statusID={status.STATUS.ID}
                 Title="Хүсэлт илгээх"
                 batlakhHuselt={batlakhHuselt}
-                MODULE_TYPE={6}
-                PERIOD_TYPE ={0}
-              /> ):null} */}
-            {/* {status.ROLE?.AUDITOR_ID !== undefined?
+              /> ):null}
+
+            {status.ROLE?.AUDITOR_ID !== undefined?
             <ButtonConfirm     
-              STATUS={status?.STATUS}
+            STATUS={status.STATUS?.STATUS}
               data={mayagtData}
               Title={mayagtData.DOCUMENT_SHORT_NAME}
               RoleID={status?.ROLE.ROLE_ID}
@@ -631,7 +582,7 @@ function Mayagt_1(props: any) {
                 APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
                 APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
               }}
-              />:null} */}
+              />:null}
           </div>
         </div>
         

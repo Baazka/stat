@@ -137,6 +137,16 @@ function Mayagt_1(props: any) {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
+  const [batlakhHuselt, setBatlakhHuselt] = useState({
+    AUDIT_ID: mayagtData.ID,
+    DOCUMENT_ID: mayagtData.Document_ID,
+    REQUEST_TYPE: 1,
+    LEVEL_ID: props.STATUS,
+    MODULE_ID:6,
+    DESCRIPTION: "",
+    CREATED_BY: userDetails.USER_ID,
+    
+  });
   const columns = React.useMemo(
     () => [
       {
@@ -381,57 +391,6 @@ function Mayagt_1(props: any) {
     debugColumns: false,
   });
 
-  function Draw_input(param: any, cell: any, index: number, cell_all: any) {
-    return (
-      <div>
-        <div>
-          {cell.id === "IS_TRANSFER" ? (
-           <select
-           className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
-           value={param.row.original[cell.id]}
-           onChange={(text) => {
-             let temp = data;
-             temp[index][cell.id] = text.target.value;
-             let tset = saveData;
-             tset.add(index);
-             setSaveData(tset);
-             loadData(temp);
-           }}
-         >
-           <option key={index+'0'} className="font-medium" key={"Сонгоно уу"} value={999}>
-             {"Сонгоно уу"}
-           </option>
-           <option key={index+'1'} className="font-medium" key={"Тийм"} value={1}>
-             {"Тийм"}
-           </option>
-           <option key={index+'2'} className="font-medium" key={"Үгүй"} value={0}>
-             {"Үгүй"}
-           </option>
-         </select>
-          ) : cell.id === "HUGATSAANII_TOLOW" ? (
-            <input
-              type="date"
-              className="border-gray-400 rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2 font-normal"
-              value={dateFormat(param.row.original[cell.id], "yyyy-mm-dd")}
-              onChange={(e) => {
-                let temp = data;
-                //@ts-ignore
-                temp[index][cell.id] = dateFormat(e.target.value, "yyyy-mm-dd");
-
-                let tset = saveData;
-                tset.add(index);
-                setSaveData(tset);
-                // @ts-ignore
-                loadData([...temp]);
-              }}
-            />
-          ) : (
-            flexRender(cell_all.column.columnDef.cell, cell_all.getContext())
-          )}
-        </div>
-      </div>
-    );
-  }
 
   useEffect(() => {
     fetchData();
@@ -543,8 +502,33 @@ function Mayagt_1(props: any) {
             </button>
           </div>
           <div className="flex">
-            <ButtonRequest />
-            {/* <ButtonConfirm /> */}
+          {
+            status?.STATUS.STATUS !== null &&
+            status?.STATUS.STATUS !== undefined ? (
+             <ButtonRequest
+                audID={mayagtData.ID}
+                docId={mayagtData.DOCUMENT_ID}
+                STATUS={status.STATUS?.STATUS}
+                RoleID={status.ROLE?.ROLE_ID}
+                statusID={status.STATUS.ID}
+                Title="Хүсэлт илгээх"
+                batlakhHuselt={batlakhHuselt}
+              /> ):null}
+
+            {status.ROLE?.AUDITOR_ID !== undefined?
+            <ButtonConfirm     
+            STATUS={status.STATUS?.STATUS}
+              data={mayagtData}
+              Title={mayagtData.DOCUMENT_SHORT_NAME}
+              RoleID={status?.ROLE.ROLE_ID}
+              statusID={status?.STATUS.ID}
+              fetchData={() => fetchData()}
+              CREATED_BY={{
+                APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+              }}
+              />:null}
           </div>
         </div>
         <div >

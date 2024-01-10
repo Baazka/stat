@@ -1,151 +1,123 @@
-import React, { useEffect, useState } from "react";
-import "../pages/Home.css";
-import {
-  sortingFns,
-  FilterFn,
-  SortingFn,
-  useReactTable,
-} from "@tanstack/react-table";
-import dateFormat from "dateformat";
+import react, { useEffect, useState } from "react";
+import Stat_URL from "../Stat_URL";
+import DataRequest from "../functions/make_Request";
+import dateFormat, { masks } from "dateformat";
 
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from "@tanstack/match-sorter-utils";
-declare module "@tanstack/table-core" {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value);
 
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  });
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed;
-};
-
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0;
-
-  // Only sort by rank if the column has ranking information
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    );
-  }
-
-  // Provide an alphanumeric fallback for when the item ranks are equal
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
-};
-function FooterValue() {
+function FooterValue(props) {
+  // @ts-ignore
+  const mayagtData = JSON.parse(localStorage.getItem("Stat"));
   const [data, loadData] = useState({});
+  let api = "";
+  async function fetchData() {
+
+
+    DataRequest({
+      url: Stat_URL + "getProcess",
+      method: "POST",
+      data: {
+        ID: mayagtData.ID,
+     
+      },
+    })
+      .then(function (response) {
+        console.log(response?.data,'tt')
+        if(response.data !== undefined && response?.data.STATUS !== undefined)
+        loadData(response.data.STATUS);
+
+      }).catch(function (err) {
+        console.log(err,'error');
+      })
+    
+  }
+  useEffect(() => {
+    fetchData();
+  }, [props]);
 
   return (
-    <>
-      <div className="text-base">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <div
-            style={{
-              marginRight: "0px",
-              textAlign: "right",
-              marginTop: "0.2rem",
-            }}
-          >
-            Бэлтгэсэн:
-          </div>
-          <div
-            className="border-b-2"
-            style={{
-              color: "#636363",
-              borderRadius: "5px",
-              marginRight: "50px",
-              marginTop: "0.2rem",
-              paddingRight: "20px",
-              paddingLeft: "10px",
-            }}
-          ></div>
-        </div>
-      </div>
+    <div className="flex flex-row">
+      <div
+        style={{
+          display: "flex",
+          width: "60%",
+          alignItems: "end",
+        }}
+      >
+       
+        {data?.USER_NAME !== undefined ? (
+          <table className="w-full">
+            <thead className="text-center">
+            </thead>
+            <tbody>
+              <tr >
+                <td className="p-1 text-left">Бэлтгэсэн:</td>
+                <td className="p-1 border-b-2">{data?.USER_NAME}</td>
+                <td className="p-1 text-right">Код:</td>
+                <td className="p-1 border-b-2">{data?.USER_CODE}</td>
+                <td className="p-1 text-right">Огноо:</td>
+                <td className="p-1 border-b-2 w-30">
+                  {dateFormat(data?.CREATED_DATE, "yyyy-mm-dd")}
+                </td>
+                <td className="p-1 text-right">Утас:</td>
+                <td className="p-1 border-b-2">{data?.PERSON_PHONE}</td>
+              </tr>
+             
+              {data?.APPROVED_FIRST_NAME !== null ? (
+                <tr>
+                  <td className="p-1 text-left w-28">Баталсан 1:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_FIRST_NAME}
+                  </td>
+                  <td className="p-1 text-right">Код:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_FIRST_CODE}
+                  </td>
+                  <td className="p-1 text-right">Огноо:</td>
+                  <td className="p-1 border-b-2">
+                    {dateFormat(data?.APPROVED_FIRST_DATE, "yyyy-mm-dd")}
+                  </td>
+                </tr>
+              ) : null}
+              {data?.APPROVED_SECOND_NAME !== null ? (
+                <tr>
+               
 
-      <div className="text-base">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <div
-            style={{
-              marginRight: "0px",
-              textAlign: "right",
-              marginTop: "0.2rem",
-            }}
-          >
-            Код:
-          </div>
-          <div
-            className="border-b-2"
-            style={{
-              color: "#636363",
-              borderRadius: "5px",
-              marginRight: "50px",
-              marginTop: "0.2rem",
-              paddingRight: "20px",
-              paddingLeft: "10px",
-            }}
-          ></div>
-        </div>
+                  <td className="p-1 text-left w-28">Баталсан 2:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_SECOND_NAME}
+                  </td>
+                  <td className="p-1text-right">Код:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_SECOND_CODE}
+                  </td>
+                  <td className="p-1 text-right">Огноо:</td>
+                  <td className="p-1 border-b-2">
+                    {dateFormat(data?.APPROVED_SECOND_DATE, "yyyy-mm-dd")}
+                  </td>
+                </tr>
+              ) : null}
+              {data?.APPROVED_THIRD_NAME !== null &&
+              data?.APPROVED_THIRD_NAME !== undefined ? (
+                <tr>
+                  <td className="p-1 text-left w-28">Баталсан 3:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_THIRD_NAME}
+                  </td>
+                  <td className="p-1 text-right">Код:</td>
+                  <td className="p-1 border-b-2">
+                    {data?.APPROVED_THIRD_CODE}
+                  </td>
+                  <td className="p-1 text-right">Огноо:</td>
+                  <td className="p-1 border-b-2">
+                    {dateFormat(data?.APPROVED_THIRD_DATE, "yyyy-mm-dd")}
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        ) : null}
       </div>
-      <div className="text-base">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <div
-            style={{
-              marginRight: "0px",
-              textAlign: "right",
-              marginTop: "0.2rem",
-            }}
-          >
-            Огноо:
-          </div>
-          <div
-            style={{
-              color: "#636363",
-              paddingLeft: "7px",
-              paddingRight: "7px",
-              marginTop: "0.2rem",
-              border: 10,
-            }}
-          >
-            <input
-              className="border-gray-400 border-b-2  text-sm focus:outline-none py-1 h-5 mr-1 pl-2"
-              value={dateFormat(data?.CREATED_DATE, "yyyy-mm-dd")}
-            />
-          </div>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
-
 export default FooterValue;

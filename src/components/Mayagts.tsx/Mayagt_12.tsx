@@ -238,7 +238,16 @@ function Mayagt_9A(props: any) {
   );
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [data, loadData] = React.useState([]);
-  const [batlakhHuselt, setBatlakhHuselt] = useState({});
+  const [batlakhHuselt, setBatlakhHuselt] = useState({
+    AUDIT_ID: mayagtData.ID,
+    DOCUMENT_ID: mayagtData.Document_ID,
+    REQUEST_TYPE: 1,
+    LEVEL_ID: props.STATUS,
+    MODULE_ID:6,
+    DESCRIPTION: "",
+    CREATED_BY: userDetails.USER_ID,
+    
+  });
   const [loaderSpinner, setloaderSpinner] = useState(0);
   const [drop,setDrop] = useState({
     drop1:[],
@@ -609,7 +618,7 @@ function Mayagt_9A(props: any) {
           </div>
 
           <div className="flex mr-4">
-            {/* {
+          {
             status?.STATUS.STATUS !== null &&
             status?.STATUS.STATUS !== undefined ? (
              <ButtonRequest
@@ -620,12 +629,11 @@ function Mayagt_9A(props: any) {
                 statusID={status.STATUS.ID}
                 Title="Хүсэлт илгээх"
                 batlakhHuselt={batlakhHuselt}
-                MODULE_TYPE={6}
-                PERIOD_TYPE ={0}
-              /> ):null} */}
-            {/* {status.ROLE?.AUDITOR_ID !== undefined?
+              /> ):null}
+
+            {status.ROLE?.AUDITOR_ID !== undefined?
             <ButtonConfirm     
-              STATUS={status?.STATUS}
+            STATUS={status.STATUS?.STATUS}
               data={mayagtData}
               Title={mayagtData.DOCUMENT_SHORT_NAME}
               RoleID={status?.ROLE.ROLE_ID}
@@ -636,7 +644,7 @@ function Mayagt_9A(props: any) {
                 APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
                 APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
               }}
-              />:null} */}
+              />:null}
           </div>
         </div>
         

@@ -3,8 +3,8 @@ import Title from "../Title";
 import "../../pages/Home.css";
 import Comment from "../comment";
 import FooterValue from "../Footervalue";
-// import ButtonConfirm from "../ButtonConfirm";
-// import ButtonRequest from "../ButtonRequest";
+import ButtonConfirm from "../ButtonConfirm";
+import ButtonRequest from "../ButtonRequest";
 import Stat_Url from "../../Stat_URL";
 import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
@@ -153,6 +153,16 @@ function Mayagt_1(props: any) {
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [batlakhHuselt, setBatlakhHuselt] = useState({
+    AUDIT_ID: mayagtData.ID,
+    DOCUMENT_ID: mayagtData.Document_ID,
+    REQUEST_TYPE: 1,
+    LEVEL_ID: props.STATUS,
+    MODULE_ID:6,
+    DESCRIPTION: "",
+    CREATED_BY: userDetails.USER_ID,
+    
+  });
   const columns = React.useMemo(
     () => [
       {
@@ -539,8 +549,33 @@ function Mayagt_1(props: any) {
             </button>
           </div>
           <div className="flex">
-            {/* <ButtonRequest /> */}
-            {/* <ButtonConfirm /> */}
+          {
+            status?.STATUS.STATUS !== null &&
+            status?.STATUS.STATUS !== undefined ? (
+             <ButtonRequest
+                audID={mayagtData.ID}
+                docId={mayagtData.DOCUMENT_ID}
+                STATUS={status.STATUS?.STATUS}
+                RoleID={status.ROLE?.ROLE_ID}
+                statusID={status.STATUS.ID}
+                Title="Хүсэлт илгээх"
+                batlakhHuselt={batlakhHuselt}
+              /> ):null}
+
+            {status.ROLE?.AUDITOR_ID !== undefined?
+            <ButtonConfirm     
+            STATUS={status.STATUS?.STATUS}
+              data={mayagtData}
+              Title={mayagtData.DOCUMENT_SHORT_NAME}
+              RoleID={status?.ROLE.ROLE_ID}
+              statusID={status?.STATUS.ID}
+              fetchData={() => fetchData()}
+              CREATED_BY={{
+                APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+              }}
+              />:null}
           </div>
         </div>
         <div >

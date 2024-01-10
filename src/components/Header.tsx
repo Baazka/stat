@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom"; 
 import logo from "../assets/zurag/logo.png";
-import fasUrl from "../fasURL";
+import Stat_URL from "../Stat_URL";
 import {
   userPro,
   DownIcon,
@@ -63,9 +63,9 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 function arrayCheck(emptyArray){
   if (
     typeof emptyArray != "undefined" &&
-    emptyArray != null 
+    emptyArray !== null 
     &&
-    emptyArray.length != null &&
+    emptyArray.length !== null &&
     emptyArray.length > 0
 )
     return true;
@@ -74,181 +74,87 @@ else return  false;
 function Header(props) {
   
   const [notification, setNotification] = useState(false);
-  const [notificationData, setNotificationData] =  Array<any>([]);
+  const [notificationData, setNotificationData] =  useState([]);
   const [showDialogOpen, setShowDialogOpen] = useState(false);
-  const [showDialogPass, setShowDialogPass] = useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+
+
   let navigate = useNavigate();
+   let location = useLocation()
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const ref = useRef(null);
-  const [globalFilter, setGlobalFilter] = React.useState("");
-  const [data, loadData] = useState({
-    ID: null,
-    ENT_ID: userDetails.ENT_ID,
-    FIRST_NAME: null,
-    LAST_NAME: null,
-    POSTION_NAME: null,
-    PHONE: null,
-    CREATED_BY: userDetails.USER_ID,
-    IS_ACTIVE: 1,
-  });
+
+ 
   const [loaderSpinner, setloaderSpinner] = useState(0);
-  const dataTable = React.useMemo(
-    () => (arrayCheck(notificationData) ? notificationData : []),
-    [notificationData]
-  );
+  const [notfilter, setFilter] = useState({
+    AUDIT_CODE: null,
+    TYPE: null,
+  });
+
   function checkRoleBatlakh(ROLE, LEVEL_ID, MODULE_TYPE, CREATED_BY) {
-   if ((ROLE === 1 ) && LEVEL_ID === 1) {
-      return true;
-    } else if ((ROLE === 2 ) && LEVEL_ID === 2) {
-      return true;
-    } else if ((ROLE === 3 ) && LEVEL_ID === 3) {
-      return true;
-    } else {
-      return false;
+    
+    if ((ROLE === 2 ) && LEVEL_ID === 0) {
+       return true;
+     } else if ((ROLE === 3 ) && LEVEL_ID === 1) {
+       return true;
+     } else if ((ROLE === 4 ) && LEVEL_ID === 2) {
+       return true;
+     } else {
+       return false;
+     }
     }
-   }
    function checkRoleTsutslah(ROLE, LEVEL_ID, MODULE_TYPE, CREATED_BY) {
-     if ((ROLE === 1 || ROLE === 9) && LEVEL_ID === 1) {
+   
+     if ((ROLE === 2 ) && LEVEL_ID === 1) {
       return true;
-    } else if ((ROLE === 2 || ROLE === 10) && LEVEL_ID === 2) {
+    } else if ((ROLE === 3 ) && LEVEL_ID === 2) {
       return true;
-    } else if ((ROLE === 3 || ROLE === 11) && LEVEL_ID === 3) {
+    } else if ((ROLE === 4 ) && LEVEL_ID === 3) {
       return true;
     } else {
       return false;
     }
   }
-  const columns = React.useMemo(
-    () => [
-      {
-        accessorKey: "№",
-        header: "№",
-        accessorFn: (value, index) => (
-          <div>
-            <div className="w-11/12">
-                  <div
-                    className="text-xl font-medium"
-                    style={{
-                      fontSize: 14,
-                      color: value.IS_SHOW === 0 ? "black" : "#58555A",
-                    }}
-                  >
-                    Чанарын баталгаажуулалын{" "}
-                    <span
-                      style={{
-                        fontSize: 14,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {value.AUDIT_CODE}
-                    </span>{" "}
-                    кодтой аудитын ажлын{" "}
-                    <span
-                      style={{
-                        fontSize: 14,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {value.DOCUMENT_SHORT_NAME}
-                    </span>{" "}
-                    баримтыг{" "}
-                    {value.REQUEST_TYPE === 0 ? (
-                      <span
-                        style={{
-                          fontSize: 14,
-                          color: "red",
-                        }}
-                      >
-                        цуцлах
-                      </span>
-                    ) : (
-                      <span
-                        style={{
-                          fontSize: 14,
-                          color: "#32CD32",
-                        }}
-                      >
-                        батлах
-                      </span>
-                    )}{" "}
-                    хүсэлт {value.USER_NAME}-с ирлээ
-                  </div>
-
-                  <p
-                    style={{
-                      fontSize: 11,
-                      color: "grey",
-                    }}
-                  >
-                    {dateFormat(
-                      value.UPDATED_DATE !== null
-                        ? value.UPDATED_DATE
-                        : value.CREATED_DATE,
-                      "yyyy-mm-dd hh:MM:ss"
-                    )}
-                  </p>
-                </div>
-                <div>
-                {value.IS_SHOW === 0 ? (
-                  <img className="h-6 w-6" src={y} />
-                ) : null}
-              </div>
-          </div>
-        ),
-        size: 10,
-      },
-   
-    
-     
-    ],
-    []
-  );
+  
   function checkNotification() {
      setloaderSpinner(1);
     if (localStorage.getItem("userDetails") !== undefined) {
       let userDetils = JSON.parse(localStorage.getItem("userDetails"));
       if (userDetils !== undefined && userDetils.USER_ID !== undefined) {
-        // DataRequest({
-        //   url: fasUrl + "OT_REQUEST_FOR_CONFIRM_ONE/",
-        //   method: "POST",
-        //   data: {
-        //     AUDIT_CODE: notfilter.AUDIT_CODE,
-        //     USER_ID: userDetils.USER_ID,
-        //     MODULE_TYPE:6
-        //   },
-        // }).then((response) => {
-        //   // if (response?.data !== undefined && response.data.length > 0) {
-        //   //   let temp = [];
-        //   //   for (let i = 0; i < response.data.length; i++) {
-        //   //     if (
-        //   //       response.data[i].REQUEST_TYPE === 1
-        //   //         ? checkRoleBatlakh(
-        //   //             response.data[i].ROLE_ID,
-        //   //             response.data[i].LEVEL_ID,
-        //   //             response.data[i].MODULE_TYPE,
-        //   //             response.data[i].CREATED_BY
-        //   //           )
-        //   //         : checkRoleTsutslah(
-        //   //             response.data[i].ROLE_ID,
-        //   //             response.data[i].LEVEL_ID,
-        //   //             response.data[i].MODULE_TYPE,
-        //   //             response.data[i].CREATED_BY
-        //   //           )
-        //   //     ) {
-        //   //       temp = temp.filter((a) => a.ID !== response.data[i].ID);
-        //   //       temp.push(response.data[i]);
-        //   //     }
-        //   //   }
-        //   //   setNotificationData(temp);
-        //   //   setloaderSpinner(0);
-        //   // } else {
-        //   //   setNotificationData([]);
-        //   //   setloaderSpinner(0);
-        //   // }
-        // });
+        DataRequest({
+          url: Stat_URL + "NotificationList/",
+          method: "POST",
+          data: {
+            AUDIT_ID: notfilter.AUDIT_CODE,
+            USER_ID: userDetils.USER_ID,
+          },
+        }).then((response) => {
+          if (response?.data !== undefined && response.data.length > 0) {
+            let temp = [];
+            for (let i = 0; i < response.data.length; i++) {
+              if (
+                response.data[i].REQUEST_TYPE === 1
+                  ? checkRoleBatlakh(
+                    response.data[i].ROLE_ID,
+                      response.data[i].PRO_STATUS,
+                    )
+                  : checkRoleTsutslah(
+                    response.data[i].ROLE_ID,
+                    response.data[i].PRO_STATUS,
+                      response.data[i].MODULE_TYPE,
+                      response.data[i].CREATED_BY
+                    )
+              ) {
+                temp = temp.filter((a) => a.ID !== response.data[i].ID);
+                temp.push(response.data[i]);
+              }
+            }
+            setNotificationData(temp);
+            setloaderSpinner(0);
+          } else {
+            setNotificationData([]);
+            setloaderSpinner(0);
+          }
+        });
       }
     }
 
@@ -268,40 +174,14 @@ function Header(props) {
     };
   }, []);
 
-  const [notfilter, setFilter] = useState({
-    AUDIT_CODE: null,
-    TYPE: null,
-  });
+  
 
   function logOutFunction() {
     localStorage.removeItem("userDetails");
     navigate("/");
   }
-
-  const table = useReactTable({
-    dataTable,
-    columns,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    state: {
-      columnFilters,
-      globalFilter,
-    },
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: false,
-    debugHeaders: false,
-    debugColumns: false,
-  });
+ 
+  
 
   return (
     <div className="sticky top-0 z-40 ">
@@ -376,7 +256,7 @@ function Header(props) {
                                ? (
                               <div class="badge">
                                 <div class="message-count">
-                                  {/* {
+                                  {
                                   // arrayCheck(notificationData.filter(
                                   //   (a) => a.IS_SHOW === 0
                                   // )) >= 1000
@@ -386,7 +266,7 @@ function Header(props) {
                                         (a) => a.IS_SHOW === 0
                                       ))?notificationData.filter(
                                         (a) => a.IS_SHOW === 0
-                                      ).length:null} */}
+                                      ).length:null}
                                 </div>
                               </div>
                             ) : null}
@@ -505,28 +385,11 @@ function Header(props) {
                   </Transition>
                 </Menu>
               </div>
-              <Dialog
-              open={notification}
-              title="Мэдэгдэл"
-              handleClose={() => setNotification(false)}
-              width={""}
-            >
-            <div style={{ maxHeight: "550px", overflowY: "scroll" }}>
-           
-              {/* <UTable
-                columns={columns}
-                data={dataTable}
-                setData={(value) => MoreNotification(value)}
-                //sData={props.data}
-                tsonkh={notification}
-                setTsonkh={(value) => setNotification(value)}
-                checkNotification={(value) => checkNotification(value)}
-                setFilter={(value) => setFilter(value)}
-                loaderSpinner={loaderSpinner}
-                notfilter={notfilter}
-              /> */}
-            </div>
-      </Dialog>
+             {
+              notification?
+              <NotificationDialog notification = {notification} setNotification={setNotification} data={arrayCheck(notificationData) ? notificationData : []} navigate={navigate} location={location}/>:null
+             }
+
             </div>
 
           </div>
@@ -548,97 +411,186 @@ function Header(props) {
   );
 }
 
+
 function Filter({
   column,
   table,
 }: {
-  column: Column<any, unknown>;
+  column: Column<any, any>;
   table: Table<any>;
 }) {
   const firstValue = table
     .getPreFilteredRowModel()
     .flatRows[0]?.getValue(column.id);
 
-  const columnFilterValue = column.getFilterValue();
-
-  const sortedUniqueValues = React.useMemo(
-    () =>
-      typeof firstValue === "number"
-        ? []
-        : Array.from(column.getFacetedUniqueValues().keys()).sort(),
-    [column.getFacetedUniqueValues()]
-  );
-
-  return typeof firstValue === "number" ? (
-    <div>
-      <div className="h-1" />
+  return (
+    <div className="flex space-x-2">
+      <input
+        type="text"
+        value={(column.getFilterValue() ?? "") as string}
+        onChange={(e) => column.setFilterValue(e.target.value)}
+        placeholder={`Search...`}
+        className="border shadow rounded w-full"
+      />
     </div>
-  ) : (
-    <>
-      <datalist id={column.id + "list"}>
-        {sortedUniqueValues.slice(0, 5000).map((value: any) => (
-          <option value={value} key={value} />
-        ))}
-      </datalist>
-
-      <div className="h-4" />
-    </>
   );
 }
+function NotificationDialog({data,notification,setNotification,navigate,location}){
 
-function Employee(props: any) {
-  //@ts-ignore
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [globalFilter, setGlobalFilter] = React.useState("");
-  const [rowSelection, setRowSelection] = React.useState({});
+  async function MoreNotification(value) {
+    let sendData = value;
+    sendData.IS_SHOW = 1;
+    sendData.MODULE_TYPE = value.MODULE_TYPE;
+    DataRequest({
+      url: Stat_URL + "NotificationUpdate/",
+      method: "POST",
+      data: sendData,
+    })
+      .then(async function (response) {
+        if (
+          (response.data?.code === 405 &&
+            response.data?.result?.errorNum === 6502) ||
+          (response.data?.code === 405 &&
+            response.data?.result?.errorNum === 1461)
+        ) {
+          alert("Тэмдэгт хэтэрсэн байна");
+        } else if (response?.data.message === "Хадгаллаа."){
+    
+          //STAT
+          DataRequest({
+            url: Stat_URL + "statisticListOne/",
+            method: "POST",
+            data: {
+              ID: value.AUDIT_ID,
+            },
+          }).then(async function (lists) {
+            if (lists.data.length > 0) {
+              localStorage.removeItem("Stat");
+              localStorage.setItem("Stat", JSON.stringify(lists.data[0]));
+              
+                      if (location.pathname === "/web/Home/Form") {
+                        window.location.reload();
+                      } else {
+                        navigate("/web/Home/Form");
+                      }
+                      setNotification(false);
+                    }
+                 
+                })
+                .catch(function (error) {
+                  alert("Aмжилтгүй");
+                });
+          }
+              
+           
+          
+        
+      })
+      .catch(function (error) {
+        alert("Aмжилтгүй");
+      });
+  }
 
   const columns = React.useMemo(
     () => [
+      {
+        accessorKey: "BUDGET_SHORT_NAME",
+        accessorFn: (value, index) => (
+          <div
+              className="py-1 flex items-center justify-between  cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200  dark:hover:text-white"
+              style={{
+                borderBottom: "1.5px solid rgba(226, 225, 225, 0.7)",
+              }}
+              onClick={() => MoreNotification(value)}
+            >
+              {(
+                <div className="w-11/12">
+                  <div
+                    className="text-xl font-medium"
+                    style={{
+                      fontSize: 14,
+                      color: value.IS_SHOW === 0 ? "black" : "#58555A",
+                    }}
+                  >
+                  
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {value.DEPARTMENT_NAME}
+                    </span>{" "}
+                    -ын{" "}
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {value.DOCUMENT_SHORT_NAME}
+                    </span>{" "}
+                    баримтыг{" "}
+                    {value.REQUEST_TYPE === 0 ? (
+                      <span
+                        style={{
+                          fontSize: 14,
+                          color: "red",
+                        }}
+                      >
+                        цуцлах
+                      </span>
+                    ) : (
+                      <span
+                        style={{
+                          fontSize: 14,
+                          color: "#32CD32",
+                        }}
+                      >
+                        батлах
+                      </span>
+                    )}{" "}
+                    хүсэлт {value.USER_NAME}-с ирлээ
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: 11,
+                      color: "grey",
+                    }}
+                  >
+                    {dateFormat(
+                      value.UPDATED_DATE !== null
+                        ? value.UPDATED_DATE
+                        : value.CREATED_DATE,
+                      "yyyy-mm-dd hh:MM:ss"
+                    )}
+                  </p>
+                </div>
+              )}
+
+              <div>
+                {value.IS_SHOW === 0 ? (
+                  <img className="h-6 w-6" src={y} />
+                ) : null}
+              </div>
+            </div>
+          
+        ),
       
-      {
-        accessorFn: (row, index) => index + 1,
-        id: "№",
-        minSize: "40px",
-        maxSize: "40px",
-        size: "40px",
-      },
-      {
-        accessorKey: "DEPARTMENT_NAME",
         cell: (info) => info.getValue(),
-        header: "Төрийн аудитын байгууллага",
+        header: "",
         footer: (props) => props.column.id,
-        // enableColumnFilter : false,
-      },
-      {
-        accessorKey: "SUB_DEPARTMENT_NAME",
-        header: "Харъяа газар",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "POSITION_NAME",
-        header: "Албан тушаал",
-        cell: (info) => info.getValue(),
+        enableColumnFilter : false,
       },
 
-      {
-        accessorKey: "USER_NAME",
-        header: "Албан хаагчийн нэр",
-        cell: (info) => info.getValue(),
-      },
-
-      {
-        accessorKey: "USER_CODE",
-        header: "Аудиторын код",
-        cell: (info) => info.getValue(),
-      },
     ],
     []
   );
-
-  const [data, setData] = React.useState([]);
 
   const table = useReactTable({
     data,
@@ -649,11 +601,9 @@ function Employee(props: any) {
     state: {
       columnFilters,
       globalFilter,
-      rowSelection,
     },
     enableRowSelection: true, //enable row selection for all rows
     // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
-    onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
@@ -665,217 +615,150 @@ function Employee(props: any) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
   });
-
- 
-
-  function saveToDB() {
-    let temp = props.data;
-    for (let j in rowSelection) {
-      let temp_team = {
-        ID: null,
-        STAT_AUDIT_ID: temp.Audit.ID,
-        AUDITOR_ID: 55,
-        ROLE_ID: 1,
-        IS_ACTIVE: 1,
-        AUDITOR_NAME: null,
-        USER_CODE: null,
-      };
-      temp_team.AUDITOR_ID = data[j].USER_ID;
-      temp_team.USER_NAME = data[j].USER_NAME;
-      temp_team.USER_CODE = data[j].USER_CODE;
-      temp.Team.push(temp_team);
-    }
-    props.loadData(temp);
-    props.setTsonkh(0);
-  }
-
-  let listItems;
-  if (data !== undefined) {
-    listItems = (
-      <div
-        style={{
-          position: "absolute",
-          width: "60%",
-          height: "auto",
-          left: "25%",
-          top: "8.5%",
-          borderRadius: "6px",
-          backgroundColor: "white",
-          boxShadow:
-            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19)",
-          zIndex: "1",
-        }}
-      >
-        <div
-          style={{
-            height: "auto",
-            backgroundColor: "#2684fe",
-            padding: "18px 10px 18px 10px",
-            color: "white",
-            marginBottom: "10px",
-            borderTopLeftRadius: "15px",
-            borderTopRightRadius: "15px",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <div className="ml-4">
-            <span> АУДИТЫН БАГ </span>
-          </div>
-          <div>
-            <span
-              style={{
-                fontWeight: "bold",
-                cursor: " -webkit-grab",
-              }}
-              onClick={() => props.setTsonkh(0)}
+  return ( <Dialog
+    open={notification}
+    title="Мэдэгдэл"
+    handleClose={() => setNotification(false)}
+    width={""}
+  >
+  <div style={{ maxHeight: "550px", overflowY: "scroll" }}>
+  <div className="flex justify-between h-8 p-2 mb-3">
+<div className="flex ">
+  <DebouncedInput
+    value={globalFilter ?? ""}
+    onChange={(value) => setGlobalFilter(String(value))}
+    className="p-1.5 font-lg shadow border border-block rounded h-8"
+    placeholder="Search all columns..."
+  />
+</div>
+</div>
+<div style={{ overflow: "scroll" }}>
+<div />
+<table className="w-full">
+  <thead >
+    {table.getHeaderGroups().map((headerGroup) => (
+      <tr key={headerGroup.id}>
+        {headerGroup.headers.map((header) => {
+          return (
+            <th
+              key={header.id}
+              colSpan={header.colSpan}
+              style={{ verticalAlign: "bottom" }}
             >
-              X
-            </span>
-          </div>
-        </div>
-        <div className="flex justify-between h-8 p-2 mb-3">
-          <div className="flex ">
-            <DebouncedInput
-              value={globalFilter ?? ""}
-              onChange={(value) => setGlobalFilter(String(value))}
-              className="p-1.5 font-lg shadow border border-block rounded h-8"
-              placeholder="Search all columns..."
-            />
-          </div>
-        </div>
-
-        <div style={{ overflow: "scroll" }}>
-          <div />
-          <table>
-            <thead className="TableHeadBackroundcolor">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{ verticalAlign: "bottom" }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </div>
-
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
-                        )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="overflow-scroll ">
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+              {header.isPlaceholder ? null : (
+                <>
+                  <div
+                    onMouseDown={header.getResizeHandler()}
+                    onTouchStart={header.getResizeHandler()}
+                  ></div>
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? "cursor-pointer select-none"
+                        : "",
+                      onClick:
+                        header.column.getToggleSortingHandler(),
+                    }}
                   >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            >
-              {"<"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-            <span className="flex items-center gap-4">
-              <div>нийт</div>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}{" "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-       
-      </div>
-    );
-  } else {
-    listItems = <h1>ачаалж байна</h1>;
-  }
-  return listItems;
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </div>
+
+                  {header.column.getCanFilter() ? (
+                    <div>
+                      <Filter column={header.column} table={table} />
+                    </div>
+                  ) : null}
+                </>
+              )}
+            </th>
+          );
+        })}
+      </tr>
+    ))}
+  </thead>
+  <tbody className="overflow-scroll ">
+    {table.getRowModel().rows.map((row, i) => {
+      return (
+        <tr
+          key={row.id}
+        >
+          {row.getVisibleCells().map((cell, index) => {
+            return (
+              <td key={cell.id} className="p-2 text-left">
+                {flexRender(
+                  cell.column.columnDef.cell,
+                  cell.getContext()
+                )}
+              </td>
+            );
+          })}
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
+<div style={{ justifyContent: "flex-end" }}>
+<div className="justify-end flex items-center gap-1 mt-5 mr-2">
+  <button
+    className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+    onClick={() => table.setPageIndex(0)}
+    disabled={!table.getCanPreviousPage()}
+  >
+    {"<<"}
+  </button>
+  <button
+    onClick={() => table.previousPage()}
+    disabled={!table.getCanPreviousPage()}
+    className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+  >
+    {"<"}
+  </button>
+  <button
+    className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+    onClick={() => table.nextPage()}
+    disabled={!table.getCanNextPage()}
+  >
+    {">"}
+  </button>
+  <button
+    className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+    disabled={!table.getCanNextPage()}
+  >
+    {">>"}
+  </button>
+  <span className="flex items-center gap-4">
+    <div>нийт</div>
+    <strong>
+      {table.getState().pagination.pageIndex + 1}{" "}
+      {table.getPageCount()}
+    </strong>
+  </span>
+  <select
+    value={table.getState().pagination.pageSize}
+    onChange={(e) => {
+      table.setPageSize(Number(e.target.value));
+    }}
+    className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+  >
+    {[10, 20, 30, 40, 50].map((pageSize) => (
+      <option key={pageSize} value={pageSize}>
+        {pageSize}
+      </option>
+    ))}
+  </select>
+</div>
+</div>
+</div>
+   
+  </div>
+</Dialog>
+)
 }
+
 function DebouncedInput({
   value: initialValue,
   onChange,
@@ -901,34 +784,70 @@ function DebouncedInput({
   }, [value]);
 
   return (
-    <div className=" overflow-hidden flex border rounded-md h-7">
+    <div className="flex  w-full items-center justify-between">
+      <label className="mr-4">Хайлт:</label>
       <input
         type="text"
         value={value || ""}
-        className=" text-sm "
+        className="text-sm border rounded-md h-7"
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
         placeholder="Хайх утгаа оруулна уу..."
-        style={{
-          width: "200px",
-        }}
+        
       />
 
-      <button className="flex items-center px-2.5 border-l bg-blue-500 rounded-md">
-        <svg
-          className="h-4 w-4 text-grey-dark"
-          fill="currentColor"
-          color="white"
-          enableBackground=""
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-        </svg>
-      </button>
+  
     </div>
+  );
+}
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  loadData,
+  tsonkh,
+  row,
+  setTsonkh,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+  function saveToDB(value) {
+    
+    if (tsonkh !== 1) {
+      let temp = data;
+     temp.ENT_ID = row.original.ENT_ID;
+     temp.ENT_NAME = row.original.ENT_NAME;
+     temp.ORG_REGISTER_NO = row.original.ORG_REGISTER_NO;
+     loadData(temp);
+      setTsonkh(0);
+    }
+
+    //  }
+  }
+
+  return tsonkh === 1 ? (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      {...rest}
+    />
+  ) : (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      onClick={(value) => saveToDB(ref)}
+      {...rest}
+    />
   );
 }
 export default Header;

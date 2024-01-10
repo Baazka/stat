@@ -16,6 +16,7 @@ import Mayagt_15 from "../components/Mayagts.tsx/Mayagt_15";
 import CM_1A from "../components/S_News.tsx/CM_1A";
 import Comments from "../components/comment";
 import Mayagt_files from '../components/Mayagt_files'
+import FooterValue from "../components/Footervalue";
 
 function Mayagt() {
   // @ts-ignore
@@ -23,7 +24,6 @@ function Mayagt() {
   // @ts-ignore
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-  console.log(mayagtData.DOCUMENT_ID,'mayagtData.document');
   return (
     <div className="overflow-scroll h-full" >
     <div  className="flex flex-col" style={{height:window.innerHeight-125}}>
@@ -63,6 +63,9 @@ function Mayagt() {
       <div className="p-1">
         <Mayagt_files mayagtData={mayagtData} userDetails={userDetails}/>
       </div>
+      <div className="p-1">
+      <FooterValue/>
+      </div>
     <div className="p-2">
       <Comments
             audid={mayagtData.ID}
@@ -72,7 +75,10 @@ function Mayagt() {
             // changeData={() => changeData()}
             MODULE_ID={6}
           />
+
           </div>
+         
+    
     </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataRequest } from "../functions/DataApi";
 import fasUrl from "../fasURL";
+import StatUrl from '../Stat_URL'
 var dateFormat = require("dateformat");
 
 function RequestButtonOT(props: any) {
@@ -57,34 +58,23 @@ function RequestButtonOT(props: any) {
     }
     if (requiredField()) {
       DataRequest({
-        url: fasUrl + "OT_REQUEST_FOR_CONFIRM/",
+        url: StatUrl + "NotificationInsert/",
         method: "POST",
         data: {
-          ID: null,
-          OT_AUDIT_ID: props.audID,
+          AUDIT_ID: props.audID,
           DOCUMENT_ID: props.docId,
-          IS_ACTIVE: 1,
-          CREATED_BY: userDetails.USER_ID,
-          IS_SHOW: 0,
           REQUEST_TYPE: data.REQUEST_TYPE,
-          DESCRIPTION: data.DESCRIPTION,
           LEVEL_ID: level,
-          // LEVEL_ID:
-          //   props.STATUS === null || props.STATUS === undefined
-          //     ? 0
-          //     : props.STATUS,
-          MODULE_TYPE: props.MODULE_TYPE,
-
-          PERIOD_TYPE: props.PERIOD_TYPE,
+          MODULE_ID:6,
+          DESCRIPTION: data.DESCRIPTION,
+          CREATED_BY: userDetails.USER_ID,
         },
       })
         .then(function (response) {
-          if (response?.data.message === "success") {
+          if (response?.data.message === "Хадгаллаа.") {
             alert("Aмжилттай хадгаллаа");
             setTsonkh(0);
-            // if (props.Akt === undefined) {
-            //   props.changeData();
-            // }
+       
           } else {
             alert("Системийн алдаа");
           }
@@ -94,33 +84,7 @@ function RequestButtonOT(props: any) {
         });
     }
   }
-  function cancel() {
-    let url = "";
-
-    DataRequest({
-      url: fasUrl + "ot_processChange/",
-      method: "POST",
-      data: {
-        PROCESS_ID: props.statusID,
-        ACTION_ID: 4,
-        CREATED_BY: userDetails.USER_ID,
-        CREATED_DATE: dateFormat(new Date(), "dd-mmm-yyyy"),
-      },
-    })
-      .then(function (response) {
-        if (response?.data.message === "success") {
-          alert("Aмжилттай хадгаллаа");
-          setTsonkh(0);
-          props.fetchData();
-        } else {
-          alert("Системийн алдаа ");
-        }
-      })
-      .catch(function (error) {
-        console.log(error,'ot_processChange');
-        // alert("Aмжилтгүй");
-      });
-  }
+ 
   return (
     <div>
       <button
