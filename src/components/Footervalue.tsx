@@ -21,7 +21,7 @@ function FooterValue(props) {
       },
     })
       .then(function (response) {
-        console.log(response?.data,'tt')
+        
         if(response.data !== undefined && response?.data.STATUS !== undefined)
         loadData(response.data.STATUS);
 

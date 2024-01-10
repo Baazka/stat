@@ -90,7 +90,7 @@ function Mayagt_11_Create(props: any) {
   async function fetchData() {
     
      if (localStorage.getItem('stat_bm8a') !== undefined && localStorage.getItem('stat_bm8a') !== null) {
-      console.log(JSON.parse(localStorage.getItem('stat_bm8a')),'test');
+      
       loadData({...JSON.parse(localStorage.getItem('stat_bm8a'))})
    
     }
@@ -1032,7 +1032,7 @@ function IndeterminateCheckbox({
     }
   }, [ref, indeterminate]);
   function saveToDB(value) {
-    console.log(row.original);
+    
     if (tsonkh !== 1) {
       let temp = data;
      temp.ENT_ID = row.original.ENT_ID;

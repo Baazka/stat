@@ -94,7 +94,7 @@ function Mayagt_9_Create(props: any) {
   async function fetchData() {
     
      if (localStorage.getItem('stat_bm9') !== undefined && localStorage.getItem('stat_bm9') !== null) {
-      console.log(JSON.parse(localStorage.getItem('stat_bm9')),'test');
+      
       loadData({...JSON.parse(localStorage.getItem('stat_bm9'))})
    
     }

@@ -83,7 +83,7 @@ function Burtgel(props: any) {
 
   async function fetchData() {
     if (state?.ID !== undefined && state.ID !== null) {
-      console.log(state, "state");
+     
       DataRequest({
         url: Stat_Url + "get_stat_plan",
         method: "POST",
@@ -1047,7 +1047,7 @@ function IndeterminateCheckbox({
     }
   }, [ref, indeterminate]);
   function saveToDB(value) {
-    console.log(row.original);
+    
     if (tsonkh !== 1) {
       let temp = data;
 

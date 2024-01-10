@@ -21,7 +21,7 @@ function Comments(props:any) {
         data: {ID:mayagtData?.ID},
       })
         .then(function (response) {
-          console.log(response,'statisticProcess');
+          
           if(response.data !== undefined && response.data.length >0){
           setStatus(response.data);
 
@@ -32,7 +32,7 @@ function Comments(props:any) {
             data: {},
           })
             .then(function (res) {
-              console.log(res,'comment get');
+              
               loadData(res.data);
               
             })

@@ -188,7 +188,7 @@ function Mayagt_2(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response, "response");
+        console.log('mayat2',response);
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
@@ -266,7 +266,7 @@ function Mayagt_2(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response.data);
+        
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           setloaderSpinner(0)

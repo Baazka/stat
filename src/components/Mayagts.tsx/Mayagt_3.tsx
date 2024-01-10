@@ -200,12 +200,7 @@ function Mayagt_3(props: any) {
     debugColumns: false,
   });
   function saveToDB() {
-    //   let temp = []
-    // //  console.log(saveData,'saveData');
-    //    for(let i of saveData){
-    //       temp.push(data[i])
-    //    }
-    //    console.log(temp,'save data');
+ 
     setloaderSpinner(1)
     DataRequest({
       url: Stat_URL + "BM3IU",
@@ -248,7 +243,7 @@ function Mayagt_3(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response);
+        
         if (response.data !== undefined && response.data.data.length > 0) {
           setData(response.data.data);
           if (response?.data.role.length > 0)

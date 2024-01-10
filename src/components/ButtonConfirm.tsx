@@ -38,7 +38,7 @@ function Batlakh(props: any) {
       },
     })
       .then(function (response) {
-        console.log("mayagt1Noti", response.data);
+        
         if (response.data !== undefined && response.data.length > 0) {
           setBatlakhHuselt(response.data[0]);
         }

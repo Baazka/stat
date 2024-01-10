@@ -483,7 +483,7 @@ function Mayagt_1(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response.data);
+        
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()

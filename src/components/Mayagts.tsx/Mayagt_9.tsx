@@ -459,7 +459,7 @@ function Mayagt_9(props: any) {
       },
     })
       .then(function (response) {
-      console.log(response,'mayagt_9');
+      
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)

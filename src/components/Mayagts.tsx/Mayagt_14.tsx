@@ -573,7 +573,7 @@ function Mayagt_14(props: any) {
   function saveToDB() {
     
     let temp = [];
-      console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'saveData');
+      
     setloaderSpinner(1)
 
     DataRequest({
@@ -587,7 +587,7 @@ function Mayagt_14(props: any) {
     })
       .then(function (response) {
        
-        console.log(response?.data,'response1');
+        
         if (response?.data.status === 200) {
           DataRequest({
             url: Stat_Url + "statisticProcessChange",
@@ -601,7 +601,7 @@ function Mayagt_14(props: any) {
             },
           })
             .then(function (response) {
-              console.log(response.data,'response2');
+              
               if (response?.data.status === 200) {
                 alert("амжилттай хадгаллаа");
                 setloaderSpinner(0)

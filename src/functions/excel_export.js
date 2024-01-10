@@ -5,7 +5,7 @@ export function getExportFileBlob( columns, data ,name) {
   let excel_header = []
   let data_header = []
   let excel_data = []
-console.log(data_header);
+
   columns.forEach((value,index)=> {
     excel_header.push(value.header)
     data_header.push(value.accessorKey)

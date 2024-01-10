@@ -490,7 +490,7 @@ function Mayagt_10(props: any) {
                   temp.drop1 = refExpertType?.data
                   temp.drop2 = refExpertReason?.data
                   setDrop({...temp})
-                  console.log(refExpertType?.data,'refExpertType?.data');
+                  
             
                 }
               })
@@ -510,7 +510,7 @@ function Mayagt_10(props: any) {
   function saveToDB() {
     setloaderSpinner(1)
     let temp = [];
-      console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'saveData');
+      
   
 
     DataRequest({
@@ -524,7 +524,7 @@ function Mayagt_10(props: any) {
     })
       .then(function (response) {
        
-        console.log(response?.data,'response1');
+        
         if (response?.data.status === 200) {
           DataRequest({
             url: Stat_Url + "statisticProcessChange",
@@ -538,7 +538,7 @@ function Mayagt_10(props: any) {
             },
           })
             .then(function (response) {
-              console.log(response.data,'response2');
+              
               if (response?.data.status === 200) {
                 alert("амжилттай хадгаллаа");
 

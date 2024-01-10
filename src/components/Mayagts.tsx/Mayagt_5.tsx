@@ -487,7 +487,7 @@ function Mayagt_5(props: any) {
       });
   }
   function saveToDB() {
-    console.log(data.filter(a=>(a.EDITED !== undefined && a.EDITED === true)),'mayagt5');
+    
     //  console.log(saveData,'saveData');
  
     setloaderSpinner(1)
@@ -502,7 +502,7 @@ function Mayagt_5(props: any) {
       },
     })
       .then(function (response) {
-        console.log(response.data);
+        
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData()

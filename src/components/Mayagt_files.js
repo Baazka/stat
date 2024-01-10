@@ -22,7 +22,7 @@ function Mayagt_files(props) {
       data: {},
     })
       .then(function (response) {
-        console.log(response.data,'getFile');
+        
         setFiles(response.data);
         
       })
@@ -35,8 +35,7 @@ function Mayagt_files(props) {
         data: {ID:mayagtData.ID},
       })
         .then(function (response) {
-          console.log(check_save({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
-            (a) => a.AUDITOR_ID === userDetils.USER_ID)}),'statisticProcessfile');
+       
           if(response.data !== undefined ){
            
             setStatusRole(()=>({STATUS:response.data.STATUS,ROLE:response?.data.ROLE.find(
@@ -59,7 +58,7 @@ function Mayagt_files(props) {
 
   async function saveAvatar(file) {
     setloaderSpinner(1)
-    console.log(file.target.files[0].size,'file.target.files[0].size');
+   
     if(file.target.files[0].size > 100000000){
       alert('файл 100MB-с их хэмжээтэй байна')
             setloaderSpinner(0)
@@ -70,7 +69,7 @@ function Mayagt_files(props) {
     
         
         axios.post(statUrl + "uploadFile/"+mayagtData.ID+'/'+file.target.files[0].name, formData).then(async function (resultFile) {
-          console.log(resultFile,'resultFile');
+          
           if((resultFile.data.status === 413 && resultFile.data.message === '100MB-с их хэмжээтэй байна!') || resultFile.status === 413)
           {
             alert('файл 100MB-с их хэмжээтэй байна')
