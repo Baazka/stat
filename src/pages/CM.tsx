@@ -61,7 +61,7 @@ function CM(props: any) {
       .then(function (response) {
         console.log(response, "response");
         if (response?.data.message === "failed" || response === undefined) {
-          alert("Өгөгдөл авчирхад алдаа гарлаа!");
+          alert("Өгөгдөл авчрахад алдаа гарлаа!");
           //setloaderSpinner(0);
         } else {
           setData(response?.data);

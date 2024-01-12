@@ -385,7 +385,7 @@ function Home(props: any) {
         }
       })
       .catch(function (error) {
-        alert("Өгөгдөл авчирхад алдаа гарлаа!");
+        alert("Өгөгдөл авчрахад алдаа гарлаа!");
       });
 
     DataRequest({
