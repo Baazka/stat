@@ -71,7 +71,10 @@ function Home(props: any) {
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 999,
-      DEPARTMENT_ID: localStorage.getItem('department') !== undefined?localStorage.getItem('department'):999,
+      DEPARTMENT_ID:
+        localStorage.getItem("department") !== undefined
+          ? localStorage.getItem("department")
+          : 999,
       DOCUMENT_ID: 999,
       PARENT_BUDGET_ID: 999,
       TYPE: 0,
@@ -145,6 +148,11 @@ function Home(props: any) {
       {
         accessorKey: "DOCUMENT_NAME",
         header: "Маягтын нэр",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "AUDIT_TYPE_NAME",
+        header: "Аудитын төрөл",
         cell: (info) => info.getValue(),
       },
       {
@@ -322,9 +330,7 @@ function Home(props: any) {
             fetchData();
           } else alert(response.data.message);
         })
-        .catch(function (error) {
-       
-        });
+        .catch(function (error) {});
     }
   }
 
@@ -370,7 +376,10 @@ function Home(props: any) {
           filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID === "999"
             ? null
             : filter.Audit.PERIOD_ID, //filter.Audit.PERIOD_ID,
-        FILTER_DEPARTMENT_ID:localStorage.getItem('department') !== undefined?localStorage.getItem('department'): filter.Audit.DEPARTMENT_ID,
+        FILTER_DEPARTMENT_ID:
+          localStorage.getItem("department") !== undefined
+            ? localStorage.getItem("department")
+            : filter.Audit.DEPARTMENT_ID,
         USER_DEPARTMENT_ID: userDetails.USER_DEPARTMENT_ID,
         USER_ID: userDetails.USER_ID,
         USER_TYPE_NAME: userDetails.USER_TYPE_NAME,
@@ -398,9 +407,7 @@ function Home(props: any) {
           setDrop(res.data);
         }
       })
-      .catch(function (error) {
-       
-      });
+      .catch(function (error) {});
   }
 
   function lockPlan() {
@@ -418,9 +425,7 @@ function Home(props: any) {
           fetchData();
         }
       })
-      .catch(function (error) {
-        
-      });
+      .catch(function (error) {});
   }
 
   return (
@@ -454,10 +459,10 @@ function Home(props: any) {
                 value={filter.Audit.DEPARTMENT_ID}
                 onChange={(value) => {
                   let temp = filter;
-                  localStorage.removeItem('department')
+                  localStorage.removeItem("department");
                   temp.Audit.DEPARTMENT_ID = value.target.value;
-                  if(value.target.value!== 999)
-                  localStorage.setItem("department",value.target.value)
+                  if (value.target.value !== 999)
+                    localStorage.setItem("department", value.target.value);
                   setFilter({ ...temp });
                 }}
               >
