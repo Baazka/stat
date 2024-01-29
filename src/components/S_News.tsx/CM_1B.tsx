@@ -221,136 +221,112 @@ function CM_1B() {
   });
   return (
     <>
+      <div className="flex justify-between mb-2 ">
+        <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
+          <ButtonSearch />
+          <button
+            //onClick={() => Navigate("/web/Home/Nemeh")}
+            className="inline-flex items-center rounded ml-2 py-1 h-7"
+            style={{
+              border: "1px solid #3cb371",
+            }}
+          >
+            <div className="bg-white">
+              <img
+                src={excel}
+                width="20px"
+                height="20px"
+                className="mx-1"
+              ></img>
+            </div>
+            <div
+              style={{
+                backgroundColor: "#3cb371",
+              }}
+              className=" text-white rounded-r px-1 h-7"
+            >
+              Excel
+            </div>
+          </button>
+        </div>
+      </div>
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
-          padding: "0.5rem 0 0 1rem",
-          overflowX: "scroll",
+          maxHeight: "630px",
+          overflowY: "scroll",
         }}
       >
-        <div className="justify-start flex mb-2 mt-2">
-          <Title
-            title={
-              "ТАЙЛАНТ ОНД ГҮЙЦЭТГЭСЭН САНХҮҮГИЙН ТАЙЛАНГИЙН АУДИТЫН ЕРӨНХИЙ МЭДЭЭЛЭЛ 3-ТАБСМ-1Б"
-            }
-            widthS={"44rem"}
-            widthL={"20rem"}
-          />
-
-          <div className="mt-1 ml-1.5">
-            <Subtitle mayagtName={"З-ТАБСМ-1Б"} />
-          </div>
-        </div>
-        <div className="flex justify-between mb-2 ">
-          <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch />
-            <button
-              onClick={() => Navigate("/web/Home/Nemeh")}
-              className="inline-flex items-center rounded ml-2 py-1 h-7"
-              style={{
-                border: "1px solid #3cb371",
-              }}
-            >
-              <div className="bg-white">
-                <img
-                  src={excel}
-                  width="20px"
-                  height="20px"
-                  className="mx-1"
-                ></img>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "#3cb371",
-                }}
-                className=" text-white rounded-r px-1 h-7"
-              >
-                Excel
-              </div>
-            </button>
-          </div>
-        </div>
-        <div
-          style={{
-            maxHeight: "630px",
-            overflowY: "scroll",
-          }}
-        >
-          <div className="h-2 mr-20" />
-          <table style={{ width: "5000px" }}>
-            <thead className="TableHeadBackroundcolor gap-20">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          width:
-                            header.getSize() !== 0
-                              ? header.getSize()
-                              : undefined,
-                        }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+        <div className="h-2 mr-20" />
+        <table style={{ width: "5000px" }}>
+          <thead className="TableHeadBackroundcolor gap-20">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        width:
+                          header.getSize() !== 0 ? header.getSize() : undefined,
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                          ></div>
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                          {header.column.getCanFilter() ? (
+                            <div>
+                              <Filter column={header.column} table={table} />
                             </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
+                          ) : null}
+                        </>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => {
+              return (
+                <tr
+                  key={row.id}
+                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                >
+                  {row.getVisibleCells().map((cell, index) => {
+                    return (
+                      <td key={cell.id} className="p-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                      </th>
+                      </td>
                     );
                   })}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+
       <div style={{ justifyContent: "flex-end" }}>
         <div className="justify-end flex items-center gap-1 mt-5 mr-2">
           <button

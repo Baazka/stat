@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Title from "./Title";
 import Stat_URl from "../Stat_URL";
-import RightMenu from "../components/RightMenu";
+import RightMenu from "./SidebarCM";
 import CM_1A from "../components/S_News.tsx/CM_1A";
 import CM_1B from "../components/S_News.tsx/CM_1B";
 import CM_1C from "../components/S_News.tsx/CM_1C";

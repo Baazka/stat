@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
 import Stat_URl from "../Stat_URL";
-import RightMenu from "../components/RightMenu";
+import RightMenu from "../components/SidebarCM";
 import CM_1A from "../components/S_News.tsx/CM_1A";
 import CM_1B from "../components/S_News.tsx/CM_1B";
 import CM_1C from "../components/S_News.tsx/CM_1C";
@@ -31,10 +31,8 @@ import CM_10 from "../components/S_News.tsx/CM_10";
 import CM_11 from "../components/S_News.tsx/CM_11";
 import DataRequest from "../functions/make_Request";
 import axios from "axios";
+import SidebarCM from "../components/SidebarCM";
 function CM(props: any) {
-  const [data, setData] = React.useState([]);
-  // @ts-ignore
-  const NewsData = JSON.parse(localStorage.getItem("userDetails"));
   const [dataMenu, setDataMenu] = useState({
     value: {},
     index: 0,
@@ -42,167 +40,161 @@ function CM(props: any) {
   });
   const [reportMenu, setReportMenu] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, [props.mayagtData]);
+  const [menuShow, setMenuShow] = useState(false);
+  const fullMenuWidth = "372px";
+  const shortMenuWidth = "115px";
 
   async function fetchData() {
-    DataRequest({
-      url: Stat_URl + "getBM1/" + NewsData?.MAYGTIIN_DUGAAR + "/" + 1,
-      method: "GET",
-      // data: {
-      //   FAS_AUDIT_ID: props.data.ID,
-      //   DOCUMENT_ID: props.data.listID,
-      //   CREATED_BY: userDetails?.USER_ID,
-      //   CREATED_DATE: dateFormat(new Date(), "dd-mmm-yy"),
-      //   IS_ACTIVE: 1,
-      // },
-    })
-      .then(function (response) {
-        console.log(response, "response");
-        if (response?.data.message === "failed" || response === undefined) {
-          alert("Өгөгдөл авчрахад алдаа гарлаа!");
-          //setloaderSpinner(0);
-        } else {
-          setData(response?.data);
-        }
-      })
-      .catch(function (error) {
-       
+    let listItems = await axios(Stat_URl + "refDocument?DocType=" + 2);
+    if (
+      localStorage.getItem("cmMenu") !== undefined &&
+      localStorage.getItem("cmMenu") !== null
+    ) {
+      let ob = JSON.parse(localStorage.getItem("cmMenu"));
+      if (ob?.value !== null && ob?.value !== undefined) {
+        setDataMenu(ob);
+      }
+    } else {
+      setDataMenu({
+        value: listItems.data[0],
+        index: 0,
+        MenuData: [],
       });
+    }
+    setReportMenu(listItems.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [props]);
+
+  function renderSwitch(param) {
+    switch (param) {
+      case 16:
+        return <CM_1A />;
+      case 17:
+        return <CM_1B />;
+      default:
+        return <div>Хөгжүүлэлт хийгдэж байна.</div>;
+    }
   }
   return (
-    <div></div>
-    // <div
-    //   style={{
-    //     maxHeight: window.innerHeight - 129,
-    //     maxWidth: window.innerWidth,
-    //     padding: "1rem 0 0 1rem",
-    //     overflow: "scroll",
-    //   }}
-    // >
-    //   <Title title={"СТАТИСТИК МЭДЭЭ"} widthS={"9rem"} widthL={"8rem"} />
+    <div className=" duration-500">
+      <div
+        style={{
+          maxHeight: 820,
+          padding: "1rem 0px 0px 1rem",
+          overflowY: "scroll",
+        }}
+      >
+        <Title
+          title={dataMenu.value.DOCUMENT_NAME}
+          widthS={"25rem"}
+          widthL={"30rem"}
+        />
 
-    //   <div className="flex  max-w-full">
-    //     <div
-    //     // style={{
-    //     //   width:
-    //     //     window.innerWidth - 260,
-    //     // }}
-    //     >
-    //       {NewsData.USER_TYPE_NAME === "KHSHUDAG" ? (
-    //         <div>
-    //           {dataMenu.value.ID === 1 ? (
-    //             <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 2 ? (
-    //             <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 3 ? (
-    //             <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 4 ? (
-    //             <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //         </div>
-    //       ) : NewsData.USER_TYPE_NAME === "AKT_ORG" ||
-    //         NewsData.USER_TYPE_NAME === "AKT_MONITOR" ? (
-    //         <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //       ) : (
-    //         <div>
-    //           {dataMenu.value.ID === 1 ? (
-    //             <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 2 ? (
-    //             <CM_1B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {/* {dataMenu.value.ID === 3 ? <Short_Report2 /> : null} */}
-    //           {dataMenu.value.ID === 3 ? (
-    //             <CM_1C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 4 ? (
-    //             <CM_2A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 5 ? (
-    //             <CM_2B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 6 ? (
-    //             <CM_2C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 7 ? (
-    //             <CM_3A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 8 ? (
-    //             <CM_3B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 9 ? (
-    //             <CM_3C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 10 ? (
-    //             <CM_4 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 12 ? (
-    //             <CM_5A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 13 ? (
-    //             <CM_5B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 14 ? (
-    //             <CM_5C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 15 ? (
-    //             <CM_5D REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 16 ? (
-    //             <CM_5E REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 17 ? (
-    //             <CM_5F REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 18 ? (
-    //             <CM_6 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 19 ? (
-    //             <CM_7 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 20 ? (
-    //             <CM_8 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 21 ? (
-    //             <CM_9A REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 22 ? (
-    //             <CM_9B REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 23 ? (
-    //             <CM_9C REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 24 ? (
-    //             <CM_9D REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 25 ? (
-    //             <CM_9E REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 26 ? (
-    //             <CM_9F REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 27 ? (
-    //             <CM_10 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //           {dataMenu.value.ID === 28 ? (
-    //             <CM_11 REPORT_NAME={dataMenu.value.REPORT_NAME} />
-    //           ) : null}
-    //         </div>
-    //       )}
-    //     </div>
-
-    //     <RightMenu
-    //       Fdata={reportMenu}
-    //       data={dataMenu}
-    //       setData={(text: any) => setDataMenu(text)}
-    //     />
-    //   </div>
-    // </div>
+        <div className="flex max-w-full">
+          <div
+            style={{
+              width: `calc(100% - ${
+                menuShow === false ? fullMenuWidth : shortMenuWidth
+              })`,
+            }}
+          >
+            {renderSwitch(dataMenu.value.ID)}
+            {/* <CM_1A REPORT_NAME={dataMenu.value.REPORT_NAME} />
+          { === 16 ? (
+            
+          ) : null} */}
+            {/* {reportMenu.value.ID === 2 ? (
+            <CM_1B REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 3 ? (
+            <CM_1C REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 4 ? (
+            <CM_2A REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 5 ? (
+            <CM_2B REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 6 ? (
+            <CM_2C REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 7 ? (
+            <CM_3A REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 8 ? (
+            <CM_3B REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 9 ? (
+            <CM_3C REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 10 ? (
+            <CM_4 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 12 ? (
+            <CM_5A REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 13 ? (
+            <CM_5B REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 14 ? (
+            <CM_5C REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 15 ? (
+            <CM_5D REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 16 ? (
+            <CM_5E REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 17 ? (
+            <CM_5F REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 18 ? (
+            <CM_6 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 19 ? (
+            <CM_7 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 20 ? (
+            <CM_8 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 21 ? (
+            <CM_9A REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 22 ? (
+            <CM_9B REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 23 ? (
+            <CM_9C REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 24 ? (
+            <CM_9D REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 25 ? (
+            <CM_9E REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 26 ? (
+            <CM_9F REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 27 ? (
+            <CM_10 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null}
+          {reportMenu.value.ID === 28 ? (
+            <CM_11 REPORT_NAME={reportMenu.value.REPORT_NAME} />
+          ) : null} */}
+          </div>
+          <SidebarCM
+            Fdata={reportMenu}
+            data={dataMenu}
+            setData={(text) => setDataMenu(text)}
+            menuShow={menuShow}
+            setMenuShow={(text) => setMenuShow(text)}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 

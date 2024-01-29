@@ -67,7 +67,7 @@ type Stat_CM1A = {
   SANHUUGIIN_BUS_UR_OGOOJIIN_TOO: string;
 };
 
-function CM_1A() {
+function CM_1A(props) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -324,198 +324,173 @@ function CM_1A() {
   });
   return (
     <>
+      <div className="flex justify-between mb-2 ">
+        <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
+          <ButtonSearch />
+          <button
+            //onClick={() => Navigate("/web/Home/Nemeh")}
+            className="inline-flex items-center rounded ml-2 py-1 h-7"
+            style={{
+              border: "1px solid #3cb371",
+            }}
+          >
+            <div className="bg-white">
+              <img
+                src={excel}
+                width="20px"
+                height="20px"
+                className="mx-1"
+              ></img>
+            </div>
+            <div
+              style={{
+                backgroundColor: "#3cb371",
+              }}
+              className=" text-white rounded-r px-1 h-7"
+            >
+              Excel
+            </div>
+          </button>
+        </div>
+      </div>
+
       <div
         style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
-          padding: "0.5rem 0 0 1rem",
-          overflowX: "scroll",
+          maxHeight: "630px",
+          overflowY: "scroll",
+          width: "100%",
         }}
       >
-        <div className="justify-start flex mb-2 mt-2">
-          <Title
-            title={
-              "ТАЙЛАНТ ОНД ГҮЙЦЭТГЭСЭН САНХҮҮГИЙН ТАЙЛАНГИЙН АУДИТЫН ЕРӨНХИЙ МЭДЭЭЛЭЛ 3-ТАБСМ-1А"
-            }
-            widthS={"44rem"}
-            widthL={"20rem"}
-          />
-          <div className="mt-1 ml-1.5">
-            <Subtitle mayagtName={"З-ТАБСМ-1A"} />
-          </div>
-        </div>
-        <div className="flex justify-between mb-2 ">
-          <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch />
-            <button
-              onClick={() => Navigate("/web/Home/Nemeh")}
-              className="inline-flex items-center rounded ml-2 py-1 h-7"
-              style={{
-                border: "1px solid #3cb371",
-              }}
-            >
-              <div className="bg-white">
-                <img
-                  src={excel}
-                  width="20px"
-                  height="20px"
-                  className="mx-1"
-                ></img>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "#3cb371",
-                }}
-                className=" text-white rounded-r px-1 h-7"
-              >
-                Excel
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <div
-          style={{
-            maxHeight: "630px",
-            overflowY: "scroll",
-            width: "100%",
-          }}
-        >
-          <div className="h-2 mr-20" />
-          <table>
-            <thead className="TableHeadBackroundcolor gap-20">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          width:
-                            header.getSize() !== 0
-                              ? header.getSize()
-                              : undefined,
-                        }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+        <div className="h-2 mr-20" />
+        <table>
+          <thead className="TableHeadBackroundcolor gap-20">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        width:
+                          header.getSize() !== 0 ? header.getSize() : undefined,
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                          ></div>
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                          {header.column.getCanFilter() ? (
+                            <div>
+                              <Filter column={header.column} table={table} />
                             </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
+                          ) : null}
+                        </>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => {
+              return (
+                <tr
+                  key={row.id}
+                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                >
+                  {row.getVisibleCells().map((cell, index) => {
+                    return (
+                      <td key={cell.id} className="p-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                      </th>
+                      </td>
                     );
                   })}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ justifyContent: "flex-end" }}>
+        <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+          <button
+            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+          >
+            {"<"}
+          </button>
+          <button
+            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
+          </button>
+          <button
+            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+          <span className="flex items-center gap-4">
+            <div>нийт</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} {table.getPageCount()}
+            </strong>
+          </span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize}
+              </option>
+            ))}
+          </select>
         </div>
-        <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            >
-              {"<"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-            <span className="flex items-center gap-4">
-              <div>нийт</div>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}{" "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
-          </div>
+      </div>
+      <div>
+        <div className="text-base flex row">
+          <FooterValue />
         </div>
-        <div>
-          <div className="text-base flex row">
-            <FooterValue />
-          </div>
-        </div>
+      </div>
 
-        <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-          <div className="flex  items-end">
-            <Comment />
-          </div>
+      <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
+        <div className="flex  items-end">
+          <Comment />
         </div>
       </div>
     </>

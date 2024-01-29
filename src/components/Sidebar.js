@@ -39,9 +39,9 @@ function Sidebar(props) {
     if (value === 1) {
       Navigate("/web/Home/Audit");
     }
-    // if (value === 2) {
-    //   Navigate("/web/CM/ReportAudit");
-    // }
+    if (value === 2) {
+      Navigate("/web/CM/ReportAudit");
+    }
   }
   return !props.sidebarSize ? (
     <div className="SideBarHidden" id="SideMenuZurag">
@@ -56,66 +56,59 @@ function Sidebar(props) {
             className="mb-16 px-8 mt-20"
           >
             <div className="space-y-6">
-              {userDetails.USER_TYPE_NAME === "OT_CREATOR" ? (
-                //||userDetails.USER_TYPE_NAME === "OT_CHECK"
-                <div className="dropdown  relative"></div>
-              ) : userDetails.USER_TYPE_NAME === "KHSHUDAG" ? (
-                <></>
-              ) : (
-                <>
-                  <div
-                    onClick={() => SelectMenu(1)}
-                    className="w-full flex items-center  h-16 pl-3 hover:bg-white  cursor-pointer"
-                    style={{ borderBottomLeftRadius: "28px" }}
-                    onMouseOver={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu1: Statictic2, menu1Color: "#2684fe" },
-                      });
-                    }}
-                    onMouseOut={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu1: Statictic2, menu1Color: "white" },
-                      });
-                    }}
+              <>
+                <div
+                  onClick={() => SelectMenu(1)}
+                  className="w-full flex items-center  h-16 pl-3 hover:bg-white  cursor-pointer"
+                  style={{ borderBottomLeftRadius: "28px" }}
+                  onMouseOver={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu1: Statictic2, menu1Color: "#2684fe" },
+                    });
+                  }}
+                  onMouseOut={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu1: Statictic2, menu1Color: "white" },
+                    });
+                  }}
+                >
+                  <img src={icons.menu1} width="60" height="52"></img>
+                  <span
+                    className="uppercase"
+                    style={{ color: icons.menu1Color, marginLeft: "6px" }}
                   >
-                    <img src={icons.menu1} width="60" height="52"></img>
-                    <span
-                      className="uppercase"
-                      style={{ color: icons.menu1Color, marginLeft: "6px" }}
-                    >
-                      БҮРТГЭЛИЙН МАЯГТ
-                    </span>
-                  </div>
+                    БҮРТГЭЛИЙН МАЯГТ
+                  </span>
+                </div>
 
-                  {/* <div
-                    onClick={() => SelectMenu(2)}
-                    className="w-full flex items-center  h-16 pl-1.5 hover:bg-white  cursor-pointer"
-                    style={{ borderBottomLeftRadius: "28px" }}
-                    onMouseOver={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu2: Statictic1, menu2Color: "#2684fe" },
-                      });
-                    }}
-                    onMouseOut={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu2: Statictic1, menu2Color: "white" },
-                      });
-                    }}
+                <div
+                  onClick={() => SelectMenu(2)}
+                  className="w-full flex items-center  h-16 pl-1.5 hover:bg-white  cursor-pointer"
+                  style={{ borderBottomLeftRadius: "28px" }}
+                  onMouseOver={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu2: Statictic1, menu2Color: "#2684fe" },
+                    });
+                  }}
+                  onMouseOut={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu2: Statictic1, menu2Color: "white" },
+                    });
+                  }}
+                >
+                  <img src={icons.menu2} width="60" height="52"></img>
+                  <span
+                    className="uppercase"
+                    style={{ color: icons.menu2Color, marginRight: "10px" }}
                   >
-                    <img src={icons.menu2} width="60" height="52"></img>
-                    <span
-                      className="uppercase"
-                      style={{ color: icons.menu2Color, marginRight: "10px" }}
-                    >
-                      СТАТИСТИК МЭДЭЭ
-                    </span>
-                  </div> */}
-                </>
-              )}
+                    СТАТИСТИК МЭДЭЭ
+                  </span>
+                </div>
+              </>
 
               <div
                 style={{
@@ -176,90 +169,47 @@ function Sidebar(props) {
             className="mb-8 px-4 mt-20"
           >
             <div className="space-y-6">
-              {userDetails.USER_TYPE_NAME === "OT_CREATOR" ? (
-                //||userDetails.USER_TYPE_NAME === "OT_CHECK"
-                <div className="dropdown  relative ">
-                  <div
-                    onMouseOver={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu3: BODIT_TSAG_TSAGAAN, menu3Color: "#2684fe" },
-                      });
-                    }}
-                    onMouseOut={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu3: BODIT_TSAG_TSENHER, menu3Color: "white" },
-                      });
-                    }}
-                  ></div>
+              <>
+                <div
+                  onClick={() => SelectMenu(1)}
+                  className="w-full flex items-center h-20 pl-3 hover:bg-white  cursor-pointer"
+                  style={{ borderBottomLeftRadius: "28px" }}
+                  onMouseOver={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu1: Statictic2, menu1Color: "#2684fe" },
+                    });
+                  }}
+                  onMouseOut={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu1: Statictic2, menu1Color: "white" },
+                    });
+                  }}
+                >
+                  <img src={icons.menu1} width="60" height="52"></img>
                 </div>
-              ) : // : userDetails.USER_TYPE_NAME === "KHSHUDAG" ? (
-              //   <div
-              //     onClick={() => SelectMenu(2)}
-              //     className="w-full flex items-center  h-14 pl-1.5 hover:bg-white  cursor-pointer"
-              //     style={{ borderBottomLeftRadius: "28px" }}
-              //     onMouseOver={() => {
-              //       setIcons({
-              //         ...icons,
-              //         ...{ menu2: Statictic1, menu2Color: "#2684fe" },
-              //       });
-              //     }}
-              //     onMouseOut={() => {
-              //       setIcons({
-              //         ...icons,
-              //         ...{ menu2: Statictic1, menu2Color: "white" },
-              //       });
-              //     }}
-              //   >
-              //     <img src={icons.menu2} width="60" height="52"></img>
-              //   </div>
-              // )
-              userDetails.USER_TYPE_NAME === "AKT_ORG" ? (
-                <> </>
-              ) : (
-                <>
-                  <div
-                    onClick={() => SelectMenu(1)}
-                    className="w-full flex items-center h-20 pl-3 hover:bg-white  cursor-pointer"
-                    style={{ borderBottomLeftRadius: "28px" }}
-                    onMouseOver={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu1: Statictic2, menu1Color: "#2684fe" },
-                      });
-                    }}
-                    onMouseOut={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu1: Statictic2, menu1Color: "white" },
-                      });
-                    }}
-                  >
-                    <img src={icons.menu1} width="60" height="52"></img>
-                  </div>
 
-                  {/* <div
-                    onClick={() => SelectMenu(2)}
-                    className="w-full flex items-center  h-20 pl-1.5 hover:bg-white  cursor-pointer"
-                    style={{ borderBottomLeftRadius: "28px" }}
-                    onMouseOver={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu2: Statictic1, menu2Color: "#2684fe" },
-                      });
-                    }}
-                    onMouseOut={() => {
-                      setIcons({
-                        ...icons,
-                        ...{ menu2: Statictic1, menu2Color: "white" },
-                      });
-                    }}
-                  >
-                    <img src={icons.menu2} width="60" height="52"></img>
-                  </div> */}
-                </>
-              )}
+                <div
+                  onClick={() => SelectMenu(2)}
+                  className="w-full flex items-center  h-20 pl-1.5 hover:bg-white  cursor-pointer"
+                  style={{ borderBottomLeftRadius: "28px" }}
+                  onMouseOver={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu2: Statictic1, menu2Color: "#2684fe" },
+                    });
+                  }}
+                  onMouseOut={() => {
+                    setIcons({
+                      ...icons,
+                      ...{ menu2: Statictic1, menu2Color: "white" },
+                    });
+                  }}
+                >
+                  <img src={icons.menu2} width="60" height="52"></img>
+                </div>
+              </>
 
               <div
                 style={{
