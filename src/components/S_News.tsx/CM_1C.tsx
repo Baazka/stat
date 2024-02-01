@@ -4,6 +4,7 @@ import Title from "../Title";
 import "../../pages/Home.css";
 import Subtitle from "../Subtitle";
 import ButtonSearch from "../ButtonSearch";
+import UserPremission from "../../functions/userPermission";
 import {
   Column,
   Table,
@@ -43,35 +44,51 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-type Stat_CM1C = {
-  UZUULELT: string;
-  MD: string;
-  EMPLOYEE: string;
-  A_DATE: string;
-  A_TIME: string;
-  TOLOWLSON_AUDIT_TOO: string;
-  GUITSETGESEN_AUDIT_TOO: string;
-  SHALGAGDAGCH_ETGEEDN_TOO: string;
-  AUDIT_HAMRAGDAGCHDIIN_TOO: string;
-  TOLOWLOSON_UR_OGOOJIIN_SANHUUGN_TOO: string;
-  TOLOWLOSON_UR_OGOOJN_DUN: string;
-  SANHUUGIIN_BUS_UR_OGOOJN_TOO: string;
-  HULEEN_ZOWSHOORUULSEN_UR_OGOOJN_SANHUUGIIN_TOO: string;
-  HULEEN_ZOWSHOORUULSEN_UR_OGOOJN_DUN_T: string;
-  SANHUUGIIN_BUS_UR_OGOOJN_TOO1: String;
-};
 
 function CM_1C() {
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const columns = React.useMemo<ColumnDef<Stat_CM1C, any>[]>(
+  const columns = React.useMemo(
     () => [
-      {
-        accessorFn: (row, index) => index + 1,
-        id: "№",
-      },
+      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
+      ? {
+          id: "select",
+          header: ({ table }) => (
+            <IndeterminateCheckboxALL
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+                data,
+                setData,
+              }}
+            />
+          ),
+          cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                  disabled: !row.getCanSelect(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
+                  data,
+                  setData,
+                  row,
+                }}
+              />
+            </div>
+          ),
+        }
+      : {
+          accessorFn: (row, index) => index + 1,
+          accessorKey: "№",
+          header: "№",
+        },
       {
         accessorKey: "UZUULELT",
         cell: (info) => info.getValue(),
@@ -119,8 +136,8 @@ function CM_1C() {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDIT_HAMRAGDAGCHDIIN_TOO",
-        header: "Аудитад хамрагдагчдийн тоо",
+        accessorKey: "AUDIT_HAMRAGDAGCHIIN_TOO",
+        header: "Аудитад хамрагдагчийн тоо",
         cell: (info) => info.getValue(),
       },
       {
@@ -130,8 +147,9 @@ function CM_1C() {
       },
       {
         accessorKey: "TOLOWLOSON_UR_OGOOJN_DUN",
-        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн (сая төгрөгөөр)",
+        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
+        size: 150,
       },
       {
         accessorKey: "SANHUUGIIN_BUS_UR_OGOOJN_TOO",
@@ -146,7 +164,7 @@ function CM_1C() {
       {
         accessorKey: "HULEEN_ZOWSHOORUULSEN_UR_OGOOJN_DUN_T",
         header:
-          "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн (сая төгрөгөөр)",
+          "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
       },
       {
@@ -157,25 +175,8 @@ function CM_1C() {
     ],
     []
   );
-  let Stat_CM1C = [
-    {
-      UZUULELT: "Нийт дүн мөр(1)=мөр(2+3+4)",
-      MD: "1",
-    },
-    {
-      UZUULELT: "Бодлогоор",
-      MD: "2",
-    },
-    {
-      UZUULELT: "Хуулийн дагуу",
-      MD: "3",
-    },
-    {
-      UZUULELT: "Төлөвлөгөөт бус",
-      MD: "4",
-    },
-  ];
-  const [data, setData] = React.useState<Stat_CM1C[]>(Stat_CM1C);
+ 
+  const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
   const refreshData = () => setData((old) => []);
   const [filter, setFilter] = useState({
@@ -218,14 +219,6 @@ function CM_1C() {
 
   return (
     <>
-      <div
-        style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
-          padding: "0.5rem 0 0 1rem",
-          overflowX: "scroll",
-        }}
-      >
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
             <ButtonSearch />
@@ -263,78 +256,75 @@ function CM_1C() {
         >
           <div className="h-2 mr-20" />
           <table>
-            <thead className="TableHeadBackroundcolor gap-20">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          width:
-                            header.getSize() !== 0
-                              ? header.getSize()
-                              : undefined,
-                        }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+          <thead className="TableHeadBackroundcolor gap-20">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="px-1.5"
+                      style={{
+                        width:
+                          header.getSize() !== 0 ? header.getSize() : undefined,
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                          ></div>
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                          {header.column.getCanFilter() ? (
+                            <div>
+                              <Filter column={header.column} table={table} />
                             </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
+                          ) : null}
+                        </>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => {
+              return (
+                <tr
+                  key={row.id}
+                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                >
+                  {row.getVisibleCells().map((cell, index) => {
+                    return (
+                      <td key={cell.id} className="p-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                      </th>
+                      </td>
                     );
                   })}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
         </div>
-      </div>
       <div style={{ justifyContent: "flex-end" }}>
         <div className="justify-end flex items-center gap-1 mt-5 mr-2">
           <button
@@ -365,28 +355,109 @@ function CM_1C() {
           >
             {">>"}
           </button>
-          <span className="flex items-center gap-4">
-            <div>нийт</div>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} {table.getPageCount()}
-            </strong>
-          </span>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className="flex items-center gap-4">
+              <div>нийт:</div>
+              <span>{data.length}</span>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
+                {table.getPageCount()}
+              </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+          </div>
       </div>
     </>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+  row,
+
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB(value) {
+    let tempData = data;
+    tempData[row.index].IS_LOCK = row.original.IS_LOCK === 0 ? 1 : 0;
+    setData(tempData);
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB(ref)}
+      {...rest}
+    />
+  );
+}
+
+function IndeterminateCheckboxALL({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+
+  table,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB() {
+    let tempData = data;
+    for (let i = 0; i < data.length; i++) {
+      tempData[i].IS_LOCK = data[i].IS_LOCK === 0 ? 1 : 0;
+      if (i === data.length - 1) {
+        setData(tempData);
+      }
+    }
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB()}
+      {...rest}
+    />
   );
 }
 

@@ -46,8 +46,8 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 function CM_1B() {
-    // @ts-ignore
-    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
