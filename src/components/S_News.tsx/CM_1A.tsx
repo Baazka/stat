@@ -169,7 +169,7 @@ function CM_1A(props) {
       },
       {
         accessorKey: "BAI_NER",
-        header: "Хягаарлалттай ",
+        header: "Хязгаарлалттай ",
         cell: (info) => info.getValue(),
       },
       {
