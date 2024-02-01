@@ -6,6 +6,7 @@ import Subtitle from "../Subtitle";
 import FooterValue from "../Footervalue";
 import Comment from "../comment";
 import ButtonSearch from "../ButtonSearch";
+import UserPremission from "../../functions/userPermission";
 import { excel } from "../../assets/zurag";
 import {
   Column,
@@ -45,39 +46,51 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-type Stat_CM1A = {
-  UZUULELT: string;
-  MD: string;
-  EMPLOYEE: string;
-  A_DATE: string;
-  A_TIME: string;
-  TOLOWLOSON: string;
-  BIE_DAAJ_DUGNELT_GARGH: string;
-  UE_SHATNII_AJLIIG_HESEGCHLEN_HIIH1: string;
-  AUDIT_HIIGGUI: string;
-  NIIT_AUDIT_SANAL_DUGNELT: string;
-  ZORCHILGUI_AUDIT_SANAL_DUGNELT: string;
-  BAI_NER: string;
-  SANAL_DUGNELT_OGHOOS_TATGALZAH: string;
-  SOROG_AUDIT_SANAL_DUGNELT: string;
-  TOLOWLOSON_UR_OGOOJIIN_SANHUUGN_DUN_T: string;
-  SANHUUGIIN_BUS_UR_OGOOJN_TOO: string;
-  HULEEN_ZOWSHOORUULSEN_UR_OGOOJ: string;
-  HULEEN_ZOWSHOORUULSEN_UR_OGOOJ_SANHUUGN_DUN: string;
-  SANHUUGIIN_BUS_UR_OGOOJIIN_TOO: string;
-};
 
 function CM_1A(props) {
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const columns = React.useMemo<ColumnDef<Stat_CM1A, any>[]>(
+  const columns = React.useMemo(
     () => [
-      {
-        accessorFn: (row, index) => index + 1,
-        id: "№",
-      },
+      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
+      ? {
+          id: "select",
+          header: ({ table }) => (
+            <IndeterminateCheckboxALL
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+                data,
+                setData,
+              }}
+            />
+          ),
+          cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                  disabled: !row.getCanSelect(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
+                  data,
+                  setData,
+                  row,
+                }}
+              />
+            </div>
+          ),
+        }
+      : {
+          accessorFn: (row, index) => index + 1,
+          accessorKey: "№",
+          header: "№",
+        },
       {
         accessorKey: "UZUULELT",
         cell: (info) => info.getValue(),
@@ -204,85 +217,8 @@ function CM_1A(props) {
     ],
     []
   );
-  let Stat_CM1A = [
-    {
-      UZUULELT: "Нийт дүн мөр(1)=мөр(2+3+4+5+6+7+8)",
-      MD: "1",
-    },
-    {
-      UZUULELT: "ЗГСНТ, НТГ",
-      MD: "2",
-    },
-    {
-      UZUULELT: "ТЕЗ",
-      MD: "3",
-    },
-    {
-      UZUULELT: "ТТЗ",
-      MD: "4",
-    },
-    {
-      UZUULELT: "ТШЗ",
-      MD: "5",
-    },
-    {
-      UZUULELT: "Төсөл, хөтөлбөр",
-      MD: "6",
-    },
-    {
-      UZUULELT: "Засгийн газрын тусгай сан",
-      MD: "7",
-    },
-    {
-      UZUULELT: "ТБОҮНӨҮГ",
-      MD: "8",
-    },
-    {
-      UZUULELT: "Төрийн аудитын байгууллага мөр(9)=мөр(10+11+12+13+14+15+16)",
-      MD: "9",
-    },
-    {
-      UZUULELT: "ЗГСНТ, НТГ",
-      MD: "10",
-    },
-    {
-      UZUULELT: "ТЕЗ",
-      MD: "11",
-    },
-    {
-      UZUULELT: "ТТЗ",
-      MD: "12",
-    },
-    {
-      UZUULELT: "ТШЗ",
-      MD: "13",
-    },
-    {
-      UZUULELT: "Төсөл, хөтөлбөр",
-      MD: "14",
-    },
-    {
-      UZUULELT: "Засгийн газрын тусгай сан",
-      MD: "15",
-    },
-    {
-      UZUULELT: "ТБОНӨҮГ",
-      MD: "16",
-    },
-    {
-      UZUULELT: "Аудитын хуулийн этгээд мөр(17)=мөр(18+19)",
-      MD: "17",
-    },
-    {
-      UZUULELT: "ТШЗ",
-      MD: "18",
-    },
-    {
-      UZUULELT: "ТБОНӨҮГ",
-      MD: "19",
-    },
-  ];
-  const [data, setData] = React.useState<Stat_CM1A[]>(Stat_CM1A);
+
+  const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
   const refreshData = () => setData((old) => []);
   const [filter, setFilter] = useState({
@@ -371,6 +307,7 @@ function CM_1A(props) {
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
+                      className="px-1.5"
                       style={{
                         width:
                           header.getSize() !== 0 ? header.getSize() : undefined,
@@ -461,28 +398,109 @@ function CM_1A(props) {
           >
             {">>"}
           </button>
-          <span className="flex items-center gap-4">
-            <div>нийт</div>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} {table.getPageCount()}
-            </strong>
-          </span>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className="flex items-center gap-4">
+              <div>нийт:</div>
+              <span>{data.length}</span>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
+                {table.getPageCount()}
+              </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+          </div>
       </div>
     </>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+  row,
+
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB(value) {
+    let tempData = data;
+    tempData[row.index].IS_LOCK = row.original.IS_LOCK === 0 ? 1 : 0;
+    setData(tempData);
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB(ref)}
+      {...rest}
+    />
+  );
+}
+
+function IndeterminateCheckboxALL({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+
+  table,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB() {
+    let tempData = data;
+    for (let i = 0; i < data.length; i++) {
+      tempData[i].IS_LOCK = data[i].IS_LOCK === 0 ? 1 : 0;
+      if (i === data.length - 1) {
+        setData(tempData);
+      }
+    }
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB()}
+      {...rest}
+    />
   );
 }
 
