@@ -4,6 +4,7 @@ import Title from "../Title";
 import "../../pages/Home.css";
 import Subtitle from "../Subtitle";
 import ButtonSearch from "../ButtonSearch";
+import UserPremission from "../../functions/userPermission";
 import {
   Column,
   Table,
@@ -43,35 +44,51 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-type Stat_CM1B = {
-  UZUULELT: string;
-  MD: string;
-  EMPLOYEE: string;
-  A_DATE: string;
-  A_TIME: string;
-  TOLOWLOSON_AUDIT_TOO: string;
-  GUITSETGESE_AUDIT_TOO: string;
-  SHALGAGDAGCH_ETGEEDIIN_TOO: string;
-  AUDIT_HAMRAGDSAN_TOO: string;
-  TOLOWLOSON_UR_OGOOJIIN_SANHUUGIIN_TOO: string;
-  TOLOWLOSON_OGOOIIN_SANHUUGIIN_DUN_T: string;
-  SANHUUGIIN_BUS_UR_OGOOJIIN_TOO: string;
-  HULEEN_ZOW_UR_OGOOJIIN_SANHUUGIIIN_TOO: string;
-  HULEEN_ZOWSHOORUULSEN_UR: string;
-  SANHUUGIIN_BUS_UR_OGOOJIIN_TOO1: string;
-};
 
 function CM_1B() {
+    // @ts-ignore
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const columns = React.useMemo<ColumnDef<Stat_CM1B, any>[]>(
+  const columns = React.useMemo(
     () => [
-      {
-        accessorFn: (row, index) => index + 1,
-        id: "№",
-      },
+      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
+      ? {
+          id: "select",
+          header: ({ table }) => (
+            <IndeterminateCheckboxALL
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+                data,
+                setData,
+              }}
+            />
+          ),
+          cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                  disabled: !row.getCanSelect(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
+                  data,
+                  setData,
+                  row,
+                }}
+              />
+            </div>
+          ),
+        }
+      : {
+          accessorFn: (row, index) => index + 1,
+          accessorKey: "№",
+          header: "№",
+        },
       {
         accessorKey: "UZUULELT",
         cell: (info) => info.getValue(),
@@ -172,25 +189,8 @@ function CM_1B() {
     ],
     []
   );
-  let Stat_CM1B = [
-    {
-      UZUULELT: "Нийт дүн мөр(1)=мөр(2+3+4)",
-      MD: "1",
-    },
-    {
-      UZUULELT: "Бодлогоор",
-      MD: "2",
-    },
-    {
-      UZUULELT: "Хуулийн дагуу",
-      MD: "3",
-    },
-    {
-      UZUULELT: "Төлөвлөгөөт бус",
-      MD: "4",
-    },
-  ];
-  const [data, setData] = React.useState<Stat_CM1B[]>(Stat_CM1B);
+
+  const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
   const refreshData = () => setData((old) => []);
 
@@ -257,7 +257,7 @@ function CM_1B() {
         }}
       >
         <div className="h-2 mr-20" />
-        <table style={{ width: "5000px" }}>
+        <table>
           <thead className="TableHeadBackroundcolor gap-20">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -266,6 +266,7 @@ function CM_1B() {
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
+                      className="px-1.5"
                       style={{
                         width:
                           header.getSize() !== 0 ? header.getSize() : undefined,
@@ -326,7 +327,6 @@ function CM_1B() {
           </tbody>
         </table>
       </div>
-
       <div style={{ justifyContent: "flex-end" }}>
         <div className="justify-end flex items-center gap-1 mt-5 mr-2">
           <button
@@ -357,28 +357,109 @@ function CM_1B() {
           >
             {">>"}
           </button>
-          <span className="flex items-center gap-4">
-            <div>нийт</div>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} {table.getPageCount()}
-            </strong>
-          </span>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className="flex items-center gap-4">
+              <div>нийт:</div>
+              <span>{data.length}</span>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
+                {table.getPageCount()}
+              </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+          </div>
       </div>
     </>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+  row,
+
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB(value) {
+    let tempData = data;
+    tempData[row.index].IS_LOCK = row.original.IS_LOCK === 0 ? 1 : 0;
+    setData(tempData);
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB(ref)}
+      {...rest}
+    />
+  );
+}
+
+function IndeterminateCheckboxALL({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+
+  table,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB() {
+    let tempData = data;
+    for (let i = 0; i < data.length; i++) {
+      tempData[i].IS_LOCK = data[i].IS_LOCK === 0 ? 1 : 0;
+      if (i === data.length - 1) {
+        setData(tempData);
+      }
+    }
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB()}
+      {...rest}
+    />
   );
 }
 
