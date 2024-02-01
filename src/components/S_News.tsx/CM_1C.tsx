@@ -166,6 +166,7 @@ function CM_1C() {
         header:
           "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
+        size: 110
       },
       {
         accessorKey: "SANHUUGIIN_BUS_UR_OGOOJN_TOO1",
