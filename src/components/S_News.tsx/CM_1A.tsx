@@ -298,7 +298,7 @@ function CM_1A(props) {
         }}
       >
         <div className="h-2 mr-20" />
-        <table>
+        <table className="w-full">
           <thead className="TableHeadBackroundcolor gap-20">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
