@@ -149,7 +149,6 @@ function CM_1B() {
         accessorKey: "TOLOWLOSON_OGOOIIN_SANHUUGIIN_DUN_T",
         header: "Төлөвлөсөн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
-        size: 250,
       },
       {
         accessorKey: "SANHUUGIIN_BUS_UR_OGOOJIIN_TOO",
@@ -166,7 +165,6 @@ function CM_1B() {
         header:
           "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
-        size: 120
       },
       {
         accessorKey: "SANHUUGIIN_BUS_UR_OGOOJIIN_TOO1",

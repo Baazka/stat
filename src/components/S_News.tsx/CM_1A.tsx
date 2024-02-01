@@ -206,7 +206,7 @@ function CM_1A(props) {
       {
         accessorKey: "HULEEN_ZOWSHOORUULSEN_UR_OGOOJ_SANHUUGN_DUN",
         header:
-          "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн/сая төгрөгөөр/",
+          "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
       },
       {
