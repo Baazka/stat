@@ -482,17 +482,6 @@ function CM_1A(props) {
           </select>
         </div>
       </div>
-      <div>
-        <div className="text-base flex row">
-          <FooterValue />
-        </div>
-      </div>
-
-      <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-        <div className="flex  items-end">
-          <Comment />
-        </div>
-      </div>
     </>
   );
 }

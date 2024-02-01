@@ -460,18 +460,6 @@ function CM_2A() {
           overflowX: "scroll",
         }}
       >
-        <div className="justify-start flex mb-2 mt-2">
-          <Title
-            title={
-              "САНХҮҮГИЙН ТАЙЛАНГИЙН АУДИТААР ИЛРҮҮЛСЭН ЗӨРЧЛИЙН ШИЙДВЭРЛЭЛТИЙН 3-ТАБСМ-2A"
-            }
-            widthS={"40rem"}
-            widthL={"20rem"}
-          />
-          <div className="mt-1 ml-1.5">
-            <Subtitle mayagtName={"З-ТАБСМ-2A"} />
-          </div>
-        </div>
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
             <ButtonSearch />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
 import Stat_URl from "../Stat_URL";
-import RightMenu from "../components/SidebarCM";
 import CM_1A from "../components/S_News.tsx/CM_1A";
 import CM_1B from "../components/S_News.tsx/CM_1B";
 import CM_1C from "../components/S_News.tsx/CM_1C";
@@ -74,6 +73,56 @@ function CM(props: any) {
         return <CM_1A />;
       case 17:
         return <CM_1B />;
+      case 18:
+        return <CM_1C />;
+      case 19:
+        return <CM_2A />;
+      case 20:
+        return <CM_2B />;
+      case 21:
+        return <CM_2C />;
+      case 22:
+        return <CM_3A />;
+      case 23:
+        return <CM_3B />;
+      case 24:
+        return <CM_3C />;
+      case 25:
+        return <CM_4 />;
+      case 26:
+        return <CM_5A />;
+      case 27:
+        return <CM_5B />;
+      case 28:
+        return <CM_5C />;
+      case 29:
+        return <CM_5D />;
+      case 30:
+        return <CM_5E />;
+      case 31:
+        return <CM_5F />;
+      case 32:
+        return <CM_6 />;
+      case 33:
+        return <CM_7 />;
+      case 34:
+        return <CM_8 />;
+      case 35:
+        return <CM_9A />;
+      case 36:
+        return <CM_9B />;
+      case 37:
+        return <CM_9C />;
+      case 38:
+        return <CM_9D />;
+      case 39:
+        return <CM_9E />;
+      case 40:
+        return <CM_9F />;
+      case 41:
+        return <CM_10 />;
+      case 42:
+        return <CM_11 />;
       default:
         return <div>Хөгжүүлэлт хийгдэж байна.</div>;
     }
