@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Title from "../Title";
 import "../../pages/Home.css";
-import Subtitle from "../Subtitle";
-import FooterValue from "../Footervalue";
-import Comment from "../comment";
 import ButtonSearch from "../ButtonSearch";
 import UserPremission from "../../functions/userPermission";
 import { excel } from "../../assets/zurag";
@@ -21,7 +17,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   FilterFn,
-  ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
 
