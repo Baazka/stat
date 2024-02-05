@@ -130,14 +130,12 @@ function CM_5E() {
         cell: (info) => info.getValue(),
         header: "Төсвийг зориулалт бусаар зарцуулсан зөрчлийн тоо",
         footer: (props) => props.column.id,
-        size: 250,
       },
       {
         accessorKey: "TOSWIIN_ZORIULLT_BUSAAR_ZARTSUULSAN_DUN",
         cell: (info) => info.getValue(),
         header: "Төсвийг зориулалт бусаар зарцуулсан зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
-        size: 250,
       },
       {
         accessorKey: "TBONOHB_TOGTOOMJ HUULI_BUSAAR_ASHIGLASAN_TOO",
@@ -145,6 +143,7 @@ function CM_5E() {
         header:
           "Төрийн болон орон нутгийн өмч, хөрөнгийг дутаасан, үрэгдүүлсэн, хууль бусаар ашигласан зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "TBONOHB_TOGTOOMJ HUULI_BUSAAR_ASHIGLASAN_DUN",
@@ -152,6 +151,7 @@ function CM_5E() {
         header:
           "Төрийн болон орон нутгийн өмч, хөрөнгийг дутаасан, үрэгдүүлсэн, хууль бусаар ашигласан зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_TOO",
@@ -159,6 +159,7 @@ function CM_5E() {
         header:
           "Төрийн болон орон нутгийн өмчийн хөрөнгөөр бараа, ажил, үйлчилгээ худалдан авах тухай хууль тогтоомж зөрчсөн зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "TBONOHB_TOGTOOMJ ZORCGSON_DUN",
@@ -166,6 +167,7 @@ function CM_5E() {
         header:
           "Төрийн болон орон нутгийн өмчийн хөрөнгөөр бараа, ажил, үйлчилгээ худалдан авах тухай хууль тогтоомж зөрчсөн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "HUURAMCH_BARIMT_UILDSEN_ASHIGLSAN_TOO",
@@ -185,6 +187,7 @@ function CM_5E() {
         header:
           "Өөрт олгогдоогүй албан тушаалын бүрэн эрхийг бусдын нэрийн өмнөөс хэрэгжүүлсэн, ашигласан зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "OOAT_ASHIGLSAN_DUN",
@@ -192,6 +195,7 @@ function CM_5E() {
         header:
           "Өөрт олгогдоогүй албан тушаалын бүрэн эрхийг бусдын нэрийн өмнөөс хэрэгжүүлсэн, ашигласан зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "EMATB_BII_BOLGSON_TOO",
@@ -199,6 +203,7 @@ function CM_5E() {
         header:
           "Эрх мэдэл, албан тушаалын байдлаа урвуулан ашиглаж өөртөө, бусдад давуу байдал бий болгосон зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "EMATB_BII_BOLGSON_DUN",
@@ -206,6 +211,7 @@ function CM_5E() {
         header:
           "Эрх мэдэл, албан тушаалын байдлаа урвуулан ашиглаж өөртөө, бусдад давуу байдал бий болгосон зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 800,
       },
       {
         accessorKey: "BUSAD_TOO",

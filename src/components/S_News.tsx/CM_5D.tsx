@@ -124,6 +124,7 @@ function CM_5D() {
         header:
           "Албан шаардлага, төлбөрийн актыг хугацаанд нь биелүүлээгүй зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 300,
       },
       {
         accessorKey: "AUA_SAAD_UCHRUULSAN_TOO",
@@ -144,12 +145,14 @@ function CM_5D() {
         cell: (info) => info.getValue(),
         header: "Санхүүгийн тайлангийн аудитаар сөрөг дүгнэлт авсан зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 300,
       },
       {
         accessorKey: "STA_SOROG_DUGNELT_AVSAN_DUN",
         cell: (info) => info.getValue(),
         header: "Санхүүгийн тайлангийн аудитаар сөрөг дүгнэлт авсан дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 300,
       },
       {
         accessorKey: "HH_UIL_AJILGAA_YWUULSAN_TOO",
@@ -193,6 +196,7 @@ function CM_5D() {
         header:
           "Төрийн аудитын байгууллага санхүүгийн тайланд дүгнэлт өгөхөөс татгалзсан зөрчлийн тоо",
         footer: (props) => props.column.id,
+        size: 300,
       },
       {
         accessorKey: "TABST_DUGNELT_OGHOOS_TATGALZSAN_DUN",
@@ -200,6 +204,7 @@ function CM_5D() {
         header:
           "Төрийн аудитын байгууллага санхүүгийн тайланд дүгнэлт өгөхөөс татгалзсан зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 300,
       },
     ],
     []
