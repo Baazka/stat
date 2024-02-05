@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import {
-  useNavigate,
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Title from "../Title";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../pages/Home.css";
-import Subtitle from "../Subtitle";
 import ButtonSearch from "../ButtonSearch";
+import UserPremission from "../../functions/userPermission";
 import { excel } from "../../assets/zurag";
+import DataRequest from "../../functions/make_Request";
+import Stat_URl from "../../Stat_URL";
 import {
   Column,
   Table,
@@ -20,19 +17,15 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getPaginationRowModel,
-  sortingFns,
   getSortedRowModel,
   FilterFn,
-  SortingFn,
   ColumnDef,
   flexRender,
-  FilterFns,
 } from "@tanstack/react-table";
 
 import {
   RankingInfo,
   rankItem,
-  compareItems,
 } from "@tanstack/match-sorter-utils";
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -54,47 +47,52 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-const now = new Date();
-
-type Stat_CM3C = {
-  UZUULLT: string;
-  MD: string;
-  HHBAI_SHILJUULSEN_ASUUDLIN_EHNII_ULDEGDEL_TOO: string;
-  HHB_SHILJULSEN_ASUUDLIN_EHNII_ULDEGDEL_DUN: string;
-  HHB_SHILJUULSEN_ASUUDLIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_TOO: string;
-  HHB_SHILJUULSEN_ASUUDLIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_DUN: string;
-  HHB_SHILJUULSEN_ASUUDLIN_BUH_TOO: string;
-  HHB_SHILJUULSEN_ASUUDLIN_BUH_DUN: string;
-  HHB_SHILJUULSEN_ASUUDLIN_HERGJILT_BUREN_SHIIDWERLEGDSEN_OMNOH_ONI_TOO: string;
-  HHB_SHILJUULSN_ASUUDLN_HERGJILT_BURN_SHIIDWERLEGDSEN_OMNOH_ONI_DUN: string;
-  HHBSH_ASUUDAL_HERGJILT_BUREN_SHIIDWERLGSEN_TAILNT_ONI_TOO: string;
-  HHBSH_ASUUDLIN_HERGJILTIIN_BUREN_SHIIDWERLEGDSEN_TAILNT_ONI_DUN: string;
-  HHBSH_ASUUDLN_HERGJILT_HYNAGDAJ_BAIGAA_OMNOH_ONI_TOO: string;
-  HHBSH_ASUUDLN_HERGJILTIIN_HYNAGDAJ_BAIGAA_OMNOH_ONI_DUN: string;
-  HHBSH_ASUUDLN_HERGJILT_HYNAGDAJ_BAIGAA_TAILANT_ONI_TOO: string;
-  HHBSH_ASUUDLIN_HERGJILT_HYNAGDAJ_BAIGAA_TAILNT_ONI_DUN: string;
-  HHBSH_ASUUDLIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_OMNOH_ONI_TOO: string;
-  HHBSH_ASUUDLN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_OMNOH_ONI_DUN: string;
-  HHBSH_ASUUDLIN_HREGJILT_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO: string;
-  HHBSH_SHILJUULSEN_ASUUDLIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO: string;
-};
 
 function CM_3C() {
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  // const userDetails = JSON.parse(getItem("userDetails"));
-  // const [status, setStatus] = useState([]);
-  // const [commentText, setCommentText] = useState("");
-  // async function fetchData() {
   const [globalFilter, setGlobalFilter] = React.useState("");
 
-  const columns = React.useMemo<ColumnDef<Stat_CM3C, any>[]>(
+  const columns = React.useMemo(
     () => [
-      {
-        accessorFn: (row, index) => index + 1,
-        id: "№",
-      },
+      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
+      ? {
+          id: "select",
+          header: ({ table }) => (
+            <IndeterminateCheckboxALL
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+                data,
+                setData,
+              }}
+            />
+          ),
+          cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                  disabled: !row.getCanSelect(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
+                  data,
+                  setData,
+                  row,
+                }}
+              />
+            </div>
+          ),
+        }
+      : {
+          accessorFn: (row, index) => index + 1,
+          accessorKey: "№",
+          header: "№",
+        },
       {
         accessorKey: "UZUULLT",
         cell: (info) => info.getValue(),
@@ -108,55 +106,52 @@ function CM_3C() {
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "HHBAI_SHILJUULSEN_ASUUDLIN_EHNII_ULDEGDEL_TOO",
+        accessorKey:
+          "HUULI_HYNALTIIN_BAI_SHILJUULLT_ASUUDLIIN_EHNII_ULDEGDL_TOO",
         cell: (info) => info.getValue(),
         header:
           "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын эхний үлдэгдлийн тоо",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
-        accessorKey: "HHB_SHILJULSEN_ASUUDLIN_EHNII_ULDEGDEL_DUN",
+        accessorKey:
+          "HUULI_HYNALTIN_BAI_SHILJUULSEN_ASUUDLIIN_EHNII_ULDEGDEL_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын эхний үлдэгдлийн дүн",
+          "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын эхний үлдэгдлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey:
-          "HHB_SHILJUULSEN_ASUUDLIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_TOO",
+          "HUULI_HYNALTIN_BAI_SHHILJUULSEN_ASUUDLIIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_TOO",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагад тайлант хугацаанд шинээр шилжүүлсэн тоо",
+          "Тайлант хугацаанд хууль хяналтын байгууллагад шинээр шилжүүлсэн асуудлын тоо ",
         footer: (props) => props.column.id,
-        size: 2000,
       },
       {
         accessorKey:
-          "HHB_SHILJUULSEN_ASUUDLIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_DUN",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_TAILANT_HUGATSAAND_SHINEER_SHILJUULSEN_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагад тайлант хугацаанд шинээр шилжүүлсэн дүн",
+          "Тайлант хугацаанд хууль хяналтын байгууллагад шинээр шилжүүлсэн асуудлын дүн /сая төгрөгөөр/ ",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
-        accessorKey:
-          "HHB_SHILJUULSEN_ASUUDLIN_HERGJILT_BUREN_SHIIDWERLEGDSEN_OMNOH_ONI_TOO",
+        accessorKey: "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_BUH_TOO",
         cell: (info) => info.getValue(),
         header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын нийт тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey:
-          "HHB_SHILJUULSN_ASUUDLN_HERGJILT_BURN_SHIIDWERLEGDSEN_OMNOH_ONI_DUN",
+        accessorKey: "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_BUH_DUN",
         cell: (info) => info.getValue(),
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын нийт дүн",
+        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын нийт дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey:
-          "HHBSH_ASUUDAL_HERGJILT_BUREN_SHIIDWERLGSEN_TAILNT_ONI_TOO",
+          "HUULI_NYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HERGJILT_BUREN_SHIIDWERLESEN_OMNOH_ONI_TOO",
         cell: (info) => info.getValue(),
         header:
           "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын өмнөх оны тоо",
@@ -164,101 +159,97 @@ function CM_3C() {
       },
       {
         accessorKey:
-          "HHBSH_ASUUDLIN_HERGJILTIIN_BUREN_SHIIDWERLEGDSEN_TAILNT_ONI_DUN",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIN_HERGJILTIIN_BUREN_SHIIDWERLEGDSEN_OMNOH_ONI_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын өмнөх оны дүн",
+          "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын өмнөх оны дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "HHBSH_ASUUDLN_HERGJILT_HYNAGDAJ_BAIGAA_OMNOH_ONI_TOO",
+        accessorKey:
+          "HUULI_HYNALTIIN_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_BUREN_SIIDWERLEGDESN_TAILANT_ONI_TOO",
         cell: (info) => info.getValue(),
         header:
           "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын тайлант оны тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "HHBSH_ASUUDLN_HERGJILTIIN_HYNAGDAJ_BAIGAA_OMNOH_ONI_DUN",
+        accessorKey:
+          "HUULI_NYALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_BUREN_SHIIDWERLGDSEN_TAILANT_ONI_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын тайлант оны дүн",
+          "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн асуудлын тайлант оны дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "HHBSH_ASUUDLN_HERGJILT_HYNAGDAJ_BAIGAA_TAILANT_ONI_TOO",
-        cell: (info) => info.getValue(),
-        header:
-          "Хууль хяналтын байгууллагад хянагдаж байгаа асуудлын өмнөх оны тоо",
-        footer: (props) => props.column.id,
-        size: 200,
-      },
-      {
-        accessorKey: "HHBSH_ASUUDLIN_HERGJILT_HYNAGDAJ_BAIGAA_TAILNT_ONI_DUN",
-        cell: (info) => info.getValue(),
-        header:
-          "Хууль хяналтын байгууллагад хянагдаж байгаа асуудлын өмнөх оны дүн",
-        footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_ASUUDLIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_OMNOH_ONI_TOO",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_HYNAGDAJ_BAIGAA_OMNOH_ONII_TOO",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагад хянагдаж байгаа асуудлын тайлант оны тоо",
+          "Хууль хяналтын байгууллагаар хянагдаж байгаа асуудлын өмнөх оны тоо",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_ASUUDLN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_OMNOH_ONI_DUN",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_HYNAGDAJ_BAIGAA_OMNOH_ONI_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагад хянагдаж байгаа асуудлын тайлант оны дүн",
+          "Хууль хяналтын байгууллагаар хянагдаж байгаа асуудлын өмнөх оны дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_ASUUDLIN_HREGJILT_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_TAILANT_ONI_TOO",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаас хэрэгсэхгүй болсон асуудлын өмнөх оны тоо",
+          "Хууль хяналтын байгууллагаар хянагдаж байгаа асуудлын тайлант оны тоо",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_SHILJUULSEN_ASUUDLIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO",
+          "HUULI_HYNALTIIN_BAIGUULLAGD_SHILJUULSEN_ASUUDLIIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_ONI_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаас хэрэгсэхгүй болсон асуудлын өмнөх оны дүн",
+          "Хууль хяналтын байгууллагаар хянагдаж байгаа асуудлын тайлант оны дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_ASUUDLIN_HREGJILT_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HEREGSEHGUI_BOLSON_OMNOH_ONI_TOO",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаас хэрэгсэхгүй болсон асуудлын тайлант оны тоо",
+          "Хууль хяналтын байгууллагаар хэрэгсэхгүй болсон асуудлын өмнөх оны тоо",
         footer: (props) => props.column.id,
-        size: 200,
       },
       {
         accessorKey:
-          "HHBSH_SHILJUULSEN_ASUUDLIN_HERGJILTIIN_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO",
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_HYNAGDAJ_BAIGAA_HERGSENGUI_BOLSON_OMNOH_ONI_DUN",
         cell: (info) => info.getValue(),
         header:
-          "Хууль хяналтын байгууллагаас хэрэгсэхгүй болсон асуудлын тайлант оны дүн",
+          "Хууль хяналтын байгууллагаар хэрэгсэхгүй болсон асуудлын өмнөх оны дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
-        size: 200,
+      },
+      {
+        accessorKey:
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HERGJILT_HYNAGDAJ_BAIGAA_HERGSEHGUI_BOLSON_TAILANT_ONI_TOO",
+        cell: (info) => info.getValue(),
+        header:
+          "Хууль хяналтын байгууллагаар хэрэгсэхгүй болсон асуудлын тайлант оны тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey:
+          "HUULI_HYNALTIIN_BAI_SHILJUULSEN_ASUUDLIIN_HEREGJILTIIN_HYNAGDAJ_BAIGAA_HEREGSEHGUI_BOLSON_TAILANT_ONI_DUN",
+        cell: (info) => info.getValue(),
+        header:
+          "Хууль хяналтын байгууллагаар хэрэгсэхгүй болсон асуудлын тайлант оны дүн /сая төгрөгөөр/",
+        footer: (props) => props.column.id,
       },
     ],
     []
   );
-  let Stat_CM3C = [{}];
-  const [data, setData] = React.useState<Stat_CM3C[]>(Stat_CM3C);
+
+  const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
   const refreshData = () => setData((old) => []);
   const [filter, setFilter] = useState({
@@ -299,6 +290,30 @@ function CM_3C() {
     debugColumns: false,
   });
 
+  useEffect(() => {
+    fetchData();
+  }, [filter]);
+
+  async function fetchData() {
+    DataRequest({
+      url: Stat_URl + "statisticList",
+      method: "POST",
+      data: {
+        
+      },
+    })
+      .then(function (response) {
+        if (response?.data !== undefined && response?.data?.length > 0) {
+          setData([]);
+        } else {
+          setData([]);
+        }
+      })
+      .catch(function (error) {
+        alert("Өгөгдөл авчрахад алдаа гарлаа!");
+      });
+  }
+
   React.useEffect(() => {
     if (table.getState().columnFilters[0]?.id === "fullName") {
       if (table.getState().sorting[0]?.id !== "fullName") {
@@ -317,18 +332,6 @@ function CM_3C() {
           overflowX: "scroll",
         }}
       >
-        <div className="justify-start flex mb-2 mt-2">
-          <Title
-            title={
-              "НИЙЦЛИЙН АУДИТААР ИЛРҮҮЛСЭН ЗӨРЧЛИЙН ШИЙДВЭРЛЭЛТИЙН ХЭРЭГЖИЛТ 3-ТАБСМ-3В"
-            }
-            widthS={"39rem"}
-            widthL={"20rem"}
-          />
-          <div className="mt-1 ml-1.5">
-            <Subtitle mayagtName={"З-ТАБСМ-3В"} />
-          </div>
-        </div>
         <div className="flex justify-between mb-2 ">
           <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
             <ButtonSearch />
@@ -365,77 +368,75 @@ function CM_3C() {
           }}
         >
           <div className="h-2 mr-20" />
-          <table>
-            <thead className="TableHeadBackroundcolor gap-20">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          width:
-                            header.getSize() !== 0
-                              ? header.getSize()
-                              : undefined,
-                        }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+          <table className="w-full">
+          <thead className="TableHeadBackroundcolor gap-20">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="px-1.5"
+                      style={{
+                        width:
+                          header.getSize() !== 0 ? header.getSize() : undefined,
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                          ></div>
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                          {header.column.getCanFilter() ? (
+                            <div>
+                              <Filter column={header.column} table={table} />
                             </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
+                          ) : null}
+                        </>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => {
+              return (
+                <tr
+                  key={row.id}
+                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                >
+                  {row.getVisibleCells().map((cell, index) => {
+                    return (
+                      <td key={cell.id} className="p-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                      </th>
+                      </td>
                     );
                   })}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
         </div>
       </div>
       <div style={{ justifyContent: "flex-end" }}>
@@ -468,28 +469,109 @@ function CM_3C() {
           >
             {">>"}
           </button>
-          <span className="flex items-center gap-4">
-            <div>нийт</div>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} {table.getPageCount()}
-            </strong>
-          </span>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className="flex items-center gap-4">
+              <div>нийт:</div>
+              <span>{data.length}</span>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}
+                {" - "}
+                {table.getPageCount()}
+              </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+          </div>
       </div>
     </>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+  row,
+
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB(value) {
+    let tempData = data;
+    tempData[row.index].IS_LOCK = row.original.IS_LOCK === 0 ? 1 : 0;
+    setData(tempData);
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB(ref)}
+      {...rest}
+    />
+  );
+}
+
+function IndeterminateCheckboxALL({
+  indeterminate,
+  className = "",
+  data,
+  setData,
+
+  table,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null!);
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  function saveToDB() {
+    let tempData = data;
+    for (let i = 0; i < data.length; i++) {
+      tempData[i].IS_LOCK = data[i].IS_LOCK === 0 ? 1 : 0;
+      if (i === data.length - 1) {
+        setData(tempData);
+      }
+    }
+  }
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      //{row?.original.IS_LOCK === 1 ?true:false}
+      checked={true}
+      onClick={(value) => saveToDB()}
+      {...rest}
+    />
   );
 }
 
@@ -528,63 +610,6 @@ function Filter({
 
       <div className="h-4" />
     </>
-  );
-}
-
-// A debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <div className=" overflow-hidden flex border rounded-md">
-      <input
-        type="text"
-        value={value || ""}
-        className=" text-sm "
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder="Хайх утгаа оруулна уу..."
-        style={{
-          width: "200px",
-        }}
-      />
-
-      <button className="flex items-center px-2.5 border-l bg-blue-500 rounded-md">
-        <svg
-          className="h-4 w-4 text-grey-dark"
-          fill="currentColor"
-          color="white"
-          enableBackground=""
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
-          <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-        </svg>
-      </button>
-    </div>
   );
 }
 
