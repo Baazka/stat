@@ -91,6 +91,7 @@ function CM_2C() {
           accessorFn: (row, index) => index + 1,
           accessorKey: "№",
           header: "№",
+          size: 10,
         },
       {
         accessorKey: "UZUULELLT",

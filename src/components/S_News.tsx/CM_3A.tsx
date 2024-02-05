@@ -91,6 +91,7 @@ function CM_3A() {
           accessorFn: (row, index) => index + 1,
           accessorKey: "№",
           header: "№",
+          size: 10,
         },
       {
         accessorKey: "UZUULLT",

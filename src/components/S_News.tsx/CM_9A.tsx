@@ -91,6 +91,7 @@ function CM_9A() {
           accessorFn: (row, index) => index + 1,
           accessorKey: "№",
           header: "№",
+          size: 10,
         },
       {
         accessorKey: "AUDIT_GAZAR",

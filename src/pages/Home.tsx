@@ -118,6 +118,7 @@ function Home(props: any) {
             accessorFn: (row, index) => index + 1,
             accessorKey: "№",
             header: "№",
+            size: 10,
           },
       {
         accessorKey: "PERIOD_LABEL",
