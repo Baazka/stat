@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import {
-  useNavigate,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../pages/Home.css";
 import ButtonSearch from "../ButtonSearch";
 import UserPremission from "../../functions/userPermission";
+import { excel } from "../../assets/zurag";
+import DataRequest from "../../functions/make_Request";
+import Stat_URl from "../../Stat_URL";
 import {
   Column,
   Table,
@@ -27,7 +28,6 @@ import {
   RankingInfo,
   rankItem,
 } from "@tanstack/match-sorter-utils";
-import { excel } from "../../assets/zurag";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -100,12 +100,12 @@ function CM_2A() {
         cell: (info) => info.getValue(),
         getGroupingValue: (row) => `${row.UZUULLT} ${row.SHIIDWERLLT}`,
       },
-      {
-        accessorKey: "ANGILAL",
-        header: "Ангилал",
-        cell: (info) => info.getValue(),
-        enableGrouping: false,
-      },
+      // {
+      //   accessorKey: "ANGILAL",
+      //   header: "Ангилал",
+      //   cell: (info) => info.getValue(),
+      //   enableGrouping: false,
+      // },
       {
         accessorKey: "SHIIDWERLLT",
         id: "baiguulaga",
@@ -370,6 +370,30 @@ function CM_2A() {
     debugHeaders: false,
     debugColumns: false,
   });
+
+  useEffect(() => {
+    fetchData();
+  }, [filter]);
+
+  async function fetchData() {
+    DataRequest({
+      url: Stat_URl + "statisticList",
+      method: "POST",
+      data: {
+        
+      },
+    })
+      .then(function (response) {
+        if (response?.data !== undefined && response?.data?.length > 0) {
+          setData([]);
+        } else {
+          setData([]);
+        }
+      })
+      .catch(function (error) {
+        alert("Өгөгдөл авчрахад алдаа гарлаа!");
+      });
+  }
 
   React.useEffect(() => {
     if (table.getState().columnFilters[0]?.id === "fullName") {
