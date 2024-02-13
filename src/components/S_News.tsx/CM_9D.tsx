@@ -115,105 +115,91 @@ function CM_9D() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Хамрагдсан албан хаагчдын нийт тоо",
+        header: "Хамрагдсан нийт албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан нийт сургалтын тоо",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "ҮАГ зохион байгуулсан сургалтад хамрагдсан нийт албан хаагчдын тоо",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан үндсэн цахим сургалтын нийт тоо",
-        footer: (props) => props.column.id,
-      },
-      // {
-      //   accessorKey: "AUDIT_KOD",
-      //   cell: (info) => info.getValue(),
-      //   header:
-      //     "ҮАГ зохион байгуулсан цахим сургалт, үндсэн хамрагдсан албан хаагчдын тоо",
-      //   footer: (props) => props.column.id,
-      // },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "ҮАГ зохион байгуулсан үндсэн цахим сургалтад хамрагдсан нийт албан хаагчдын тоо",
+        header: "ҮАГ-аас зохион байгуулсан нийт сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "ҮАГ зохион байгуулсан үндсэн цахим сургалтад хамрагдан сертификаттай төгссөн нийт албан хаагчдын тоо",
+          "ҮАГ-аас зохион байгуулсан сургалтад хамрагдсан нийт албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан хөгжлийн цахим сургалтын нийт тоо",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан хөгжлийн цахим сургалтын хандалтын тоо",
-        footer: (props) => props.column.id,
-      },
-      // {
-      //   accessorKey: "AUDIT_KOD",
-      //   cell: (info) => info.getValue(),
-      //   header:
-      //     "ҮАГ зохион байгуулсан танхимын сургалт, хамрагдсан албан хаагчдын тоо",
-      //   footer: (props) => props.column.id,
-      // },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан танхимын сургалтын тоо",
+        header: "ҮАГ-аас зохион байгуулсан үндсэн цахим сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "ҮАГ зохион байгуулсан танхимын сургалтад хамрагдсан албан хаагчийн тоо",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан онлайн сургалтын тоо",
+          "ҮАГ-аас зохион байгуулсан үндсэн цахим сургалтад хамрагдсан нийт албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "ҮАГ зохион байгуулсан онлайн сургалтад хамрагдсан албан хаагчийн тоо",
+          "ҮАГ-аас зохион байгуулсан үндсэн цахим сургалтад хамрагдан сертификаттай төгссөн албан хаагчийн тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "ҮАГ зохион байгуулсан хосолсон сургалтын тоо",
+        header: "ҮАГ-аас зохион байгуулсан хөгжлийн цахим сургалтын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header: "ҮАГ-аас зохион байгуулсан хөгжлийн цахим сургалтын хандалтын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header: "ҮАГ-аас зохион байгуулсан танхимын сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "ҮАГ зохион байгуулсан хосолсон сургалтад хамрагдсан албан хаагчийн тоо",
+          "ҮАГ-аас зохион байгуулсан танхимын сургалтад хамрагдсан албан хаагчдын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header: "ҮАГ-аас зохион байгуулсан онлайн сургалтын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header:
+          "ҮАГ-аас зохион байгуулсан онлайн сургалтад хамрагдсан албан хаагчдын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header: "ҮАГ-аас зохион байгуулсан хосолсон сургалтын тоо",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header:
+          "ҮАГ-аас зохион байгуулсан хосолсон сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
@@ -226,7 +212,7 @@ function CM_9D() {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Бусад байгууллагаас зохион байгуулсан сургалтад хамрагдсан албан хаагчийн тоо",
+          "Бусад байгууллагаас зохион байгуулсан сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
@@ -238,7 +224,7 @@ function CM_9D() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Гадаад сургалтад хамрагдсан албан хаагчийн тоо",
+        header: "Гадаад сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
     ],

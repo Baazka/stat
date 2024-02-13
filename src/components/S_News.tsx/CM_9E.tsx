@@ -115,7 +115,7 @@ function CM_9E() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Хамрагдсан албан хаагчдын нийт тоо",
+        header: "Хамрагдсан нийт албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
@@ -133,37 +133,37 @@ function CM_9E() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Танхимын сургалтын тоо",
+        header: "Танхимаар зохион байгуулсан дотоод сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Танхимын сургалтад хамрагдсан албан хаагчдын тоо",
+        header: "Танхимаар зохион байгуулсан сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Онлайн сургалтын тоо",
+        header: "Онлайнаар зохион байгуулсан дотоод сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Онлайн сургалтад хамрагдсан албан хаагчдын тоо",
+        header: "Онлайнаар зохион байгуулсан сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Хосолсон сургалтын тоо",
+        header: "Хосолсон дотоод сургалтын тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Хосолсон сургалтад хамрагдсан албан хаагчдын тоо",
+        header: "Хосолсон дотоод сургалтад хамрагдсан албан хаагчдын тоо",
         footer: (props) => props.column.id,
       },
       {
