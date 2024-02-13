@@ -103,110 +103,110 @@ function CM_7() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Санхүүгийн тайлангийн аудитад ТАБ санал дүгнэлт гаргах ТЕЗ",
+        header: "СТА-ТАБ-ТЕЗ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Санхүүгийн тайлангийн аудитад ТАБ санал дүгнэлт гаргах ТТЗ",
+        header: "СТА-ТАБ-ТТЗ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Санхүүгийн тайлангийн аудитад ТАБ санал дүгнэлт гаргах ТШЗ",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "Санхүүгийн тайлангийн аудитад ТАБ санал дүгнэлт гаргах төсөл, хөтөлбөр",
+        header: "СТА-ТАБ-ТШЗ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "ТАБ-ын санхүүгийн тайланд аудитын санал дүгнэлт гаргах засгийн газрын тусгай сан",
+          "СТА-ТАБ-Төсөл, хөтөлбөр-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ санал дүгнэлт гаргах ТБОНӨҮГ",
+          "СТА-ТАБ- Засгийн газрын тусгай сан-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх ТЕЗ",
+          "СТА-ТАБ- ТБОНӨҮГ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх ТТЗ",
+          "СТА-ТАБ-ТЕЗ- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх ТШЗ",
+          "СТА-ТАБ- ТТЗ- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх төсөл, хөтөлбөр",
+          "СТА-ТАБ- ТШЗ- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх засгийн газрын тусгай сан",
+          "СТА-ТАБ-Төсөл, хөтөлбөр- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад ТАБ үе шатны ажлыг хэсэгчлэн хийх ТБОНӨҮГ",
+          "СТА-ТАБ- Засгийн газрын тусгай сан- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад аудитын хуулийн этгээд санал дүгнэлт гаргах ТШЗ",
+          "СТА-ТАБ- ТБОНӨҮГ- Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад аудитын хуулийн этгээд санал дүгнэлт гаргах ТБОНӨҮГ",
+          "СТА-АХЭ-ТШЗ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад аудитын хуулийн этгээд үе шатны ажлыг хэсэгчлэн хийх ТШЗ",
+          "СТА-АХЭ- ТБОНӨҮГ-Санал дүгнэлт гаргах",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Санхүүгийн тайлангийн аудитад аудитын хуулийн этгээд үе шатны ажлыг хэсэгчлэн хийх ТБОНӨҮГ",
+          "СТА-АХЭ-ТШЗ- Үе шатны ажлыг хэсэгчлэн хийх",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header:
+          "СТА-АХЭ- ТБОНӨҮГ - Үе шатны ажлыг хэсэгчлэн хийх",
         footer: (props) => props.column.id,
       },
       {
