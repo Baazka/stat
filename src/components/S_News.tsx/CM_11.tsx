@@ -109,37 +109,37 @@ function CM_11() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Эхний үлдэгдэл",
+        header: "Зөвлөмжийн эхний үлдэгдэл",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Тайлант хугацаанд нэмэгдсэн",
+        header: "Тайлант хугацаанд нэмэгдсэн тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Төсөв, түүний зарцуулалттай холбоотой зөвлөмжийн мэдээлэл",
+        header: "Төсөв, түүний зарцуулалттай холбоотой",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Хүний нөөцтэй холбоотой зөвлөмжийн мэдээлэл",
+        header: "Хүний нөөцтэй холбоотой",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Төлөвлөгөөт ажлын биелэлттэй холбоотой зөвлөмжийн мэдээлэл",
+        header: "Төлөвлөгөөт ажлын биелэлттэй холбоотой",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Бусад зөвлөмжийн мэдээлэл",
+        header: "Бусад",
         footer: (props) => props.column.id,
       },
       {
@@ -151,13 +151,7 @@ function CM_11() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Зөвлөмжийн биелэлтийн өмнөх оноос",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header: "Зөвлөмжийн биелэлтийн тайлант он",
+        header: "Тайлант оны зөвлөмжийн биелэлт",
         footer: (props) => props.column.id,
       },
       {
@@ -169,25 +163,25 @@ function CM_11() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Өмнөх оны хугацаа болоогүй зөвлөмжийн биелэлт",
+        header: "Өмнөх оны хугацаа болоогүй тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Өмнөх оны хугацаа хэтэрсэн зөвлөмжийн биелэлт",
+        header: "Өмнөх оны хугацаа хэтэрсэн тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Тайлант оны хугацаа болоогүй зөвлөмжийн биелэлт",
+        header: "Тайлант оны хугацаа болоогүй тоо",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Тайлант оны хугацаа хэтэрсэн зөвлөмжийн биелэлт",
+        header: "Тайлант оны хугацаа хэтэрсэн тоо",
         footer: (props) => props.column.id,
       },
       {
@@ -199,7 +193,7 @@ function CM_11() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Зөвлөмжйин хэрэгжээгүй шалтгааны тайлбар",
+        header: "Зөвлөмжийн хэрэгжээгүй шалтгааны тайлбар",
         footer: (props) => props.column.id,
       },
     ],

@@ -94,6 +94,12 @@ function CM_10() {
           header: "№",
           size: 10,
         },
+        {
+          accessorKey: "ANGILAL",
+          cell: (info) => info.getValue(),
+          header: "Ангилал",
+          footer: (props) => props.column.id,
+        },
       {
         accessorKey: "AUDIT_GAZAR",
         cell: (info) => info.getValue(),
@@ -121,41 +127,41 @@ function CM_10() {
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Гэрээгээр хийлгэсэн шинжээчийн тоо, хувь хүн",
+        header: "Шинжээчийн тоо /хувь хүн/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
-        header: "Аудитад гэрээний үндсэн дээр шинжээчээр оролцсон багийн тоо",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "AUDIT_KOD",
-        cell: (info) => info.getValue(),
-        header:
-          "Аудитад гэрээний үндсэн дээр шинжээчээр оролцсон хуулийн этгээдийн тоо",
+        header: "Шинжээчийн тоо /баг/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Аудитад гэрээний үндсэн дээр шинжээчээр оролцсон хувь хүний зардал /сая төгрөгөөр/",
+          "Шинжээчийн тоо /хуулийн этгээд/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Аудитад гэрээний үндсэн дээр шинжээчээр оролцсон багийн зардал /сая төгрөгөөр/",
+          "Шинжээчийн зардал /хувь хүн/, /сая төгрөг/",
         footer: (props) => props.column.id,
       },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),
         header:
-          "Аудитад гэрээний үндсэн дээр шинжээчээр оролцсон хуулийн этгээдийн зардал /сая төгрөгөөр/",
+          "Шинжээчийн зардал /баг/, /сая төгрөг/",
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: "AUDIT_KOD",
+        cell: (info) => info.getValue(),
+        header:
+          "Шинжээчийн зардал /хуулийн этгээд/, /сая төгрөг/",
         footer: (props) => props.column.id,
       },
     ],
