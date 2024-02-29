@@ -93,16 +93,16 @@ function CM_9A() {
           header: "№",
           size: 10,
         },
+        {
+          accessorKey: "ANGILAL",
+          cell: (info) => info.getValue(),
+          header: "Ангилал",
+          footer: (props) => props.column.id,
+        },  
       {
         accessorKey: "AUDIT_GAZAR",
         cell: (info) => info.getValue(),
         header: "Үзүүлэлт",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "ANGILAL",
-        cell: (info) => info.getValue(),
-        header: "Ангилал",
         footer: (props) => props.column.id,
       },
       {

@@ -96,6 +96,12 @@ function CM_2B() {
           size: 10,
         },
       {
+        accessorKey: "ANGILAL",
+        header: "Ангилал",
+        cell: (info) => info.getValue(),
+        enableGrouping: false,
+      },
+      {
         accessorKey: "UZUULLT",
         cell: (info) => info.getValue(),
         header: "Үзүүлэлт",

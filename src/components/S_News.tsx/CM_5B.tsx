@@ -94,6 +94,12 @@ function CM_5B() {
           header: "№",
           size: 10,
         },
+        {
+          accessorKey: "ANGILAL",
+          header: "Аудитын төрөл",
+          cell: (info) => info.getValue(),
+          enableGrouping: false,
+        },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),
@@ -235,6 +241,7 @@ function CM_5B() {
         header:
           "Төрийн болон орон нутгийн өмчийн хөрөнгөөр бараа, ажил, үйлчилгээ худалдан авах тухай хууль, тогтоомж зөрчсөн нь төлбөрийн акт тогтоох үндэслэл бүрдээгүй зөрчлийн дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        size: 2000
       },
       {
         accessorKey: "AIAZ_TUUNII_ARILGAH_OGSON_ZOWLOMJ_HEREGJEEGUI_TOO",

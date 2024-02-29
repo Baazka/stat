@@ -100,12 +100,12 @@ function CM_10() {
           header: "Ангилал",
           footer: (props) => props.column.id,
         },
-      {
-        accessorKey: "AUDIT_GAZAR",
-        cell: (info) => info.getValue(),
-        header: "Үзүүлэлт",
-        footer: (props) => props.column.id,
-      },
+        {
+          accessorKey: "AUDIT_GAZAR",
+          cell: (info) => info.getValue(),
+          header: "Үзүүлэлт",
+          footer: (props) => props.column.id,
+        },
       {
         accessorKey: "AUDIT_KOD",
         cell: (info) => info.getValue(),

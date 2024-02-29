@@ -94,6 +94,12 @@ function CM_5E() {
           header: "№",
           size: 10,
         },
+        {
+          accessorKey: "ANGILAL",
+          header: "Аудитын төрөл",
+          cell: (info) => info.getValue(),
+          enableGrouping: false,
+        },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),

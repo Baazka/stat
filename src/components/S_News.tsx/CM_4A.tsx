@@ -94,6 +94,12 @@ function CM_4() {
           header: "№",
           size: 10,
         },
+        {
+          accessorKey: "ANGILAL",
+          header: "Байгууллагын үйл ажиллагааны салбарын ангилал",
+          cell: (info) => info.getValue(),
+          enableGrouping: false,
+        },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),
