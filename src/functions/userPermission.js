@@ -41,9 +41,10 @@ function UserPremission(userType, scope, action) {
       }
     } else if (action === "write") {
       switch (userType.toUpperCase()) {
+        case "STAT_ADMIN".toUpperCase():
+          return true;
         case "admin".toUpperCase():
           return true;
-
         case "MANAGER".toUpperCase():
           return true;
         default:
