@@ -96,17 +96,17 @@ function CM_2A() {
           size: 10,
         },
       {
+        accessorKey: "ANGILAL",
+        header: "Ангилал",
+        cell: (info) => info.getValue(),
+        enableGrouping: false,
+      },
+      {
         accessorKey: "UZUULLT",
         header: "Үзүүлэлт",
         cell: (info) => info.getValue(),
         getGroupingValue: (row) => `${row.UZUULLT} ${row.SHIIDWERLLT}`,
       },
-      // {
-      //   accessorKey: "ANGILAL",
-      //   header: "Ангилал",
-      //   cell: (info) => info.getValue(),
-      //   enableGrouping: false,
-      // },
       {
         accessorKey: "SHIIDWERLLT",
         id: "baiguulaga",
