@@ -372,7 +372,8 @@ function Burtgel(props: any) {
                             i.IS_TAB ===
                             (userDetails.USER_TYPE_NAME === "MANAGER"
                               ? 1
-                              : userDetails.USER_TYPE_NAME === "ADMIN"
+                              : userDetails.USER_TYPE_NAME === "ADMIN" ||
+                                userDetails.USER_TYPE_NAME === "STAT_ADMIN"
                               ? i.IS_TAB
                               : 0)
                         )
