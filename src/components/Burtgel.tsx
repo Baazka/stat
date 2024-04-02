@@ -254,10 +254,10 @@ function Burtgel(props: any) {
                       {drop.drop2.map((nation, index) => (
                         <option
                           className="font-semibold"
-                          key={nation.YEAR_LABEL}
+                          key={nation.ID}
                           value={nation.ID}
                         >
-                          {nation.YEAR_LABEL}
+                          {nation.PERIOD_LABEL}
                         </option>
                       ))}
                     </select>
