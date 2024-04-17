@@ -37,7 +37,7 @@ import { Period, Department } from "../components/library";
 // import RightMenu from "../components/RightMenu";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import "./Home.css";
-
+import { RevolvingDot } from "react-loader-spinner";
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -65,6 +65,7 @@ function Home(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
@@ -369,6 +370,7 @@ function Home(props: any) {
   }, [filter]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_URl + "statisticList",
       method: "POST",
@@ -389,13 +391,15 @@ function Home(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.length > 0) {
           setData([...response.data]);
-          //setloaderSpinner(0);
+          setloaderSpinner(0)
         } else {
           setData([]);
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         alert("Өгөгдөл авчрахад алдаа гарлаа!");
+        setloaderSpinner(0)
       });
 
     DataRequest({
@@ -406,9 +410,12 @@ function Home(props: any) {
       .then(function (res) {
         if (res.data !== undefined && res?.data.length > 0) {
           setDrop(res.data);
+          setloaderSpinner(0)
         }
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        setloaderSpinner(0)
+      });
   }
 
   function lockPlan() {
@@ -431,6 +438,17 @@ function Home(props: any) {
 
   return (
     <>
+     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div
+          style={{
+            paddingLeft: "45%",
+            paddingTop: "10%",
+            paddingBottom: "10%",
+          }}
+        >
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>
+      ) : (
       <div
         style={{
           maxHeight: window.innerHeight,
@@ -688,6 +706,7 @@ function Home(props: any) {
           </div>
         </div>
       </div>
+      )}
     </>
   );
 }
