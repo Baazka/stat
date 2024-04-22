@@ -203,11 +203,11 @@ function Burtgel(props: any) {
       >
         <Title title={"ХУВААРЬ"} widthS={"5rem"} widthL={"5rem"} />
       </div>
-      <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
+      {/* <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
         <div className="space-y-4">
           <p className="text-white text-center  pt-2">ХУВААРИЙН БҮРТГЭЛ</p>
         </div>
-      </div>
+      </div> */}
 
       <div className="w-full ">
         {tsonkh !== 0 ? (
@@ -222,9 +222,10 @@ function Burtgel(props: any) {
         <div
           style={{
             display: "flex row text-base",
-            padding: "6rem 0rem 0rem 0rem",
+            padding: "4rem 0rem 0rem 0rem",
           }}
         >
+          {JSON.stringify(data)}
           <div className="flex  md:justify-center sm:justify-center">
             <div className="flex flex-row">
               <div className="grid grid-rows-3  lg:grid-flow-col md:grid-flow-row sm:grid-flow-row ">
@@ -254,10 +255,10 @@ function Burtgel(props: any) {
                       {drop.drop2.map((nation, index) => (
                         <option
                           className="font-semibold"
-                          key={nation.ID}
-                          value={nation.ID}
+                          key={nation.YEAR_NAME}
+                          value={nation.PERIOD_ID}
                         >
-                          {nation.PERIOD_LABEL}
+                          {nation.YEAR_LABEL}
                         </option>
                       ))}
                     </select>

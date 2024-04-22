@@ -33,7 +33,7 @@ import {
   ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import { Period, Department } from "../components/library";
+import { Period, Document } from "../components/library";
 // import RightMenu from "../components/RightMenu";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import "./Home.css";
@@ -71,13 +71,11 @@ function Home(props: any) {
   const [filter, setFilter] = useState({
     Audit: {
       PERIOD_ID: 999,
+      DOCUMENT_ID: 999,
       DEPARTMENT_ID:
         localStorage.getItem("department") !== undefined
           ? localStorage.getItem("department")
           : 999,
-      DOCUMENT_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
     },
   });
   const [drop, setDrop] = useState([]);
@@ -377,6 +375,10 @@ function Home(props: any) {
           filter.Audit.PERIOD_ID === 999 || filter.Audit.PERIOD_ID === "999"
             ? null
             : filter.Audit.PERIOD_ID, //filter.Audit.PERIOD_ID,
+        FILTER_DOCUMENT_ID:
+          filter.Audit.DOCUMENT_ID === 999 || filter.Audit.DOCUMENT_ID === "999"
+            ? null
+            : filter.Audit.DOCUMENT_ID,
         FILTER_DEPARTMENT_ID:
           localStorage.getItem("department") !== undefined
             ? localStorage.getItem("department")
@@ -447,8 +449,10 @@ function Home(props: any) {
         />
         <div className="justify-start flex mb-2">
           <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <Period
-              title="Аудит жил"
+            <Period data={filter} setData={(value: any) => setFilter(value)} />
+          </div>
+          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+            <Document
               data={filter}
               setData={(value: any) => setFilter(value)}
             />

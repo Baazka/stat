@@ -32,7 +32,7 @@ function Period(props) {
         {data?.map((nation, index) => (
           <option
             className="font-semibold"
-            key={nation.YEAR_LABEL}
+            key={nation.YEAR_NAME}
             value={nation.PERIOD_ID}
           >
             {nation.YEAR_LABEL}
@@ -112,7 +112,7 @@ function Employee(props) {
   return listItems;
 }
 
-function Document(param) {
+function Document(props) {
   const [data, loadData] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -121,15 +121,18 @@ function Document(param) {
         loadData(listItems.data);
     }
     fetchData();
-  }, [param]);
+  }, [props]);
   let listItems;
   if (data !== undefined) {
     listItems = (
       <select
         className="border rounded text-sm focus:outline-none py-0.5"
-        // style={
-        //   ({ border: "1px solid black", borderRadius: "4px" }, props.styleLib)
-        // }
+        value={props.data.Audit.DOCUMENT_ID}
+        onChange={(value) => {
+          let temp = props.data;
+          temp.Audit.DOCUMENT_ID = value.target.value;
+          props.setData({ ...temp });
+        }}
       >
         <option value={999}>Сонгоно уу</option>
         {data?.map((nation, index) => (
@@ -138,7 +141,7 @@ function Document(param) {
             key={nation.DOCUMENT_SHORT_NAME}
             value={nation.ID}
           >
-            {nation.DOCUMENT_NAME}
+            {nation.DOCUMENT_SHORT_NAME}
           </option>
         ))}
       </select>
