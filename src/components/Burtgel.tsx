@@ -225,7 +225,6 @@ function Burtgel(props: any) {
             padding: "4rem 0rem 0rem 0rem",
           }}
         >
-          {JSON.stringify(data)}
           <div className="flex  md:justify-center sm:justify-center">
             <div className="flex flex-row">
               <div className="grid grid-rows-3  lg:grid-flow-col md:grid-flow-row sm:grid-flow-row ">

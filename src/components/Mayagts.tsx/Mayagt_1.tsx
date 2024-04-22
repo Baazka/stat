@@ -237,9 +237,15 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TATGALZSAN_SHALTGAAN",
+        accessorKey: "CONCLUSION_DESC",
         header: "Татгалзсан шалтгаан",
         cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "TUL_BENEFIT_TOO",
+        header: "Төлөвлөсөн санхүүгийн үр өгөөжийн тоо",
+        cell: (info) => info.getValue(),
+        accessorFn: (row, index) => <div>{row.TUL_BENEFIT_TOO}</div>,
       },
       {
         accessorKey: "TUL_BENEFIT",
@@ -297,12 +303,12 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDITOR_LEAD",
+        accessorKey: "AUDIT_LEAD",
         header: "Багийн ахлах",
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "AUDITOR_MEMBER",
+        accessorKey: "AUDIT_MEMBER",
         header: "Багийн гишүүд",
         cell: (info) => info.getValue(),
         wraptext: true,
@@ -405,7 +411,7 @@ function Mayagt_1(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
-    setloaderSpinner(1)
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM1List",
       method: "POST",
@@ -417,7 +423,7 @@ function Mayagt_1(props: any) {
     })
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
-          loadData(response.data.data);      
+          loadData(response.data.data);
           if (response?.data.role.length > 0)
             setStatus({
               STATUS: response?.data.status,
@@ -425,12 +431,12 @@ function Mayagt_1(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
-            setloaderSpinner(0)
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-        setloaderSpinner(0)
+        setloaderSpinner(0);
       });
 
     DataRequest({
@@ -444,12 +450,12 @@ function Mayagt_1(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response?.data.length > 0) {
           setBatlakhHuselt(response.data[0]);
-          setloaderSpinner(0)
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-        setloaderSpinner(0)
+        setloaderSpinner(0);
       });
   }
 
@@ -601,110 +607,183 @@ function Mayagt_1(props: any) {
                 maxHeight: "530px",
               }}
             >
-            <table
-              {...{
-                style: {
-                  width: table.getCenterTotalSize(),
-                },
-              }}
-            >
-              <thead className="TableHeadBackroundcolor sticky">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <th
-                          {...{
-                            key: header.id,
-                            colSpan: header.colSpan,
-                            style: {
-                              backgroundColor: header.id === '№' || header.id === 'AUDIT_TYPE_NAME'|| header.id === 'AUDIT_NAME' ?"#dbe9fc" :null,
-                              width: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px" :header.getSize(),
-                              minWidth: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px" :null,
-                              maxWidth: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px":null,
-                              left: header.id === '№' ? 0 : header.id === 'AUDIT_TYPE_NAME' ? 50 : header.id === 'AUDIT_NAME' ? 200 :null
-                            },
-                            className: header.id === '№' || header.id === 'AUDIT_TYPE_NAME' ||header.id === 'AUDIT_NAME' ? "sticky-col" : null
-                          }}
-                        >
-                          {header.isPlaceholder ? null : (
-                            <>
-                              <div
-                                {...{
-                                  onMouseDown: header.getResizeHandler(),
-                                  onTouchStart: header.getResizeHandler(),
-                                  className: `resizer ${
-                                    header.column.getIsResizing()
-                                      ? "isResizing"
-                                      : ""
-                                  }`,
-                                }}
-                              ></div>
-                              <div
-                                {...{
-                                  className: header.column.getCanSort()
-                                    ? "cursor-pointer select-none"
-                                    : "",
-                                  onClick:
-                                    header.column.getToggleSortingHandler(),
-                                }}
-                              >
-                                {flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                              </div>
-                              {header.column.getCanFilter() ? (
-                                <div>
-                                  <Filter
-                                    column={header.column}
-                                    table={table}
-                                  />
-                                </div>
-                              ) : null}
-                            </>
-                          )}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row, i) => {
-                  return (
-                    <tr
-                      key={row.id}
-                      className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                    >
-                      {row.getVisibleCells().map((cell, index) => {
+              <table
+                {...{
+                  style: {
+                    width: table.getCenterTotalSize(),
+                  },
+                }}
+              >
+                <thead className="TableHeadBackroundcolor sticky">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
                         return (
-                          <td
+                          <th
                             {...{
-                              key: cell.id,
+                              key: header.id,
+                              colSpan: header.colSpan,
                               style: {
-                                backgroundColor: i % 2 > 0 ? "#f5f5f5" : "white",
-                                width: cell.column.id === '№' ? "50px" : cell.column.id === 'AUDIT_TYPE_NAME'? "150px" :cell.column.id === 'AUDIT_NAME'? "250px" : cell.column.getSize(),
-                                minWidth: cell.column.id === '№' ?"50px":cell.column.id === 'AUDIT_TYPE_NAME'? "150px":cell.column.id === 'AUDIT_NAME'? "250px" :null,
-                                maxWidth: cell.column.id === '№' ?"50px" :cell.column.id === 'AUDIT_TYPE_NAME'? "150px":cell.column.id === 'AUDIT_NAME'? "250px" :null,
-                                left: cell.column.id === '№' ? 0: cell.column.id === 'AUDIT_TYPE_NAME' ? 50 :cell.column.id === 'AUDIT_NAME'? 200 :null
+                                backgroundColor:
+                                  header.id === "№" ||
+                                  header.id === "AUDIT_TYPE_NAME" ||
+                                  header.id === "AUDIT_NAME"
+                                    ? "#dbe9fc"
+                                    : null,
+                                width:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : header.getSize(),
+                                minWidth:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : null,
+                                maxWidth:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : null,
+                                left:
+                                  header.id === "№"
+                                    ? 0
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? 50
+                                    : header.id === "AUDIT_NAME"
+                                    ? 200
+                                    : null,
                               },
+                              className:
+                                header.id === "№" ||
+                                header.id === "AUDIT_TYPE_NAME" ||
+                                header.id === "AUDIT_NAME"
+                                  ? "sticky-col"
+                                  : null,
                             }}
-                            className={cell.column.id === '№' || cell.column.id === 'AUDIT_TYPE_NAME' || cell.column.id === 'AUDIT_NAME'  ? "p-2 sticky-col" : "p-2" } 
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
+                            {header.isPlaceholder ? null : (
+                              <>
+                                <div
+                                  {...{
+                                    onMouseDown: header.getResizeHandler(),
+                                    onTouchStart: header.getResizeHandler(),
+                                    className: `resizer ${
+                                      header.column.getIsResizing()
+                                        ? "isResizing"
+                                        : ""
+                                    }`,
+                                  }}
+                                ></div>
+                                <div
+                                  {...{
+                                    className: header.column.getCanSort()
+                                      ? "cursor-pointer select-none"
+                                      : "",
+                                    onClick:
+                                      header.column.getToggleSortingHandler(),
+                                  }}
+                                >
+                                  {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                                </div>
+                                {header.column.getCanFilter() ? (
+                                  <div>
+                                    <Filter
+                                      column={header.column}
+                                      table={table}
+                                    />
+                                  </div>
+                                ) : null}
+                              </>
                             )}
-                          </td>
+                          </th>
                         );
                       })}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row, i) => {
+                    return (
+                      <tr
+                        key={row.id}
+                        className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                      >
+                        {row.getVisibleCells().map((cell, index) => {
+                          return (
+                            <td
+                              {...{
+                                key: cell.id,
+                                style: {
+                                  backgroundColor:
+                                    i % 2 > 0 ? "#f5f5f5" : "white",
+                                  width:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : cell.column.getSize(),
+                                  minWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  maxWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  left:
+                                    cell.column.id === "№"
+                                      ? 0
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? 50
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? 200
+                                      : null,
+                                },
+                              }}
+                              className={
+                                cell.column.id === "№" ||
+                                cell.column.id === "AUDIT_TYPE_NAME" ||
+                                cell.column.id === "AUDIT_NAME"
+                                  ? "p-2 sticky-col"
+                                  : "p-2"
+                              }
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
           <div style={{ justifyContent: "flex-end" }}>
             <div className="justify-end flex items-center gap-1 mt-5 mr-2 sticky">
@@ -763,9 +842,7 @@ function Mayagt_1(props: any) {
               <ButtonSave saveToDB={() => saveToDB()} />
             ) : null}
           </div>
-          <div style={{ display: "flex", justifyContent: "end" }}>
-          </div>
-
+          <div style={{ display: "flex", justifyContent: "end" }}></div>
         </div>
       )}
     </>
