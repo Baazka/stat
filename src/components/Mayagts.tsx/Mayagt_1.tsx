@@ -167,19 +167,20 @@ function Mayagt_1(props: any) {
         accessorFn: (row, index) => index + 1,
         accessorKey: "№",
         header: "№",
-        size: 10,
+        mixSize: 50,
         cell: (info) => info.getValue(),
       },
       {
         accessorKey: "AUDIT_TYPE_NAME",
         header: "Аудитын төрөл",
+        maxSize: 150,
         cell: (info) => info.getValue(),
       },
 
       {
         accessorKey: "AUDIT_NAME",
         header: "Аудитын нэр, сэдэв",
-        minSize: 250,
+        maxSize: 250,
         cell: (info) => info.getValue(),
       },
 
@@ -404,6 +405,7 @@ function Mayagt_1(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1)
     DataRequest({
       url: Stat_Url + "BM1List",
       method: "POST",
@@ -415,7 +417,7 @@ function Mayagt_1(props: any) {
     })
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
-          loadData(response.data.data);
+          loadData(response.data.data);      
           if (response?.data.role.length > 0)
             setStatus({
               STATUS: response?.data.status,
@@ -423,10 +425,12 @@ function Mayagt_1(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+            setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0)
       });
 
     DataRequest({
@@ -440,10 +444,12 @@ function Mayagt_1(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response?.data.length > 0) {
           setBatlakhHuselt(response.data[0]);
+          setloaderSpinner(0)
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0)
       });
   }
 
@@ -489,6 +495,7 @@ function Mayagt_1(props: any) {
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0);
       });
   }
 
@@ -588,6 +595,12 @@ function Mayagt_1(props: any) {
 
           <div className="overflow-y-scroll">
             <div className="h-2 mr-20" />
+            <div
+              style={{
+                overflow: "scroll",
+                maxHeight: "530px",
+              }}
+            >
             <table
               {...{
                 style: {
@@ -605,8 +618,13 @@ function Mayagt_1(props: any) {
                             key: header.id,
                             colSpan: header.colSpan,
                             style: {
-                              width: header.getSize(),
+                              backgroundColor: header.id === '№' || header.id === 'AUDIT_TYPE_NAME'|| header.id === 'AUDIT_NAME' ?"#dbe9fc" :null,
+                              width: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px" :header.getSize(),
+                              minWidth: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px" :null,
+                              maxWidth: header.id === '№' ?"50px": header.id === 'AUDIT_TYPE_NAME' ? "150px" : header.id === 'AUDIT_NAME' ? "250px":null,
+                              left: header.id === '№' ? 0 : header.id === 'AUDIT_TYPE_NAME' ? 50 : header.id === 'AUDIT_NAME' ? 200 :null
                             },
+                            className: header.id === '№' || header.id === 'AUDIT_TYPE_NAME' ||header.id === 'AUDIT_NAME' ? "sticky-col" : null
                           }}
                         >
                           {header.isPlaceholder ? null : (
@@ -633,7 +651,7 @@ function Mayagt_1(props: any) {
                               >
                                 {flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                               </div>
                               {header.column.getCanFilter() ? (
@@ -665,10 +683,14 @@ function Mayagt_1(props: any) {
                             {...{
                               key: cell.id,
                               style: {
-                                width: cell.column.getSize(),
+                                backgroundColor: i % 2 > 0 ? "#f5f5f5" : "white",
+                                width: cell.column.id === '№' ? "50px" : cell.column.id === 'AUDIT_TYPE_NAME'? "150px" :cell.column.id === 'AUDIT_NAME'? "250px" : cell.column.getSize(),
+                                minWidth: cell.column.id === '№' ?"50px":cell.column.id === 'AUDIT_TYPE_NAME'? "150px":cell.column.id === 'AUDIT_NAME'? "250px" :null,
+                                maxWidth: cell.column.id === '№' ?"50px" :cell.column.id === 'AUDIT_TYPE_NAME'? "150px":cell.column.id === 'AUDIT_NAME'? "250px" :null,
+                                left: cell.column.id === '№' ? 0: cell.column.id === 'AUDIT_TYPE_NAME' ? 50 :cell.column.id === 'AUDIT_NAME'? 200 :null
                               },
                             }}
-                            className="p-2 "
+                            className={cell.column.id === '№' || cell.column.id === 'AUDIT_TYPE_NAME' || cell.column.id === 'AUDIT_NAME'  ? "p-2 sticky-col" : "p-2" } 
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
@@ -682,6 +704,7 @@ function Mayagt_1(props: any) {
                 })}
               </tbody>
             </table>
+          </div>
           </div>
           <div style={{ justifyContent: "flex-end" }}>
             <div className="justify-end flex items-center gap-1 mt-5 mr-2 sticky">
@@ -741,16 +764,8 @@ function Mayagt_1(props: any) {
             ) : null}
           </div>
           <div style={{ display: "flex", justifyContent: "end" }}>
-            {/* {UserPremission(status.ROLE?.ROLE_ID, "mayagt","save") || mayagtData.IS_LOCK !== 1 ?  */}
-
-            {/* :null} */}
           </div>
 
-          {/* <div>
-          <div className="text-base flex row">
-            <FooterValue />
-          </div>
-        </div> */}
         </div>
       )}
     </>
