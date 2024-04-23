@@ -393,15 +393,15 @@ function Home(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.length > 0) {
           setData([...response.data]);
-          setloaderSpinner(0)
+          setloaderSpinner(0);
         } else {
           setData([]);
-          setloaderSpinner(0)
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         alert("Өгөгдөл авчрахад алдаа гарлаа!");
-        setloaderSpinner(0)
+        setloaderSpinner(0);
       });
 
     DataRequest({
@@ -412,11 +412,11 @@ function Home(props: any) {
       .then(function (res) {
         if (res.data !== undefined && res?.data.length > 0) {
           setDrop(res.data);
-          setloaderSpinner(0)
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
-        setloaderSpinner(0)
+        setloaderSpinner(0);
       });
   }
 
@@ -440,7 +440,7 @@ function Home(props: any) {
 
   return (
     <>
-     {loaderSpinner === 1 || loaderSpinner === undefined ? (
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
         <div
           style={{
             paddingLeft: "45%",
@@ -451,265 +451,271 @@ function Home(props: any) {
           <RevolvingDot color="#2684fe" height={50} width={50} />
         </div>
       ) : (
-      <div
-        style={{
-          maxHeight: window.innerHeight,
-          maxWidth: window.innerWidth,
-          overflow: "scroll",
-          padding: "0.5rem 0rem 0 0.4rem",
-          // scrollbarWidth: "none",
-        }}
-      >
-        <Title
-          title={"СТАТИСТИК МЭДЭЭНИЙ БҮРТГЭЛИЙН МАЯГТЫН ЖАГСААЛТ"}
-          widthS={"28rem"}
-          widthL={"14rem"}
-        />
-        <div className="justify-start flex mb-2">
-          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <Period data={filter} setData={(value: any) => setFilter(value)} />
-          </div>
-          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            <Document
-              data={filter}
-              setData={(value: any) => setFilter(value)}
-            />
-          </div>
-          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
-            {UserPremission(userDetails.USER_TYPE_NAME, "plan", "view") ? (
-              <select
-                className="border rounded text-sm focus:outline-none py-0.5"
-                value={filter.Audit.DEPARTMENT_ID}
-                onChange={(value) => {
-                  let temp = filter;
-                  localStorage.removeItem("department");
-                  temp.Audit.DEPARTMENT_ID = value.target.value;
-                  if (value.target.value !== 999)
-                    localStorage.setItem("department", value.target.value);
-                  setFilter({ ...temp });
-                }}
-              >
-                <option value={999}>Аудит хийх нэгж</option>
-                {drop.map((nation, index) => (
-                  <option
-                    className="font-semibold"
-                    key={nation.DEPARTMENT_SHORT_NAME}
-                    value={nation.DEPARTMENT_ID}
-                  >
-                    {nation.DEPARTMENT_NAME}
-                  </option>
-                ))}
-              </select>
-            ) : null}
-          </div>
-
-          <DebouncedInput
-            value={globalFilter ?? ""}
-            onChange={(value) => setGlobalFilter(String(value))}
-            className="p-1.5 font-lg shadow border border-block rounded py-1 h-7"
+        <div
+          style={{
+            maxHeight: window.innerHeight,
+            maxWidth: window.innerWidth,
+            overflow: "scroll",
+            padding: "0.5rem 0rem 0 0.4rem",
+            // scrollbarWidth: "none",
+          }}
+        >
+          <Title
+            title={"СТАТИСТИК МЭДЭЭНИЙ БҮРТГЭЛИЙН МАЯГТЫН ЖАГСААЛТ"}
+            widthS={"28rem"}
+            widthL={"14rem"}
           />
-          <div
-            style={{ height: 30, marginLeft: "10px" }}
-            className="cursor-pointer "
-          >
-            <div
-              style={{ height: 28 }}
-              className="flex flex-row  cursor-pointer"
-            >
-              {UserPremission(userDetails.USER_TYPE_NAME, "plan", "write") ? (
-                <button
-                  onClick={() => Navigate("/web/Home/Nemeh")}
-                  className="inline-flex items-center rounded ml-2 py-1 h-7"
-                  style={{
-                    border: "1px solid #2684fe",
+          <div className="justify-start flex mb-2">
+            <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+              <Period
+                data={filter}
+                setData={(value: any) => setFilter(value)}
+              />
+            </div>
+            <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+              <Document
+                data={filter}
+                setData={(value: any) => setFilter(value)}
+              />
+            </div>
+            <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+              {UserPremission(userDetails.USER_TYPE_NAME, "plan", "view") ? (
+                <select
+                  className="border rounded text-sm focus:outline-none py-0.5"
+                  value={filter.Audit.DEPARTMENT_ID}
+                  onChange={(value) => {
+                    let temp = filter;
+                    localStorage.removeItem("department");
+                    temp.Audit.DEPARTMENT_ID = value.target.value;
+                    if (value.target.value !== 999)
+                      localStorage.setItem("department", value.target.value);
+                    setFilter({ ...temp });
                   }}
                 >
-                  <div className="bg-white px-1 ">
-                    <img src={addIcon} width="18px" height="10px "></img>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: "#2684fe",
-                    }}
-                    className=" text-white rounded-r px-1 h-7"
-                  >
-                    нэмэх
-                  </div>
-                </button>
-              ) : null}
-              <button
-                onClick={() => {
-                  getExportFileBlob(columns, data, "хуваарь");
-                }}
-                className="inline-flex items-center rounded ml-2 py-1 h-7"
-                style={{
-                  border: "1px solid #3cb371",
-                }}
-              >
-                <div className="bg-white">
-                  <img
-                    src={excel}
-                    width="20px"
-                    height="20px"
-                    className="mx-1"
-                  ></img>
-                </div>
-                <div
-                  style={{
-                    backgroundColor: "#3cb371",
-                  }}
-                  className=" text-white rounded-r px-1 h-7"
-                >
-                  Excel
-                </div>
-              </button>
-              {UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock") ? (
-                <button
-                  onClick={() => lockPlan()}
-                  className="inline-flex items-center rounded ml-2 py-1 h-7"
-                  style={{
-                    border: "1px solid #2684fe",
-                  }}
-                >
-                  <div className="bg-white px-1 ">
-                    <img src={TSOOJ} width="12px" height="10px "></img>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: "#2684fe",
-                    }}
-                    className=" text-white rounded-r px-1 h-7"
-                  >
-                    Түгжих
-                  </div>
-                </button>
+                  <option value={999}>Аудит хийх нэгж</option>
+                  {drop.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.DEPARTMENT_SHORT_NAME}
+                      value={nation.DEPARTMENT_ID}
+                    >
+                      {nation.DEPARTMENT_NAME}
+                    </option>
+                  ))}
+                </select>
               ) : null}
             </div>
-          </div>
-        </div>
-        <div style={{ maxHeight: window.innerHeight - 230, width: "100%" }}>
-          <table className="w-full">
-            <thead className="TableHeadBackroundcolor ">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        className="sticky-col"
-                      >
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
-                        )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+
+            <DebouncedInput
+              value={globalFilter ?? ""}
+              onChange={(value) => setGlobalFilter(String(value))}
+              className="p-1.5 font-lg shadow border border-block rounded py-1 h-7"
+            />
+            <div
+              style={{ height: 30, marginLeft: "10px" }}
+              className="cursor-pointer "
+            >
+              <div
+                style={{ height: 28 }}
+                className="flex flex-row  cursor-pointer"
+              >
+                {UserPremission(userDetails.USER_TYPE_NAME, "plan", "write") ? (
+                  <button
+                    onClick={() => Navigate("/web/Home/Nemeh")}
+                    className="inline-flex items-center rounded ml-2 py-1 h-7"
+                    style={{
+                      border: "1px solid #2684fe",
+                    }}
                   >
-                    {row.getVisibleCells().map((cell) => {
+                    <div className="bg-white px-1 ">
+                      <img src={addIcon} width="18px" height="10px "></img>
+                    </div>
+                    <div
+                      style={{
+                        backgroundColor: "#2684fe",
+                      }}
+                      className=" text-white rounded-r px-1 h-7"
+                    >
+                      нэмэх
+                    </div>
+                  </button>
+                ) : null}
+                <button
+                  onClick={() => {
+                    getExportFileBlob(columns, data, "хуваарь");
+                  }}
+                  className="inline-flex items-center rounded ml-2 py-1 h-7"
+                  style={{
+                    border: "1px solid #3cb371",
+                  }}
+                >
+                  <div className="bg-white">
+                    <img
+                      src={excel}
+                      width="20px"
+                      height="20px"
+                      className="mx-1"
+                    ></img>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: "#3cb371",
+                    }}
+                    className=" text-white rounded-r px-1 h-7"
+                  >
+                    Excel
+                  </div>
+                </button>
+                {UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock") ? (
+                  <button
+                    onClick={() => lockPlan()}
+                    className="inline-flex items-center rounded ml-2 py-1 h-7"
+                    style={{
+                      border: "1px solid #2684fe",
+                    }}
+                  >
+                    <div className="bg-white px-1 ">
+                      <img src={TSOOJ} width="12px" height="10px "></img>
+                    </div>
+                    <div
+                      style={{
+                        backgroundColor: "#2684fe",
+                      }}
+                      className=" text-white rounded-r px-1 h-7"
+                    >
+                      Түгжих
+                    </div>
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          </div>
+          <div style={{ maxHeight: window.innerHeight - 230, width: "100%" }}>
+            <table className="w-full">
+              <thead className="TableHeadBackroundcolor ">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
                       return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className="sticky-col"
+                        >
+                          {header.isPlaceholder ? null : (
+                            <>
+                              <div
+                                onMouseDown={header.getResizeHandler()}
+                                onTouchStart={header.getResizeHandler()}
+                              ></div>
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? "cursor-pointer select-none"
+                                    : "",
+                                  onClick:
+                                    header.column.getToggleSortingHandler(),
+                                }}
+                              >
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                              </div>
+                              {header.column.getCanFilter() ? (
+                                <div>
+                                  <Filter
+                                    column={header.column}
+                                    table={table}
+                                  />
+                                </div>
+                              ) : null}
+                            </>
                           )}
-                        </td>
+                        </th>
                       );
                     })}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div style={{ justifyContent: "flex-end" }}>
-            <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-              <button
-                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                {"<<"}
-              </button>
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              >
-                {"<"}
-              </button>
-              <button
-                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                {">"}
-              </button>
-              <button
-                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                {">>"}
-              </button>
-              <span className="flex items-center gap-4">
-                <div>нийт:</div>
-                <span>{data.length}</span>
-                <strong>
-                  {table.getState().pagination.pageIndex + 1}
-                  {" - "}
-                  {table.getPageCount()}
-                </strong>
-              </span>
-              <select
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
-                }}
-                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-              >
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </option>
                 ))}
-              </select>
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row, i) => {
+                  return (
+                    <tr
+                      key={row.id}
+                      className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                    >
+                      {row.getVisibleCells().map((cell) => {
+                        return (
+                          <td key={cell.id} className="p-2">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <div style={{ justifyContent: "flex-end" }}>
+              <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.setPageIndex(0)}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  {"<<"}
+                </button>
+                <button
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                >
+                  {"<"}
+                </button>
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  {">"}
+                </button>
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  disabled={!table.getCanNextPage()}
+                >
+                  {">>"}
+                </button>
+                <span className="flex items-center gap-4">
+                  <div>нийт:</div>
+                  <span>{data.length}</span>
+                  <strong>
+                    {table.getState().pagination.pageIndex + 1}
+                    {" - "}
+                    {table.getPageCount()}
+                  </strong>
+                </span>
+                <select
+                  value={table.getState().pagination.pageSize}
+                  onChange={(e) => {
+                    table.setPageSize(Number(e.target.value));
+                  }}
+                  className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+                >
+                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                    <option key={pageSize} value={pageSize}>
+                      {pageSize}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
     </>
   );

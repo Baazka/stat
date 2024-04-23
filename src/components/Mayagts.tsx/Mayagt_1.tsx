@@ -34,6 +34,7 @@ import fasUrl from "../../fasURL";
 import UserPremission from "../../functions/userPermission";
 import { check_save } from "../../functions/Tools";
 import { RevolvingDot } from "react-loader-spinner";
+import DocInfo from "../DocInfo";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -273,6 +274,29 @@ function Mayagt_1(props: any) {
       {
         accessorKey: "TOD_BENEFIT",
         header: "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн",
+        cell: (info) => info.getValue(),
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.TOD_BENEFIT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
+      },
+      {
+        accessorKey: "TOD_BUS_BENEFIT_TOO",
+        header: "Хүлээн зөвшөөрүүлсэн санхүүгийн бус үр өгөөжийн тоо",
+        cell: (info) => info.getValue(),
+        accessorFn: (row, index) => <div>{row.TOD_BENEFIT_TOO}</div>,
+      },
+      {
+        accessorKey: "TOD_BUS_BENEFIT",
+        header: "Хүлээн зөвшөөрүүлсэн санхүүгийн бус үр өгөөжийн дүн",
         cell: (info) => info.getValue(),
         accessorFn: (row, index) => (
           <div>
@@ -530,6 +554,7 @@ function Mayagt_1(props: any) {
             widthS={"28rem"}
             widthL={"10rem"}
           />
+          <DocInfo />
           <div className="flex justify-between mb-2 ">
             <div
               style={{ height: 28 }}
