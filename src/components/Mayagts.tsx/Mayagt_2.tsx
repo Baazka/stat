@@ -14,7 +14,7 @@ import ButtonSearch from "../ButtonSearch";
 import ButtonSave from "../SaveButton";
 import writeXlsxFile from "write-excel-file";
 import DataRequest from "../../functions/make_Request";
-import {check_save}from '../../functions/Tools'
+import { check_save } from "../../functions/Tools";
 import Stat_Url from "../../Stat_URL";
 import {
   Column,
@@ -43,6 +43,7 @@ import {
   compareItems,
 } from "@tanstack/match-sorter-utils";
 import { getExportFileBlob } from "../../functions/excel_export";
+import DocInfo from "../DocInfo";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -69,8 +70,6 @@ const fuzzyFilter: FilterFn<any> = (
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-
-
 
 function Mayagt_2(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -104,6 +103,16 @@ function Mayagt_2(props: any) {
         footer: (info) => info.column.id,
       },
       {
+        accessorKey: "ENT_NAME",
+        header: "Шалгагдагч байгууллагын нэр",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "ORG_REGISTER_NO",
+        header: "Регистрийн дугаар",
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "HOSLUULAH",
         header: "Хослуулан гүйцэтгэсэн эсэх",
         cell: (info) => info.getValue(),
@@ -111,6 +120,16 @@ function Mayagt_2(props: any) {
       {
         accessorKey: "UNDESLEL",
         header: "Сэдвийн үндэслэл",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "SALBAR_ANGILAL",
+        header: "Байгууллагын үйл ажиллагааны үндсэн чиглэл",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "BUDGET_SHORT_NAME",
+        header: "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
       },
       {
@@ -138,27 +157,6 @@ function Mayagt_2(props: any) {
         header: "Байгууллагын төрөл",
         cell: (info) => info.getValue(),
       },
-      {
-        accessorKey: "ENT_NAME",
-        header: "Шалгагдагч байгууллагын нэр",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "ORG_REGISTER_NO",
-        header: "Регистрийн дугаар",
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: "BUDGET_SHORT_NAME",
-        header: "Төсөв захирагчийн ангилал",
-        cell: (info) => info.getValue(),
-      },
-
-      {
-        accessorKey: "SALBAR_ANGILAL",
-        header: "Салбарын харьяалал",
-        cell: (info) => info.getValue(),
-      },
     ],
     []
   );
@@ -167,10 +165,9 @@ function Mayagt_2(props: any) {
     DOCUMENT_ID: mayagtData.Document_ID,
     REQUEST_TYPE: 1,
     LEVEL_ID: props.STATUS,
-    MODULE_ID:6,
+    MODULE_ID: 6,
     DESCRIPTION: "",
     CREATED_BY: userDetails.USER_ID,
-    
   });
   const [loaderSpinner, setloaderSpinner] = useState(0);
   useEffect(() => {
@@ -188,7 +185,7 @@ function Mayagt_2(props: any) {
       },
     })
       .then(function (response) {
-        console.log('mayat2',response);
+        console.log("mayat2", response);
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
@@ -255,7 +252,7 @@ function Mayagt_2(props: any) {
     //    for(let i of saveData){
     //       temp.push(data[i])
     //    }
-    setloaderSpinner(1)
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM2IU",
       method: "POST",
@@ -266,237 +263,250 @@ function Mayagt_2(props: any) {
       },
     })
       .then(function (response) {
-        
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
-          setloaderSpinner(0)
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
-        setloaderSpinner(0)
+        setloaderSpinner(0);
       });
   }
   return (
     <>
-     {loaderSpinner === 1 || loaderSpinner === undefined ? (
-        <div style={{ paddingLeft: "45%",paddingTop:'10%',paddingBottom:'10%'}}>
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div
+          style={{
+            paddingLeft: "45%",
+            paddingTop: "10%",
+            paddingBottom: "10%",
+          }}
+        >
           <RevolvingDot color="#2684fe" height={50} width={50} />
-        </div>):
-      <div
-        style={{
-          padding: "0.5rem 0 0 1rem",
-        }}
-      >
-        <Title
-          title={
-            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
-          }
-          widthS={"39rem"}
-          widthL={"20rem"}
-        />
-        <div className="flex justify-between mb-2 ">
-          <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch
-              globalFilter={globalFilter}
-              setGlobalFilter={(value) => setGlobalFilter(value)}
-            />
-            <button
-              onClick={() => {
-                getExportFileBlob(columns, data, "З-ТАББМ-2");
-              }}
-              className="inline-flex items-center rounded ml-2 py-1 h-7"
-              style={{
-                border: "1px solid #3cb371",
-              }}
-            >
-              <div className="bg-white">
-                <img
-                  src={excel}
-                  width="20px"
-                  height="20px"
-                  className="mx-1"
-                ></img>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "#3cb371",
-                }}
-                className=" text-white rounded-r px-1 h-7"
-              >
-                Excel
-              </div>
-            </button>
-          </div>
-          <div className="flex">
-          {
-            status?.STATUS.STATUS !== null &&
-            status?.STATUS.STATUS !== undefined ? (
-             <ButtonRequest
-                audID={mayagtData.ID}
-                docId={mayagtData.DOCUMENT_ID}
-                STATUS={status.STATUS?.STATUS}
-                RoleID={status.ROLE?.ROLE_ID}
-                statusID={status.STATUS.ID}
-                Title="Хүсэлт илгээх"
-                batlakhHuselt={batlakhHuselt}
-              /> ):null}
-
-            {status.ROLE?.AUDITOR_ID !== undefined?
-            <ButtonConfirm     
-            STATUS={status.STATUS?.STATUS}
-              data={mayagtData}
-              Title={mayagtData.DOCUMENT_SHORT_NAME}
-              RoleID={status?.ROLE.ROLE_ID}
-              statusID={status?.STATUS.ID}
-              fetchData={() => fetchData()}
-              CREATED_BY={{
-                APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
-                APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
-                APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
-              }}
-              />:null}
-          </div>
         </div>
-        <div style={{ overflowY: "scroll" }}>
-        <div className="overflow-y-scroll">
-          <div className="h-2 mr-20" />
-          <table>
-            <thead className="TableHeadBackroundcolor gap-20">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
+      ) : (
+        <div
+          style={{
+            padding: "0.5rem 0 0 1rem",
+          }}
+        >
+          <Title
+            title={
+              mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+            }
+            widthS={"39rem"}
+            widthL={"20rem"}
+          />
+          <DocInfo />
+          <div className="flex justify-between mb-2 ">
+            <div
+              style={{ height: 28 }}
+              className="flex flex-row  cursor-pointer"
+            >
+              <ButtonSearch
+                globalFilter={globalFilter}
+                setGlobalFilter={(value) => setGlobalFilter(value)}
+              />
+              <button
+                onClick={() => {
+                  getExportFileBlob(columns, data, "З-ТАББМ-2");
+                }}
+                className="inline-flex items-center rounded ml-2 py-1 h-7"
+                style={{
+                  border: "1px solid #3cb371",
+                }}
+              >
+                <div className="bg-white">
+                  <img
+                    src={excel}
+                    width="20px"
+                    height="20px"
+                    className="mx-1"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#3cb371",
+                  }}
+                  className=" text-white rounded-r px-1 h-7"
+                >
+                  Excel
+                </div>
+              </button>
+            </div>
+            <div className="flex">
+              {status?.STATUS.STATUS !== null &&
+              status?.STATUS.STATUS !== undefined ? (
+                <ButtonRequest
+                  audID={mayagtData.ID}
+                  docId={mayagtData.DOCUMENT_ID}
+                  STATUS={status.STATUS?.STATUS}
+                  RoleID={status.ROLE?.ROLE_ID}
+                  statusID={status.STATUS.ID}
+                  Title="Хүсэлт илгээх"
+                  batlakhHuselt={batlakhHuselt}
+                />
+              ) : null}
+
+              {status.ROLE?.AUDITOR_ID !== undefined ? (
+                <ButtonConfirm
+                  STATUS={status.STATUS?.STATUS}
+                  data={mayagtData}
+                  Title={mayagtData.DOCUMENT_SHORT_NAME}
+                  RoleID={status?.ROLE.ROLE_ID}
+                  statusID={status?.STATUS.ID}
+                  fetchData={() => fetchData()}
+                  CREATED_BY={{
+                    APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                    APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                    APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+                  }}
+                />
+              ) : null}
+            </div>
+          </div>
+          <div style={{ overflowY: "scroll" }}>
+            <div className="overflow-y-scroll">
+              <div className="h-2 mr-20" />
+              <table>
+                <thead className="TableHeadBackroundcolor gap-20">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <th key={header.id} colSpan={header.colSpan}>
+                            {header.isPlaceholder ? null : (
+                              <>
+                                <div
+                                  onMouseDown={header.getResizeHandler()}
+                                  onTouchStart={header.getResizeHandler()}
+                                ></div>
+                                <div
+                                  {...{
+                                    className: header.column.getCanSort()
+                                      ? "cursor-pointer select-none"
+                                      : "",
+                                    onClick:
+                                      header.column.getToggleSortingHandler(),
+                                  }}
+                                >
+                                  {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                                </div>
+                                {header.column.getCanFilter() ? (
+                                  <div>
+                                    <Filter
+                                      column={header.column}
+                                      table={table}
+                                    />
+                                  </div>
+                                ) : null}
+                              </>
+                            )}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row, i) => {
                     return (
-                      <th key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              onMouseDown={header.getResizeHandler()}
-                              onTouchStart={header.getResizeHandler()}
-                            ></div>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? "cursor-pointer select-none"
-                                  : "",
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
+                      <tr
+                        key={row.id}
+                        className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                      >
+                        {row.getVisibleCells().map((cell, index) => {
+                          return (
+                            <td key={cell.id} className="p-2">
                               {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
+                                cell.column.columnDef.cell,
+                                cell.getContext()
                               )}
-                            </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Filter column={header.column} table={table} />
-                              </div>
-                            ) : null}
-                          </>
-                        )}
-                      </th>
+                            </td>
+                          );
+                        })}
+                      </tr>
                     );
                   })}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row, i) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td key={cell.id} className="p-2">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+            <div style={{ justifyContent: "flex-end" }}>
+              <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.setPageIndex(0)}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  {"<<"}
+                </button>
+                <button
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                >
+                  {"<"}
+                </button>
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  {">"}
+                </button>
+                <button
+                  className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  disabled={!table.getCanNextPage()}
+                >
+                  {">>"}
+                </button>
+                <span className="flex items-center gap-4">
+                  <div>нийт:</div>
+                  <span>{data.length}</span>
+                  <strong>
+                    {table.getState().pagination.pageIndex + 1}
+                    {" - "}
+                    {table.getPageCount()}
+                  </strong>
+                </span>
+                <select
+                  value={table.getState().pagination.pageSize}
+                  onChange={(e) => {
+                    table.setPageSize(Number(e.target.value));
+                  }}
+                  className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+                >
+                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                    <option key={pageSize} value={pageSize}>
+                      {pageSize}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
-          <div style={{ justifyContent: "flex-end" }}>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            >
-              {"<"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-            <span className="flex items-center gap-4">
-              <div>нийт:</div>
-              <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}
-                {" - "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
+          <div style={{ display: "flex", justifyContent: "end" }}>
+            {check_save(status) ? (
+              <ButtonSave saveToDB={() => saveToDB()} />
+            ) : null}
           </div>
-        </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          {check_save(status)?
-          <ButtonSave saveToDB={() => saveToDB()} />:null}
-        </div>
-        
-        <div>
-          <div className="text-base flex row">
-            {/* <FooterValue /> */}
-          </div>
-        </div>
 
-        <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-          <div className="flex  items-end">
-            <Comment />
+          <div>
+            <div className="text-base flex row">{/* <FooterValue /> */}</div>
+          </div>
+
+          <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
+            <div className="flex  items-end">
+              <Comment />
+            </div>
           </div>
         </div>
-      </div>
-    }
+      )}
     </>
   );
 }
