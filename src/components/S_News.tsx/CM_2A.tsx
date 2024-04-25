@@ -24,10 +24,7 @@ import {
   getExpandedRowModel,
 } from "@tanstack/react-table";
 
-import {
-  RankingInfo,
-  rankItem,
-} from "@tanstack/match-sorter-utils";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -60,43 +57,43 @@ function CM_2A() {
   const columns = React.useMemo(
     () => [
       UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
-      ? {
-          id: "select",
-          header: ({ table }) => (
-            <IndeterminateCheckboxALL
-              {...{
-                checked: table.getIsAllRowsSelected(),
-                indeterminate: table.getIsSomeRowsSelected(),
-                onChange: table.getToggleAllRowsSelectedHandler(),
-                data,
-                setData,
-              }}
-            />
-          ),
-          cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
+        ? {
+            id: "select",
+            header: ({ table }) => (
+              <IndeterminateCheckboxALL
                 {...{
-                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
-                  disabled: !row.getCanSelect(),
-                  indeterminate: row.getIsSomeSelected(),
-                  onChange: row.getToggleSelectedHandler(),
+                  checked: table.getIsAllRowsSelected(),
+                  indeterminate: table.getIsSomeRowsSelected(),
+                  onChange: table.getToggleAllRowsSelectedHandler(),
                   data,
                   setData,
-                  row,
                 }}
               />
-            </div>
-          ),
-        }
-      : {
-          accessorFn: (row, index) => index + 1,
-          accessorKey: "№",
-          header: "№",
-          size: 10,
-        },
+            ),
+            cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox
+                  {...{
+                    checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                    disabled: !row.getCanSelect(),
+                    indeterminate: row.getIsSomeSelected(),
+                    onChange: row.getToggleSelectedHandler(),
+                    data,
+                    setData,
+                    row,
+                  }}
+                />
+              </div>
+            ),
+          }
+        : {
+            accessorFn: (row, index) => index + 1,
+            accessorKey: "№",
+            header: "№",
+            size: 10,
+          },
       {
-        accessorKey: "ANGILAL",
+        accessorKey: "ANGILAL1111",
         header: "Ангилал",
         cell: (info) => info.getValue(),
         enableGrouping: false,
@@ -316,7 +313,8 @@ function CM_2A() {
       },
       {
         accessorKey: "HULEEN_ZOWSHOORUULSEN_UR_OGOOJIIN_SANHUUGIIN_DUN",
-        header: "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
+        header:
+          "Хүлээн зөвшөөрүүлсэн санхүүгийн үр өгөөжийн дүн /сая төгрөгөөр/",
         cell: (info) => info.getValue(),
         enableGrouping: false,
       },
@@ -380,9 +378,7 @@ function CM_2A() {
     DataRequest({
       url: Stat_URl + "statisticList",
       method: "POST",
-      data: {
-        
-      },
+      data: {},
     })
       .then(function (response) {
         if (response?.data !== undefined && response?.data?.length > 0) {
@@ -451,74 +447,77 @@ function CM_2A() {
         >
           <div className="h-2 mr-20" />
           <table className="w-full">
-          <thead className="TableHeadBackroundcolor gap-20">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className="px-1.5"
-                      style={{
-                        width:
-                          header.getSize() !== 0 ? header.getSize() : undefined,
-                      }}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                          ></div>
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? "cursor-pointer select-none"
-                                : "",
-                              onClick: header.column.getToggleSortingHandler(),
-                            }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </div>
-                          {header.column.getCanFilter() ? (
-                            <div>
-                              <Filter column={header.column} table={table} />
-                            </div>
-                          ) : null}
-                        </>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row, i) => {
-              return (
-                <tr
-                  key={row.id}
-                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                >
-                  {row.getVisibleCells().map((cell, index) => {
+            <thead className="TableHeadBackroundcolor gap-20">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
                     return (
-                      <td key={cell.id} className="p-2">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                      <th
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className="px-1.5"
+                        style={{
+                          width:
+                            header.getSize() !== 0
+                              ? header.getSize()
+                              : undefined,
+                        }}
+                      >
+                        {header.isPlaceholder ? null : (
+                          <>
+                            <div
+                              onMouseDown={header.getResizeHandler()}
+                              onTouchStart={header.getResizeHandler()}
+                            ></div>
+                            <div
+                              {...{
+                                className: header.column.getCanSort()
+                                  ? "cursor-pointer select-none"
+                                  : "",
+                                onClick:
+                                  header.column.getToggleSortingHandler(),
+                              }}
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                            </div>
+                            {header.column.getCanFilter() ? (
+                              <div>
+                                <Filter column={header.column} table={table} />
+                              </div>
+                            ) : null}
+                          </>
                         )}
-                      </td>
+                      </th>
                     );
                   })}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row, i) => {
+                return (
+                  <tr
+                    key={row.id}
+                    className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                  >
+                    {row.getVisibleCells().map((cell, index) => {
+                      return (
+                        <td key={cell.id} className="p-2">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
       <div style={{ justifyContent: "flex-end" }}>
@@ -551,29 +550,29 @@ function CM_2A() {
           >
             {">>"}
           </button>
-            <span className="flex items-center gap-4">
-              <div>нийт:</div>
-              <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}
-                {" - "}
-                {table.getPageCount()}
-              </strong>
-              </span>
-              <select
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
-                }}
-                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-              >
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </option>
-                ))}
-              </select>
-          </div>
+          <span className="flex items-center gap-4">
+            <div>нийт:</div>
+            <span>{data.length}</span>
+            <strong>
+              {table.getState().pagination.pageIndex + 1}
+              {" - "}
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   );

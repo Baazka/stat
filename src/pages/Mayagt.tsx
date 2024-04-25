@@ -13,7 +13,6 @@ import Mayagt_12 from "../components/Mayagts.tsx/Mayagt_12";
 import Mayagt_13 from "../components/Mayagts.tsx/Mayagt_13";
 import Mayagt_14 from "../components/Mayagts.tsx/Mayagt_14";
 import Mayagt_15 from "../components/Mayagts.tsx/Mayagt_15";
-import CM_1A from "../components/S_News.tsx/CM_1A";
 import Comments from "../components/comment";
 import Mayagt_files from "../components/Mayagt_files";
 import FooterValue from "../components/Footervalue";
@@ -60,8 +59,6 @@ function Mayagt() {
           <Mayagt_14 mayagtData={mayagtData} userDetails={userDetails} />
         ) : mayagtData.DOCUMENT_ID === 15 ? (
           <Mayagt_15 mayagtData={mayagtData} userDetails={userDetails} />
-        ) : mayagtData.DOCUMENT_ID === "З-ТАБСМ-1 А" ? (
-          <CM_1A mayagtData={mayagtData} userDetails={userDetails} />
         ) : null}
         <div className="p-1">
           <Mayagt_files mayagtData={mayagtData} userDetails={userDetails} />

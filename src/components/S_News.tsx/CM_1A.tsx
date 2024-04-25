@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../pages/Home.css";
 import ButtonSearch from "../ButtonSearch";
@@ -21,6 +21,10 @@ import {
 } from "@tanstack/react-table";
 
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
+import { Period } from "../library";
+import { DataRequest } from "../../functions/DataApi";
+import Stat_URl from "../../Stat_URL";
+import { RevolvingDot } from "react-loader-spinner";
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -52,41 +56,41 @@ function CM_1A(props) {
   const columns = React.useMemo(
     () => [
       UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
-      ? {
-          id: "select",
-          header: ({ table }) => (
-            <IndeterminateCheckboxALL
-              {...{
-                checked: table.getIsAllRowsSelected(),
-                indeterminate: table.getIsSomeRowsSelected(),
-                onChange: table.getToggleAllRowsSelectedHandler(),
-                data,
-                setData,
-              }}
-            />
-          ),
-          cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
+        ? {
+            id: "select",
+            header: ({ table }) => (
+              <IndeterminateCheckboxALL
                 {...{
-                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
-                  disabled: !row.getCanSelect(),
-                  indeterminate: row.getIsSomeSelected(),
-                  onChange: row.getToggleSelectedHandler(),
+                  checked: table.getIsAllRowsSelected(),
+                  indeterminate: table.getIsSomeRowsSelected(),
+                  onChange: table.getToggleAllRowsSelectedHandler(),
                   data,
                   setData,
-                  row,
                 }}
               />
-            </div>
-          ),
-        }
-      : {
-          accessorFn: (row, index) => index + 1,
-          accessorKey: "№",
-          header: "№",
-          size: 10,
-        },
+            ),
+            cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox
+                  {...{
+                    checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                    disabled: !row.getCanSelect(),
+                    indeterminate: row.getIsSomeSelected(),
+                    onChange: row.getToggleSelectedHandler(),
+                    data,
+                    setData,
+                    row,
+                  }}
+                />
+              </div>
+            ),
+          }
+        : {
+            accessorFn: (row, index) => index + 1,
+            accessorKey: "№",
+            header: "№",
+            size: 10,
+          },
       {
         accessorKey: "UZUULELT",
         cell: (info) => info.getValue(),
@@ -219,13 +223,14 @@ function CM_1A(props) {
   const refreshData = () => setData((old) => []);
   const [filter, setFilter] = useState({
     Audit: {
-      PERIOD_ID: 4,
+      PERIOD_ID: 999,
+      DOCUMENT_ID: 999,
       DEPARTMENT_ID: 999,
-      BUDGET_TYPE_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
     },
   });
+
+  const [drop, setDrop] = useState([]);
+  const [loaderSpinner, setloaderSpinner] = useState(0);
 
   const table = useReactTable({
     data,
@@ -254,10 +259,57 @@ function CM_1A(props) {
     debugHeaders: false,
     debugColumns: false,
   });
+
+  useEffect(() => {
+    fetchData();
+  }, [filter]);
+
+  async function fetchData(params: type) {
+    setloaderSpinner(1);
+    DataRequest({
+      url: Stat_URl + "refDepartment?DepType=1",
+      method: "GET",
+      data: {},
+    })
+      .then(function (res) {
+        if (res.data !== undefined && res?.data.length > 0) {
+          setDrop(res.data);
+          setloaderSpinner(0);
+        }
+      })
+      .catch(function (error) {
+        setloaderSpinner(0);
+      });
+  }
   return (
     <>
       <div className="flex justify-between mb-2 ">
         <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
+          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+            <Period data={filter} setData={(value: any) => setFilter(value)} />
+          </div>
+          <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+            <select
+              className="border rounded text-sm focus:outline-none py-0.5"
+              value={filter.Audit.DEPARTMENT_ID}
+              onChange={(value) => {
+                let temp = filter;
+                temp.Audit.DEPARTMENT_ID = value.target.value;
+                setFilter({ ...temp });
+              }}
+            >
+              <option value={999}>Аудит хийх нэгж</option>
+              {drop.map((nation, index) => (
+                <option
+                  className="font-semibold"
+                  key={nation.DEPARTMENT_SHORT_NAME}
+                  value={nation.DEPARTMENT_ID}
+                >
+                  {nation.DEPARTMENT_NAME}
+                </option>
+              ))}
+            </select>
+          </div>
           <ButtonSearch />
           <button
             //onClick={() => Navigate("/web/Home/Nemeh")}
@@ -394,29 +446,29 @@ function CM_1A(props) {
           >
             {">>"}
           </button>
-            <span className="flex items-center gap-4">
-              <div>нийт:</div>
-              <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}
-                {" - "}
-                {table.getPageCount()}
-              </strong>
-              </span>
-              <select
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
-                }}
-                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-              >
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </option>
-                ))}
-              </select>
-          </div>
+          <span className="flex items-center gap-4">
+            <div>нийт:</div>
+            <span>{data.length}</span>
+            <strong>
+              {table.getState().pagination.pageIndex + 1}
+              {" - "}
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+            className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   );
