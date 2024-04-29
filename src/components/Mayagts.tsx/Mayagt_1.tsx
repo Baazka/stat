@@ -492,7 +492,7 @@ function Mayagt_1(props: any) {
       url: Stat_Url + "BM1IU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data.filter((a) => a.EDITED !== undefined && a.EDITED === true),
         CREATED_BY: userDetails.USER_ID,
       },
