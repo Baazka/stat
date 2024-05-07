@@ -32,7 +32,7 @@ function Period(props) {
         {data?.map((nation, index) => (
           <option
             className="font-semibold"
-            key={nation.YEAR_NAME}
+            key={nation.YEAR_NAME + nation.PERIOD_ID}
             value={nation.PERIOD_ID}
           >
             {nation.YEAR_LABEL}

@@ -35,7 +35,7 @@ function SidebarCM(props: any) {
               </th>
             </tr>
             {props.Fdata?.map((value: any, index: any) => (
-              <tr>
+              <tr key={index}>
                 <td
                   className="text-left text-black p-2 cursor-pointer"
                   style={{
