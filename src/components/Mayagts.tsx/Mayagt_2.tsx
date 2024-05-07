@@ -175,6 +175,7 @@ function Mayagt_2(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM2List",
       method: "POST",
@@ -185,7 +186,6 @@ function Mayagt_2(props: any) {
       },
     })
       .then(function (response) {
-        console.log("mayat2", response);
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
@@ -195,10 +195,12 @@ function Mayagt_2(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0);
       });
   }
 
@@ -257,7 +259,7 @@ function Mayagt_2(props: any) {
       url: Stat_Url + "BM2IU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data,
         CREATED_BY: userDetails.USER_ID,
       },

@@ -116,6 +116,11 @@ function Mayagt_3(props: any) {
         cell: (info) => info.getValue(),
       },
       {
+        accessorKey: "SALBAR_ANGILAL",
+        header: "Байгууллагын үйл ажиллагааны үндсэн чиглэл",
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "BUDGET_SHORT_NAME",
         header: "Төсөв захирагчийн ангилал",
         cell: (info) => info.getValue(),
@@ -210,14 +215,12 @@ function Mayagt_3(props: any) {
       url: Stat_URL + "BM3IU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data,
-
         CREATED_BY: userDetails.USER_ID,
       },
     })
       .then(function (response) {
-        console.log(response.data);
         if (response?.data.message === "Хадгаллаа.") {
           alert("амжилттай хадгаллаа");
           fetchData();
@@ -236,6 +239,7 @@ function Mayagt_3(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_URL + "BM3List",
       method: "POST",
@@ -255,9 +259,13 @@ function Mayagt_3(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+          setloaderSpinner(0);
         }
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        console.log(error, "error");
+        setloaderSpinner(0);
+      });
   }
   return (
     <>
