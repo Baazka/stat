@@ -23,10 +23,9 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-import {
-  RankingInfo,
-  rankItem,
-} from "@tanstack/match-sorter-utils";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
+import { RevolvingDot } from "react-loader-spinner";
+import { Period } from "../library";
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -49,8 +48,8 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 };
 
 function CM_4() {
-   // @ts-ignore
-   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  // @ts-ignore
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -59,47 +58,47 @@ function CM_4() {
   const columns = React.useMemo(
     () => [
       UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
-      ? {
-          id: "select",
-          header: ({ table }) => (
-            <IndeterminateCheckboxALL
-              {...{
-                checked: table.getIsAllRowsSelected(),
-                indeterminate: table.getIsSomeRowsSelected(),
-                onChange: table.getToggleAllRowsSelectedHandler(),
-                data,
-                setData,
-              }}
-            />
-          ),
-          cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
+        ? {
+            id: "select",
+            header: ({ table }) => (
+              <IndeterminateCheckboxALL
                 {...{
-                  checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
-                  disabled: !row.getCanSelect(),
-                  indeterminate: row.getIsSomeSelected(),
-                  onChange: row.getToggleSelectedHandler(),
+                  checked: table.getIsAllRowsSelected(),
+                  indeterminate: table.getIsSomeRowsSelected(),
+                  onChange: table.getToggleAllRowsSelectedHandler(),
                   data,
                   setData,
-                  row,
                 }}
               />
-            </div>
-          ),
-        }
-      : {
-          accessorFn: (row, index) => index + 1,
-          accessorKey: "№",
-          header: "№",
-          size: 10,
-        },
-        {
-          accessorKey: "ANGILAL",
-          header: "Байгууллагын үйл ажиллагааны салбарын ангилал",
-          cell: (info) => info.getValue(),
-          enableGrouping: false,
-        },
+            ),
+            cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox
+                  {...{
+                    checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
+                    disabled: !row.getCanSelect(),
+                    indeterminate: row.getIsSomeSelected(),
+                    onChange: row.getToggleSelectedHandler(),
+                    data,
+                    setData,
+                    row,
+                  }}
+                />
+              </div>
+            ),
+          }
+        : {
+            accessorFn: (row, index) => index + 1,
+            accessorKey: "№",
+            header: "№",
+            size: 10,
+          },
+      {
+        accessorKey: "ANGILAL",
+        header: "Байгууллагын үйл ажиллагааны салбарын ангилал",
+        cell: (info) => info.getValue(),
+        enableGrouping: false,
+      },
       {
         accessorKey: "MD",
         cell: (info) => info.getValue(),
@@ -151,7 +150,8 @@ function CM_4() {
       {
         accessorKey: "AZSH_SAHILGIIN_SHIITGEL_NOOGDUULAH_ALBAN_SHARDLAGIN_DUN",
         cell: (info) => info.getValue(),
-        header: "Сахилгын шийтгэл ногдуулах албан шаардлагын дүн /сая төгрөгөөр/",
+        header:
+          "Сахилгын шийтгэл ногдуулах албан шаардлагын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
       },
       {
@@ -175,25 +175,26 @@ function CM_4() {
       {
         accessorKey: "AZSH_HUULI_HYNALTIN_BAI_SHILJUULSEN_ASUUDLIN_DUN",
         cell: (info) => info.getValue(),
-        header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн /сая төгрөгөөр/",
+        header:
+          "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
       },
     ],
     []
   );
- 
+
   const [data, setData] = React.useState([]);
   const Navigate = useNavigate();
   const refreshData = () => setData((old) => []);
   const [filter, setFilter] = useState({
     Audit: {
-      PERIOD_ID: 4,
+      PERIOD_ID: 999,
       DEPARTMENT_ID: 999,
-      BUDGET_TYPE_ID: 999,
-      PARENT_BUDGET_ID: 999,
-      TYPE: 0,
     },
   });
+
+  const [drop, setDrop] = useState([]);
+  const [loaderSpinner, setloaderSpinner] = useState(0);
 
   const table = useReactTable({
     data,
@@ -227,23 +228,41 @@ function CM_4() {
     fetchData();
   }, [filter]);
 
-  async function fetchData() {
+  async function fetchData(params: type) {
+    setloaderSpinner(1);
     DataRequest({
-      url: Stat_URl + "statisticList",
+      url: Stat_URl + "refDepartment?DepType=1",
+      method: "GET",
+      data: {},
+    })
+      .then(function (res) {
+        if (res.data !== undefined && res?.data.length > 0) {
+          setDrop(res.data);
+          setloaderSpinner(0);
+        }
+      })
+      .catch(function (error) {
+        setloaderSpinner(0);
+      });
+    DataRequest({
+      url: Stat_URl + "CM4List/",
       method: "POST",
       data: {
-        
+        PERIOD_ID: filter.Audit.PERIOD_ID,
+        DEPARTMENT_ID: filter.Audit.DEPARTMENT_ID,
       },
     })
       .then(function (response) {
-        if (response?.data !== undefined && response?.data?.length > 0) {
-          setData([]);
+        if (response.data !== undefined && response?.data.length > 0) {
+          setData(response.data);
+          setloaderSpinner(0);
         } else {
           setData([]);
         }
       })
       .catch(function (error) {
-        alert("Өгөгдөл авчрахад алдаа гарлаа!");
+        console.log(error, "error");
+        setloaderSpinner(0);
       });
   }
 
@@ -257,159 +276,200 @@ function CM_4() {
 
   return (
     <>
-      <div
-        style={{
-          maxHeight: window.innerHeight - 129,
-          maxWidth: window.innerWidth,
-          padding: "0.5rem 0 0 1rem",
-          overflowX: "scroll",
-        }}
-      >
-        <div className="flex justify-between mb-2 ">
-          <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch />
-            <button
-              onClick={() => Navigate("/web/Home/Nemeh")}
-              className="inline-flex items-center rounded ml-2 py-1 h-7"
-              style={{
-                border: "1px solid #3cb371",
-              }}
-            >
-              <div className="bg-white">
-                <img
-                  src={excel}
-                  width="20px"
-                  height="20px"
-                  className="mx-1"
-                ></img>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "#3cb371",
-                }}
-                className=" text-white rounded-r px-1 h-7"
-              >
-                Excel
-              </div>
-            </button>
-          </div>
-        </div>
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
         <div
           style={{
-            maxHeight: "630px",
-            overflowY: "scroll",
+            paddingLeft: "45%",
+            paddingTop: "10%",
+            paddingBottom: "10%",
           }}
         >
-          <div className="h-2 mr-20" />
-          <table className="w-full">
-          <thead className="TableHeadBackroundcolor gap-20">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className="px-1.5"
-                      style={{
-                        width:
-                          header.getSize() !== 0 ? header.getSize() : undefined,
-                      }}
+          <RevolvingDot color="#2684fe" height={50} width={50} />
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between mb-2 ">
+            <div
+              style={{ height: 28 }}
+              className="flex flex-row  cursor-pointer"
+            >
+              <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+                <Period
+                  data={filter}
+                  setData={(value: any) => setFilter(value)}
+                />
+              </div>
+              <div style={{ marginRight: "10px", fontSize: "0.8rem" }}>
+                <select
+                  className="border rounded text-sm focus:outline-none py-0.5"
+                  value={filter.Audit.DEPARTMENT_ID}
+                  onChange={(value) => {
+                    let temp = filter;
+                    temp.Audit.DEPARTMENT_ID = value.target.value;
+                    setFilter({ ...temp });
+                  }}
+                >
+                  <option value={999}>Аудит хийх нэгж</option>
+                  {drop.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.DEPARTMENT_SHORT_NAME}
+                      value={nation.DEPARTMENT_ID}
                     >
-                      {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                          ></div>
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? "cursor-pointer select-none"
-                                : "",
-                              onClick: header.column.getToggleSortingHandler(),
-                            }}
-                          >
+                      {nation.DEPARTMENT_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <ButtonSearch />
+              <button
+                //onClick={() => Navigate("/web/Home/Nemeh")}
+                className="inline-flex items-center rounded ml-2 py-1 h-7"
+                style={{
+                  border: "1px solid #3cb371",
+                }}
+              >
+                <div className="bg-white">
+                  <img
+                    src={excel}
+                    width="20px"
+                    height="20px"
+                    className="mx-1"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#3cb371",
+                  }}
+                  className=" text-white rounded-r px-1 h-7"
+                >
+                  Excel
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div
+            style={{
+              maxHeight: "630px",
+              overflowY: "scroll",
+            }}
+          >
+            <div className="h-2 mr-20" />
+            <table className="w-full">
+              <thead className="TableHeadBackroundcolor gap-20">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className="px-1.5"
+                          style={{
+                            width:
+                              header.getSize() !== 0
+                                ? header.getSize()
+                                : undefined,
+                          }}
+                        >
+                          {header.isPlaceholder ? null : (
+                            <>
+                              <div
+                                onMouseDown={header.getResizeHandler()}
+                                onTouchStart={header.getResizeHandler()}
+                              ></div>
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? "cursor-pointer select-none"
+                                    : "",
+                                  onClick:
+                                    header.column.getToggleSortingHandler(),
+                                }}
+                              >
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                              </div>
+                              {header.column.getCanFilter() ? (
+                                <div>
+                                  <Filter
+                                    column={header.column}
+                                    table={table}
+                                  />
+                                </div>
+                              ) : null}
+                            </>
+                          )}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row, i) => {
+                  return (
+                    <tr
+                      key={row.id}
+                      className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                    >
+                      {row.getVisibleCells().map((cell, index) => {
+                        return (
+                          <td key={cell.id} className="p-2">
                             {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
+                              cell.column.columnDef.cell,
+                              cell.getContext()
                             )}
-                          </div>
-                          {header.column.getCanFilter() ? (
-                            <div>
-                              <Filter column={header.column} table={table} />
-                            </div>
-                          ) : null}
-                        </>
-                      )}
-                    </th>
+                          </td>
+                        );
+                      })}
+                    </tr>
                   );
                 })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row, i) => {
-              return (
-                <tr
-                  key={row.id}
-                  className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                >
-                  {row.getVisibleCells().map((cell, index) => {
-                    return (
-                      <td key={cell.id} className="p-2">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        </div>
-      </div>
-      <div style={{ justifyContent: "flex-end" }}>
-        <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-          <button
-            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {"<<"}
-          </button>
-          <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-          >
-            {"<"}
-          </button>
-          <button
-            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {">"}
-          </button>
-          <button
-            className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            {">>"}
-          </button>
-            <span className="flex items-center gap-4">
-              <div>нийт:</div>
-              <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}
-                {" - "}
-                {table.getPageCount()}
-              </strong>
+              </tbody>
+            </table>
+          </div>
+          <div style={{ justifyContent: "flex-end" }}>
+            <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<<"}
+              </button>
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              >
+                {"<"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {">"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {">>"}
+              </button>
+              <span className="flex items-center gap-4">
+                <div>нийт:</div>
+                <span>{data.length}</span>
+                <strong>
+                  {table.getState().pagination.pageIndex + 1}
+                  {" - "}
+                  {table.getPageCount()}
+                </strong>
               </span>
               <select
                 value={table.getState().pagination.pageSize}
@@ -424,8 +484,10 @@ function CM_4() {
                   </option>
                 ))}
               </select>
+            </div>
           </div>
-      </div>
+        </>
+      )}
     </>
   );
 }

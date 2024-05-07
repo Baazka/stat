@@ -567,8 +567,51 @@ function Mayagt_1(props: any) {
                               key: header.id,
                               colSpan: header.colSpan,
                               style: {
-                                width: header.getSize(),
+                                backgroundColor:
+                                  header.id === "№" ||
+                                  header.id === "AUDIT_TYPE_NAME" ||
+                                  header.id === "AUDIT_NAME"
+                                    ? "#dbe9fc"
+                                    : null,
+                                width:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : header.getSize(),
+                                minWidth:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : null,
+                                maxWidth:
+                                  header.id === "№"
+                                    ? "50px"
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? "150px"
+                                    : header.id === "AUDIT_NAME"
+                                    ? "250px"
+                                    : null,
+                                left:
+                                  header.id === "№"
+                                    ? 0
+                                    : header.id === "AUDIT_TYPE_NAME"
+                                    ? 50
+                                    : header.id === "AUDIT_NAME"
+                                    ? 200
+                                    : null,
                               },
+                              className:
+                                header.id === "№" ||
+                                header.id === "AUDIT_TYPE_NAME" ||
+                                header.id === "AUDIT_NAME"
+                                  ? "sticky-col"
+                                  : null,
                             }}
                           >
                             {header.isPlaceholder ? null : (
@@ -627,10 +670,49 @@ function Mayagt_1(props: any) {
                               {...{
                                 key: cell.id,
                                 style: {
-                                  width: cell.column.getSize(),
+                                  backgroundColor:
+                                    i % 2 > 0 ? "#f5f5f5" : "white",
+                                  width:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : cell.column.getSize(),
+                                  minWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  maxWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  left:
+                                    cell.column.id === "№"
+                                      ? 0
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? 50
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? 200
+                                      : null,
                                 },
                               }}
-                              className="p-2 "
+                              className={
+                                cell.column.id === "№" ||
+                                cell.column.id === "AUDIT_TYPE_NAME" ||
+                                cell.column.id === "AUDIT_NAME"
+                                  ? "p-2 sticky-col"
+                                  : "p-2"
+                              }
                             >
                               {flexRender(
                                 cell.column.columnDef.cell,

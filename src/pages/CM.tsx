@@ -41,7 +41,7 @@ function CM(props: any) {
 
   const [menuShow, setMenuShow] = useState(false);
   const fullMenuWidth = "372px";
-  const shortMenuWidth = "115px";
+  const shortMenuWidth = "125px";
 
   async function fetchData() {
     let listItems = await axios(Stat_URl + "refDocument?DocType=" + 2);
