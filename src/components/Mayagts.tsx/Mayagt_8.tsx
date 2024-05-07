@@ -480,6 +480,7 @@ function Mayagt_8(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM8List",
       method: "POST",
@@ -499,10 +500,12 @@ function Mayagt_8(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0);
       });
   }
   function saveToDB() {
@@ -512,9 +515,8 @@ function Mayagt_8(props: any) {
       url: Stat_Url + "BM8IU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data.filter((a) => a.EDITED !== undefined && a.EDITED === true),
-
         CREATED_BY: userDetails.USER_ID,
       },
     })

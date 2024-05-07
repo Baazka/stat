@@ -490,6 +490,7 @@ function Mayagt_5(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM5List",
       method: "POST",
@@ -502,10 +503,12 @@ function Mayagt_5(props: any) {
       .then(function (response) {
         if (response.data !== undefined && response.data.data.length > 0) {
           loadData(response.data.data);
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0);
         alert("Aмжилтгүй");
       });
   }
@@ -517,9 +520,8 @@ function Mayagt_5(props: any) {
       url: Stat_Url + "BM5IU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data.filter((a) => a.EDITED !== undefined && a.EDITED === true),
-
         CREATED_BY: userDetails.USER_ID,
       },
     })

@@ -450,6 +450,7 @@ function Mayagt_9(props: any) {
   }, [props.mayagtData]);
 
   async function fetchData() {
+    setloaderSpinner(1);
     DataRequest({
       url: Stat_Url + "BM9List",
       method: "POST",
@@ -469,10 +470,12 @@ function Mayagt_9(props: any) {
                 (a) => a.AUDITOR_ID === userDetails.USER_ID
               ),
             });
+          setloaderSpinner(0);
         }
       })
       .catch(function (error) {
         console.log(error, "error");
+        setloaderSpinner(0);
       });
   }
 
