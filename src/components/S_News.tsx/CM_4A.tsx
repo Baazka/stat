@@ -26,6 +26,7 @@ import {
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { RevolvingDot } from "react-loader-spinner";
 import { Period } from "../library";
+import CurrencyInput from "react-currency-input-field";
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -57,127 +58,169 @@ function CM_4() {
 
   const columns = React.useMemo(
     () => [
-      UserPremission(userDetails.USER_TYPE_NAME, "plan", "lock")
-        ? {
-            id: "select",
-            header: ({ table }) => (
-              <IndeterminateCheckboxALL
-                {...{
-                  checked: table.getIsAllRowsSelected(),
-                  indeterminate: table.getIsSomeRowsSelected(),
-                  onChange: table.getToggleAllRowsSelectedHandler(),
-                  data,
-                  setData,
-                }}
-              />
-            ),
-            cell: ({ row }) => (
-              <div>
-                <IndeterminateCheckbox
-                  {...{
-                    checked: row.original.IS_LOCK === 1 ? true : false, //ow.getIsSelected(), //row.IS_LOCK === 1 ?true:false
-                    disabled: !row.getCanSelect(),
-                    indeterminate: row.getIsSomeSelected(),
-                    onChange: row.getToggleSelectedHandler(),
-                    data,
-                    setData,
-                    row,
-                  }}
-                />
-              </div>
-            ),
-          }
-        : {
-            accessorFn: (row, index) => index + 1,
-            accessorKey: "№",
-            header: "№",
-            size: 10,
-          },
       {
-        accessorKey: "ANGILAL",
+        accessorFn: (row, index) => index + 1,
+        accessorKey: "№",
+        header: "№",
+        size: 10,
+      },
+      {
+        accessorKey: "SALBAR_ANGILAL",
         header: "Байгууллагын үйл ажиллагааны салбарын ангилал",
         cell: (info) => info.getValue(),
         enableGrouping: false,
       },
+      // {
+      //   accessorKey: "MD",
+      //   cell: (info) => info.getValue(),
+      //   header: "МД",
+      //   footer: (props) => props.column.id,
+      // },
       {
-        accessorKey: "MD",
-        cell: (info) => info.getValue(),
-        header: "МД",
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorKey: "ZALRUULGIIN_TOO",
+        accessorKey: "ZAL_CNT",
         cell: (info) => info.getValue(),
         header: "Залруулгын тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "ZALRUULGIIN_DUN",
+        accessorKey: "ZAL_AMOUNT",
         cell: (info) => info.getValue(),
         header: "Залруулгын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.ZAL_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
-        accessorKey: "ZOWLOMJIIN_TOO",
+        accessorKey: "ZUW_CNT",
         cell: (info) => info.getValue(),
         header: "Зөвлөмжийн тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "ZOWLOMJIIN_DUN",
+        accessorKey: "ZUW_AMOUNT",
         cell: (info) => info.getValue(),
         header: "Зөвлөмжийн дүн /сая төгрөгөөр/ ",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.ZUW_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
-        accessorKey: "ALBAN_SHAARDLAGIIN_TOO",
+        accessorKey: "ASH_CNT",
         cell: (info) => info.getValue(),
         header: "Албан шаардлагын тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "ALBAN_SHAARDLAGIIN_DUN",
+        accessorKey: "ASH_AMOUNT",
         cell: (info) => info.getValue(),
         header: "Албан шаардлагын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.ASH_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
-        accessorKey: "SAHILGIIN_SHIITGEL_NOOGDUULAH_ALBAN_SHARDLAGIN_TOO",
+        accessorKey: "SSH_CNT",
         cell: (info) => info.getValue(),
         header: "Сахилгын шийтгэл ногдуулах албан шаардлагын тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "AZSH_SAHILGIIN_SHIITGEL_NOOGDUULAH_ALBAN_SHARDLAGIN_DUN",
+        accessorKey: "SSH_AMOUNT",
         cell: (info) => info.getValue(),
         header:
           "Сахилгын шийтгэл ногдуулах албан шаардлагын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.SSH_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
-        accessorKey: "TOLBORIIN_AKTIN_TOO",
+        accessorKey: "TA_CNT",
         cell: (info) => info.getValue(),
         header: "Төлбөрийн актын тоо ",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "AZSH_TOLBORIIN_AKTIN_DUN",
+        accessorKey: "TA_AMOUNT",
         cell: (info) => info.getValue(),
         header: "Төлбөрийн актын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.TA_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
       {
-        accessorKey: "AZSH_HUULI_HYNALTIN_BAI_SHILJUULSEN_ASUUDLIN_TOO",
+        accessorKey: "KHKH_CNT",
         cell: (info) => info.getValue(),
         header: "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын тоо",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "AZSH_HUULI_HYNALTIN_BAI_SHILJUULSEN_ASUUDLIN_DUN",
+        accessorKey: "KHKH_AMOUNT",
         cell: (info) => info.getValue(),
         header:
           "Хууль хяналтын байгууллагад шилжүүлсэн асуудлын дүн /сая төгрөгөөр/",
         footer: (props) => props.column.id,
+        accessorFn: (row, index) => (
+          <div>
+            <CurrencyInput
+              id="input-example"
+              defaultValue={row.KHKH_AMOUNT}
+              decimalsLimit={2}
+              decimalScale={2}
+              disabled
+              style={{ textAlign: "center", backgroundColor: "transparent" }}
+            />
+          </div>
+        ),
       },
     ],
     []

@@ -45,7 +45,7 @@ function DebouncedInput({
         className=" text-sm "
         onChange={(e) => {
           setValue(e.target.value);
-          onChange(e.target.value);
+          //onChange(e.target.value);
         }}
         placeholder="Хайх утгаа оруулна уу..."
         style={{
