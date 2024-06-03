@@ -286,19 +286,17 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_AMOUNT",
+        accessorKey: "PROCESS_AMOUNT",
         header: "Биелсэн төлбөрийн актын дүн (төгрөг)",
         accessorFn: (row, index) => (
-          <div>
-            <CurrencyInput
-              id="input-example"
-              defaultValue={row.MO_AMOUNT}
-              decimalsLimit={2}
-              decimalScale={2}
-              disabled
-              style={{ textAlign: "center", backgroundColor: "transparent" }}
-            />
-          </div>
+          <CurrencyInput
+            id="input-example"
+            defaultValue={row.PROCESS_AMOUNT}
+            decimalsLimit={2}
+            decimalScale={2}
+            disabled
+            style={{ textAlign: "center", backgroundColor: "transparent" }}
+          />
         ),
         cell: (info) => info.getValue(),
       },
