@@ -614,7 +614,7 @@ function Mayagt_8(props: any) {
         </div>
         <div>
           <div className="h-2 mr-20" />
-          <div className="overflow-y-scroll">
+          <div className="overflow-auto" style={{ maxHeight: 600 }}>
             <table
               {...{
                 style: {

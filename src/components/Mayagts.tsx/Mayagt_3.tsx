@@ -141,11 +141,6 @@ function Mayagt_3(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "ss",
-        header: "Тайлант хугацааны эхний үлдэгдэл",
-        cell: (info) => info.getValue(),
-      },
-      {
         accessorKey: "AMOUNT",
         header: "Алдааны дүн /төгрөг/",
         accessorFn: (row, index) => (

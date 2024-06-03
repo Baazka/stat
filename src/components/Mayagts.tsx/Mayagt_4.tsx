@@ -300,13 +300,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_AMOUNT",
+        accessorKey: "PROCESS_AMOUNT",
         header: "Биелсэн зөвлөмжийн дүн (төгрөг)",
         accessorFn: (row, index) => (
           <div>
             <CurrencyInput
               id="input-example"
-              defaultValue={row.MO_AMOUNT}
+              defaultValue={row.PROCESS_AMOUNT}
               decimalsLimit={2}
               decimalScale={2}
               disabled
@@ -619,7 +619,7 @@ function Mayagt_1(props: any) {
           </div>
           <div>
             <div className="h-2 mr-20" />
-            <div className="overflow-y-scroll">
+            <div className="overflow-auto" style={{ maxHeight: 600 }}>
               <table
                 {...{
                   style: {
