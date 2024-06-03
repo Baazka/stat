@@ -195,11 +195,7 @@ function Mayagt_1(props: any) {
         header: "Зөрчил гаргасан албан тушаалтны овог, нэр",
         cell: (info) => info.getValue(),
       },
-      {
-        accessorKey: "ZORCHIL_GARGSAN_HUNII_ALBAN_TUSHL",
-        header: "Зөрчил гаргасан хүний албан тушаал",
-        cell: (info) => info.getValue(),
-      },
+
       {
         accessorKey: "AUDITOR_NAME",
         header: "Биелэлтийг хянасан аудитор",
@@ -226,13 +222,13 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_AMOUNT",
+        accessorKey: "PROCESS_AMOUNT",
         header: "Албан шаардлагын бүрэн хэрэгжсэн дүн (төгрөг)",
         accessorFn: (row, index) => (
           <div>
             <CurrencyInput
               id="input-example"
-              defaultValue={row.MO_AMOUNT}
+              defaultValue={row.PROCESS_AMOUNT}
               decimalsLimit={2}
               decimalScale={2}
               disabled
