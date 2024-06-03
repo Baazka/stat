@@ -291,13 +291,13 @@ function Mayagt_5(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "MO_AMOUNT",
+        accessorKey: "PROCESS_AMOUNT",
         header: "Биелсэн албан шаардлагын дүн (төгрөг)",
         accessorFn: (row, index) => (
           <div>
             <CurrencyInput
               id="input-example"
-              defaultValue={row.MO_AMOUNT}
+              defaultValue={row.PROCESS_AMOUNT}
               decimalsLimit={2}
               decimalScale={2}
               disabled
