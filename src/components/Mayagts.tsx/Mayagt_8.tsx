@@ -297,7 +297,7 @@ function Mayagt_8(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "LAW_FULL_AMOUNT",
+        accessorKey: "PROCESS_AMOUNT",
         header:
           "Хууль хяналтын байгууллагаар бүрэн шийдвэрлэгдсэн дүн (төгрөг)",
       },
