@@ -5,7 +5,7 @@ function Select({ globalFilter, setGlobalFilter }) {
       <div className="flex ">
         <DebouncedInput
           value={globalFilter ?? ""}
-          //onChange={(value) => setGlobalFilter(String(value))}
+          onChange={(value) => setGlobalFilter(String(value))}
           className="p-1.5 font-lg shadow border border-block rounded h-8"
         />
       </div>
@@ -15,12 +15,12 @@ function Select({ globalFilter, setGlobalFilter }) {
 
 function DebouncedInput({
   value: initialValue,
-  //onChange,
+  onChange,
   debounce = 500,
   ...props
 }: {
   value: string | number;
-  //onChange: (value: string | number) => void;
+  onChange: (value: string | number) => void;
   debounce?: number;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
   const [value, setValue] = React.useState(initialValue);
@@ -31,7 +31,7 @@ function DebouncedInput({
 
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      //onChange(value);
+      onChange(value);
     }, debounce);
 
     return () => clearTimeout(timeout);
@@ -45,7 +45,7 @@ function DebouncedInput({
         className=" text-sm "
         onChange={(e) => {
           setValue(e.target.value);
-          //onChange(e.target.value);
+          onChange(e.target.value);
         }}
         placeholder="Хайх утгаа оруулна уу..."
         style={{

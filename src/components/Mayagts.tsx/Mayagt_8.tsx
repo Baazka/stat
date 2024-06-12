@@ -535,334 +535,349 @@ function Mayagt_8(props: any) {
 
   return (
     <>
-      <div
-        style={{
-          padding: "0.5rem 0 0 1rem",
-        }}
-      >
-        <Title
-          title={
-            mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
-          }
-          widthS={"28rem"}
-          widthL={"10rem"}
-        />
-        <DocInfo />
-        <div className="flex justify-between mb-2 ">
-          <div style={{ height: 28 }} className="flex flex-row  cursor-pointer">
-            <ButtonSearch
-              globalFilter={globalFilter}
-              setGlobalFilter={(value) => setGlobalFilter(value)}
-            />
-            <button
-              onClick={() => {
-                getExportFileBlob(columns, data, "З-ТАББМ-8");
-              }}
-              className="inline-flex items-center rounded ml-2 py-1 h-7"
-              style={{
-                border: "1px solid #3cb371",
-              }}
-            >
-              <div className="bg-white">
-                <img
-                  src={excel}
-                  width="20px"
-                  height="20px"
-                  className="mx-1"
-                ></img>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "#3cb371",
-                }}
-                className=" text-white rounded-r px-1 h-7"
-              >
-                Excel
-              </div>
-            </button>
-          </div>
-          <div className="flex">
-            {status?.STATUS.STATUS !== null &&
-            status?.STATUS.STATUS !== undefined ? (
-              <ButtonRequest
-                audID={mayagtData.ID}
-                docId={mayagtData.DOCUMENT_ID}
-                STATUS={status.STATUS?.STATUS}
-                RoleID={status.ROLE?.ROLE_ID}
-                statusID={status.STATUS.ID}
-                Title="Хүсэлт илгээх"
-                batlakhHuselt={batlakhHuselt}
-              />
-            ) : null}
-
-            {status.ROLE?.AUDITOR_ID !== undefined ? (
-              <ButtonConfirm
-                STATUS={status.STATUS?.STATUS}
-                data={mayagtData}
-                Title={mayagtData.DOCUMENT_SHORT_NAME}
-                RoleID={status?.ROLE.ROLE_ID}
-                statusID={status?.STATUS.ID}
-                fetchData={() => fetchData()}
-                CREATED_BY={{
-                  APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
-                  APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
-                  APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
-                }}
-              />
-            ) : null}
-          </div>
+      {loaderSpinner === 1 || loaderSpinner === undefined ? (
+        <div
+          style={{
+            paddingLeft: "45%",
+            paddingTop: "10%",
+            paddingBottom: "10%",
+          }}
+        >
+          <RevolvingDot color="#2684fe" height={50} width={50} />
         </div>
-        <div>
-          <div className="h-2 mr-20" />
-          <div className="overflow-auto" style={{ maxHeight: 600 }}>
-            <table
-              {...{
-                style: {
-                  width: table.getCenterTotalSize(),
-                },
-              }}
+      ) : (
+        <div
+          style={{
+            padding: "0.5rem 0 0 1rem",
+          }}
+        >
+          <Title
+            title={
+              mayagtData.DOCUMENT_NAME + " " + mayagtData.DOCUMENT_SHORT_NAME
+            }
+            widthS={"28rem"}
+            widthL={"10rem"}
+          />
+          <DocInfo />
+          <div className="flex justify-between mb-2 ">
+            <div
+              style={{ height: 28 }}
+              className="flex flex-row  cursor-pointer"
             >
-              <thead className="TableHeadBackroundcolor">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <th
-                          {...{
-                            key: header.id,
-                            colSpan: header.colSpan,
-                            style: {
-                              backgroundColor:
-                                header.id === "№" ||
-                                header.id === "AUDIT_TYPE_NAME" ||
-                                header.id === "AUDIT_NAME"
-                                  ? "#dbe9fc"
-                                  : null,
-                              width:
-                                header.id === "№"
-                                  ? "50px"
-                                  : header.id === "AUDIT_TYPE_NAME"
-                                  ? "150px"
-                                  : header.id === "AUDIT_NAME"
-                                  ? "250px"
-                                  : header.getSize(),
-                              minWidth:
-                                header.id === "№"
-                                  ? "50px"
-                                  : header.id === "AUDIT_TYPE_NAME"
-                                  ? "150px"
-                                  : header.id === "AUDIT_NAME"
-                                  ? "250px"
-                                  : null,
-                              maxWidth:
-                                header.id === "№"
-                                  ? "50px"
-                                  : header.id === "AUDIT_TYPE_NAME"
-                                  ? "150px"
-                                  : header.id === "AUDIT_NAME"
-                                  ? "250px"
-                                  : null,
-                              left:
-                                header.id === "№"
-                                  ? 0
-                                  : header.id === "AUDIT_TYPE_NAME"
-                                  ? 50
-                                  : header.id === "AUDIT_NAME"
-                                  ? 200
-                                  : null,
-                            },
-                            className:
-                              header.id === "№" ||
-                              header.id === "AUDIT_TYPE_NAME" ||
-                              header.id === "AUDIT_NAME"
-                                ? "sticky-col"
-                                : null,
-                          }}
-                        >
-                          {header.isPlaceholder ? null : (
-                            <>
-                              <div
-                                {...{
-                                  onMouseDown: header.getResizeHandler(),
-                                  onTouchStart: header.getResizeHandler(),
-                                  className: `resizer ${
-                                    header.column.getIsResizing()
-                                      ? "isResizing"
-                                      : ""
-                                  }`,
-                                }}
-                              ></div>
-                              <div
-                                {...{
-                                  className: header.column.getCanSort()
-                                    ? "cursor-pointer select-none"
-                                    : "",
-                                  onClick:
-                                    header.column.getToggleSortingHandler(),
-                                }}
-                              >
-                                {flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                              </div>
-                              {header.column.getCanFilter() ? (
-                                <div>
-                                  <Filter
-                                    column={header.column}
-                                    table={table}
-                                  />
-                                </div>
-                              ) : null}
-                            </>
-                          )}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row, i) => {
-                  return (
-                    <tr
-                      key={row.id}
-                      className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
-                    >
-                      {row.getVisibleCells().map((cell, index) => {
+              <ButtonSearch
+                globalFilter={globalFilter}
+                setGlobalFilter={(value) => setGlobalFilter(value)}
+              />
+              <button
+                onClick={() => {
+                  getExportFileBlob(columns, data, "З-ТАББМ-8");
+                }}
+                className="inline-flex items-center rounded ml-2 py-1 h-7"
+                style={{
+                  border: "1px solid #3cb371",
+                }}
+              >
+                <div className="bg-white">
+                  <img
+                    src={excel}
+                    width="20px"
+                    height="20px"
+                    className="mx-1"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#3cb371",
+                  }}
+                  className=" text-white rounded-r px-1 h-7"
+                >
+                  Excel
+                </div>
+              </button>
+            </div>
+            <div className="flex">
+              {status?.STATUS.STATUS !== null &&
+              status?.STATUS.STATUS !== undefined ? (
+                <ButtonRequest
+                  audID={mayagtData.ID}
+                  docId={mayagtData.DOCUMENT_ID}
+                  STATUS={status.STATUS?.STATUS}
+                  RoleID={status.ROLE?.ROLE_ID}
+                  statusID={status.STATUS.ID}
+                  Title="Хүсэлт илгээх"
+                  batlakhHuselt={batlakhHuselt}
+                />
+              ) : null}
+
+              {status.ROLE?.AUDITOR_ID !== undefined ? (
+                <ButtonConfirm
+                  STATUS={status.STATUS?.STATUS}
+                  data={mayagtData}
+                  Title={mayagtData.DOCUMENT_SHORT_NAME}
+                  RoleID={status?.ROLE.ROLE_ID}
+                  statusID={status?.STATUS.ID}
+                  fetchData={() => fetchData()}
+                  CREATED_BY={{
+                    APPROVED_FIRST_ID: status?.STATUS.APPROVED_FIRST_ID,
+                    APPROVED_SECOND_ID: status?.STATUS.APPROVED_SECOND_ID,
+                    APPROVED_THIRD_ID: status?.STATUS.APPROVED_THIRD_ID,
+                  }}
+                />
+              ) : null}
+            </div>
+          </div>
+          <div>
+            <div className="h-2 mr-20" />
+            <div className="overflow-auto" style={{ maxHeight: 600 }}>
+              <table
+                {...{
+                  style: {
+                    width: table.getCenterTotalSize(),
+                  },
+                }}
+              >
+                <thead className="TableHeadBackroundcolor">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
                         return (
-                          <td
+                          <th
                             {...{
-                              key: cell.id,
+                              key: header.id,
+                              colSpan: header.colSpan,
                               style: {
                                 backgroundColor:
-                                  i % 2 > 0 ? "#f5f5f5" : "white",
+                                  header.id === "№" ||
+                                  header.id === "AUDIT_TYPE_NAME" ||
+                                  header.id === "AUDIT_NAME"
+                                    ? "#dbe9fc"
+                                    : null,
                                 width:
-                                  cell.column.id === "№"
+                                  header.id === "№"
                                     ? "50px"
-                                    : cell.column.id === "AUDIT_TYPE_NAME"
+                                    : header.id === "AUDIT_TYPE_NAME"
                                     ? "150px"
-                                    : cell.column.id === "AUDIT_NAME"
+                                    : header.id === "AUDIT_NAME"
                                     ? "250px"
-                                    : cell.column.getSize(),
+                                    : header.getSize(),
                                 minWidth:
-                                  cell.column.id === "№"
+                                  header.id === "№"
                                     ? "50px"
-                                    : cell.column.id === "AUDIT_TYPE_NAME"
+                                    : header.id === "AUDIT_TYPE_NAME"
                                     ? "150px"
-                                    : cell.column.id === "AUDIT_NAME"
+                                    : header.id === "AUDIT_NAME"
                                     ? "250px"
                                     : null,
                                 maxWidth:
-                                  cell.column.id === "№"
+                                  header.id === "№"
                                     ? "50px"
-                                    : cell.column.id === "AUDIT_TYPE_NAME"
+                                    : header.id === "AUDIT_TYPE_NAME"
                                     ? "150px"
-                                    : cell.column.id === "AUDIT_NAME"
+                                    : header.id === "AUDIT_NAME"
                                     ? "250px"
                                     : null,
                                 left:
-                                  cell.column.id === "№"
+                                  header.id === "№"
                                     ? 0
-                                    : cell.column.id === "AUDIT_TYPE_NAME"
+                                    : header.id === "AUDIT_TYPE_NAME"
                                     ? 50
-                                    : cell.column.id === "AUDIT_NAME"
+                                    : header.id === "AUDIT_NAME"
                                     ? 200
                                     : null,
                               },
+                              className:
+                                header.id === "№" ||
+                                header.id === "AUDIT_TYPE_NAME" ||
+                                header.id === "AUDIT_NAME"
+                                  ? "sticky-col"
+                                  : null,
                             }}
-                            className={
-                              cell.column.id === "№" ||
-                              cell.column.id === "AUDIT_TYPE_NAME" ||
-                              cell.column.id === "AUDIT_NAME"
-                                ? "p-2 sticky-col"
-                                : "p-2"
-                            }
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
+                            {header.isPlaceholder ? null : (
+                              <>
+                                <div
+                                  {...{
+                                    onMouseDown: header.getResizeHandler(),
+                                    onTouchStart: header.getResizeHandler(),
+                                    className: `resizer ${
+                                      header.column.getIsResizing()
+                                        ? "isResizing"
+                                        : ""
+                                    }`,
+                                  }}
+                                ></div>
+                                <div
+                                  {...{
+                                    className: header.column.getCanSort()
+                                      ? "cursor-pointer select-none"
+                                      : "",
+                                    onClick:
+                                      header.column.getToggleSortingHandler(),
+                                  }}
+                                >
+                                  {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                                </div>
+                                {header.column.getCanFilter() ? (
+                                  <div>
+                                    <Filter
+                                      column={header.column}
+                                      table={table}
+                                    />
+                                  </div>
+                                ) : null}
+                              </>
                             )}
-                          </td>
+                          </th>
                         );
                       })}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row, i) => {
+                    return (
+                      <tr
+                        key={row.id}
+                        className={i % 2 > 0 ? "tr bg-gray-100" : "tr"}
+                      >
+                        {row.getVisibleCells().map((cell, index) => {
+                          return (
+                            <td
+                              {...{
+                                key: cell.id,
+                                style: {
+                                  backgroundColor:
+                                    i % 2 > 0 ? "#f5f5f5" : "white",
+                                  width:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : cell.column.getSize(),
+                                  minWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  maxWidth:
+                                    cell.column.id === "№"
+                                      ? "50px"
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? "150px"
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? "250px"
+                                      : null,
+                                  left:
+                                    cell.column.id === "№"
+                                      ? 0
+                                      : cell.column.id === "AUDIT_TYPE_NAME"
+                                      ? 50
+                                      : cell.column.id === "AUDIT_NAME"
+                                      ? 200
+                                      : null,
+                                },
+                              }}
+                              className={
+                                cell.column.id === "№" ||
+                                cell.column.id === "AUDIT_TYPE_NAME" ||
+                                cell.column.id === "AUDIT_NAME"
+                                  ? "p-2 sticky-col"
+                                  : "p-2"
+                              }
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="justify-end flex items-center gap-1 mt-5 mr-2">
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<<"}
+              </button>
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+              >
+                {"<"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {">"}
+              </button>
+              <button
+                className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {">>"}
+              </button>
+              <span className="flex items-center gap-4">
+                <div>нийт:</div>
+                <span>{data.length}</span>
+                <strong>
+                  {table.getState().pagination.pageIndex + 1}
+                  {" - "}
+                  {table.getPageCount()}
+                </strong>
+              </span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+                className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="justify-end flex items-center gap-1 mt-5 mr-2">
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-            >
-              {"<"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border p-0.8 color bg-blue-300 rounded-md w-6 text-white"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-            <span className="flex items-center gap-4">
-              <div>нийт:</div>
-              <span>{data.length}</span>
-              <strong>
-                {table.getState().pagination.pageIndex + 1}
-                {" - "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="border p-0.8 bg-blue-300 rounded-lg text-white ml-2"
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
+          <div style={{ display: "flex", justifyContent: "end" }}>
+            {check_save(status) ? (
+              <ButtonSave saveToDB={() => saveToDB()} />
+            ) : null}
           </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          {check_save(status) ? (
-            <ButtonSave saveToDB={() => saveToDB()} />
-          ) : null}
-        </div>
-        <div style={{ justifyContent: "flex-end" }}></div>
-        {/* <div>
+          <div style={{ justifyContent: "flex-end" }}></div>
+          {/* <div>
           <div className="text-base flex row">
             <FooterValue />
           </div>
         </div> */}
 
-        <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
-          <div className="flex  items-end">
-            <Comment />
+          <div className="flex flex-col p-5 pl-0" style={{ width: "100%" }}>
+            <div className="flex  items-end">
+              <Comment />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
