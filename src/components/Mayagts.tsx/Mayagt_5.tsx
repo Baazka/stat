@@ -308,6 +308,18 @@ function Mayagt_5(props: any) {
         cell: (info) => info.getValue(),
       },
       {
+        accessorKey: "PROCESS_EVALUATION",
+        header: "Биелсэн албан шаардлагын хувь",
+        accessorFn: (row, index) => (
+          <>
+            {row.PROCESS_EVALUATION === null
+              ? ""
+              : row.PROCESS_EVALUATION + "%"}
+          </>
+        ),
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "B_HASAGDSAN_DUNE_TOGROG",
         header: "Бүртгэлээс хасагдсан дүн(төгрөг)",
         cell: (info) => info.getValue(),

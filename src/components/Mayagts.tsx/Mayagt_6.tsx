@@ -238,6 +238,18 @@ function Mayagt_1(props: any) {
         ),
         cell: (info) => info.getValue(),
       },
+      {
+        accessorKey: "PROCESS_EVALUATION",
+        header: "Албан шаардлагын бүрэн хэрэгжсэн хувь",
+        accessorFn: (row, index) => (
+          <>
+            {row.PROCESS_EVALUATION === null
+              ? ""
+              : row.PROCESS_EVALUATION + "%"}
+          </>
+        ),
+        cell: (info) => info.getValue(),
+      },
     ],
     [status]
   );

@@ -317,6 +317,18 @@ function Mayagt_1(props: any) {
         cell: (info) => info.getValue(),
       },
       {
+        accessorKey: "PROCESS_EVALUATION",
+        header: "Биелсэн зөвлөмжийн хувь",
+        accessorFn: (row, index) => (
+          <>
+            {row.PROCESS_EVALUATION === null
+              ? ""
+              : row.PROCESS_EVALUATION + "%"}
+          </>
+        ),
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "NEXT_AMOUNT",
         header: "Дараагийн тайлант хугацаанд шилжих үлдэгдлийн дүн (төгрөг)",
         accessorFn: (row, index) => (

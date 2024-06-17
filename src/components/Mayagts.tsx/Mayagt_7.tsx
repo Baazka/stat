@@ -300,7 +300,18 @@ function Mayagt_1(props: any) {
         ),
         cell: (info) => info.getValue(),
       },
-
+      {
+        accessorKey: "PROCESS_EVALUATION",
+        header: "Биелсэн төлбөрийн актын хувь",
+        accessorFn: (row, index) => (
+          <>
+            {row.PROCESS_EVALUATION === null
+              ? ""
+              : row.PROCESS_EVALUATION + "%"}
+          </>
+        ),
+        cell: (info) => info.getValue(),
+      },
       {
         accessorKey: "BURTGELEES_HASAGDSN_DUN_T",
         header: "Бүртгэлээс хасагдсан дүн (төгрөг)",
