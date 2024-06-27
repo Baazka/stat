@@ -387,6 +387,7 @@ function Mayagt_9(props: any) {
     DESCRIPTION: "",
     CREATED_BY: userDetails.USER_ID,
   });
+  const [loaderSpinner, setloaderSpinner] = useState(0);
 
   const [filter, setFilter] = useState({
     Audit: {
