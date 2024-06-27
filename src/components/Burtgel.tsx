@@ -982,7 +982,7 @@ function Employee(props: any) {
             <span className="flex items-center gap-4">
               <div>нийт</div>
               <strong>
-                {table.getState().pagination.pageIndex + 1}
+                {table.getState().pagination.pageIndex + 1} -
                 {table.getPageCount()}
               </strong>
             </span>

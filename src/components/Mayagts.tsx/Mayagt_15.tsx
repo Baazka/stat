@@ -164,6 +164,7 @@ function Mayagt_15(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(

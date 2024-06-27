@@ -164,6 +164,7 @@ function Mayagt_13(props: any) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loaderSpinner, setloaderSpinner] = useState(0);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [status, setStatus] = useState({ STATUS: {}, ROLE: {} });
   const columns = React.useMemo(
@@ -384,7 +385,7 @@ function Mayagt_13(props: any) {
       },
     })
       .then(function (response) {
-        if (response.data !== undefined && response.data.data.length > 0) {
+        if (response.data !== undefined) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
             setStatus({
@@ -444,6 +445,30 @@ function Mayagt_13(props: any) {
               globalFilter={globalFilter}
               setGlobalFilter={(value) => setGlobalFilter(value)}
             />
+            {check_save(status) ? (
+              <button
+                onClick={() => {
+                  localStorage.removeItem("stat_bm13");
+                  Navigate("/web/Home/bm13/create");
+                }}
+                className="inline-flex items-center rounded ml-2 py-1 h-7"
+                style={{
+                  border: "1px solid #2684fe",
+                }}
+              >
+                <div className="bg-white px-1 ">
+                  <img src={addIcon} width="18px" height="10px "></img>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#2684fe",
+                  }}
+                  className=" text-white rounded-r px-1 h-7"
+                >
+                  Нэмэх
+                </div>
+              </button>
+            ) : null}
             <button
               onClick={() => {
                 getExportFileBlob(columns, data, "З-ТАББМ-1");
@@ -470,30 +495,6 @@ function Mayagt_13(props: any) {
                 Excel
               </div>
             </button>
-            {check_save(status) ? (
-              <button
-                onClick={() => {
-                  localStorage.removeItem("stat_bm13");
-                  Navigate("/web/Home/bm13/create");
-                }}
-                className="inline-flex items-center rounded ml-2 py-1 h-7"
-                style={{
-                  border: "1px solid #2684fe",
-                }}
-              >
-                <div className="bg-white px-1 ">
-                  <img src={addIcon} width="18px" height="10px "></img>
-                </div>
-                <div
-                  style={{
-                    backgroundColor: "#2684fe",
-                  }}
-                  className=" text-white rounded-r px-1 h-7"
-                >
-                  нэмэх
-                </div>
-              </button>
-            ) : null}
           </div>
 
           <div className="flex mr-4">

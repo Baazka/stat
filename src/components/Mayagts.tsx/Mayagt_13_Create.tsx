@@ -1,5 +1,5 @@
 import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
-import { useNavigate, useLocation ,redirect } from "react-router-dom";
+import { useNavigate, useLocation, redirect } from "react-router-dom";
 import Title from "../Title";
 import { saveIcon, deleteIcon } from "../../assets/zurag";
 import imagebackground from "../../assets/zurag/background.png";
@@ -31,7 +31,6 @@ import Stat_Url from "../../Stat_URL";
 import axios from "axios";
 import dateFormat, { masks } from "dateformat";
 
-
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -60,18 +59,18 @@ function Mayagt_13_Create(props: any) {
   let navigate = useNavigate();
   const { state } = useLocation();
   const [data, loadData] = useState({
-    ID:null,
-    DEPARTMENT_ID:999,
-    SUB_DEPARTMENT_ID:999,
-    TRAIN_ENVIRONMENT_ID:999,
-    TRAIN_CATEGORY_ID:999,
-    TRAIN_DIRECTION_ID:999,
-    TRAIN_NAME:"",
-    TRAIN_START_DATE:new Date(),
-    TRAIN_END_DATE:new Date(),
-    TRAIN_MINUTE:0,
-    TRAIN_PERSON_COUNT:0,
-    CREATED_BY:userDetails.USER_ID
+    ID: null,
+    DEPARTMENT_ID: 999,
+    SUB_DEPARTMENT_ID: 999,
+    TRAIN_ENVIRONMENT_ID: 999,
+    TRAIN_CATEGORY_ID: 999,
+    TRAIN_DIRECTION_ID: 999,
+    TRAIN_NAME: "",
+    TRAIN_START_DATE: new Date(),
+    TRAIN_END_DATE: new Date(),
+    TRAIN_MINUTE: 0,
+    TRAIN_PERSON_COUNT: 0,
+    CREATED_BY: userDetails.USER_ID,
   });
 
   const [drop, setDrop] = useState({
@@ -80,7 +79,7 @@ function Mayagt_13_Create(props: any) {
     drop3: [],
     drop4: [],
     drop5: [],
-    drop6:[]
+    drop6: [],
   });
 
   useEffect(() => {
@@ -88,11 +87,11 @@ function Mayagt_13_Create(props: any) {
   }, []);
 
   async function fetchData() {
-    
-     if (localStorage.getItem('stat_bm13') !== undefined && localStorage.getItem('stat_bm13') !== null) {
-      
-      loadData({...JSON.parse(localStorage.getItem('stat_bm13'))})
-   
+    if (
+      localStorage.getItem("stat_bm13") !== undefined &&
+      localStorage.getItem("stat_bm13") !== null
+    ) {
+      loadData({ ...JSON.parse(localStorage.getItem("stat_bm13")) });
     }
 
     let refDepartment = await axios(Stat_Url + "refDepartment?DepType=1");
@@ -102,83 +101,89 @@ function Mayagt_13_Create(props: any) {
       setDrop({ ...temp });
     }
     let refTrainEnvironment = await axios(Stat_Url + "refTrainEnvironment");
-    if (refTrainEnvironment.data !== undefined && refTrainEnvironment.data.length > 0) {
+    if (
+      refTrainEnvironment.data !== undefined &&
+      refTrainEnvironment.data.length > 0
+    ) {
       let temp = drop;
       temp.drop2 = refTrainEnvironment.data;
       setDrop({ ...temp });
     }
     let refTrainCatergory = await axios(Stat_Url + "refTrainCatergory");
-    if (refTrainCatergory.data !== undefined && refTrainCatergory.data.length > 0) {
+    if (
+      refTrainCatergory.data !== undefined &&
+      refTrainCatergory.data.length > 0
+    ) {
       let temp = drop;
       temp.drop3 = refTrainCatergory.data;
       setDrop({ ...temp });
     }
     let refTrainDirection = await axios(Stat_Url + "refTrainDirection");
-    if (refTrainDirection.data !== undefined && refTrainDirection.data.length > 0) {
+    if (
+      refTrainDirection.data !== undefined &&
+      refTrainDirection.data.length > 0
+    ) {
       let temp = drop;
       temp.drop4 = refTrainDirection.data;
       setDrop({ ...temp });
     }
-    
+
     let refSubDepartment = await axios(Stat_Url + "refSubDepartment");
-    if (refSubDepartment.data !== undefined && refSubDepartment.data.length > 0) {
+    if (
+      refSubDepartment.data !== undefined &&
+      refSubDepartment.data.length > 0
+    ) {
       let temp = drop;
       temp.drop6 = refSubDepartment.data;
       setDrop({ ...temp });
     }
   }
-  function requiredField(){
-   if(data.DEPARTMENT_ID === 999){
-    alert('Төрийн аудитын байгууллага сонгоно уу')
-    return false;
-   }
-   else if(data.SUB_DEPARTMENT_ID === 999){
-    alert('Зохион байгуулалтын бүтцийн нэгжийн нэр сонгоно уу')
-    return false;
-   }else if(data.TRAIN_ENVIRONMENT_ID === 999){
-    alert('Сургалтын орчин сонгоно уу')
-    return false;
-   }else if(data.CONCLUSION_FORM_ID === 999){
-    alert('Дүгнэлтийн хэлбэр сонгоно уу')
-    return false;
-   }else if(data.TRAIN_CATEGORY_ID === 999){
-    alert('Сургалтын ангилал сонгоно уу')
-    return false;
-   }else if(data.CONCLUSION_TYPE_ID === 999){
-    alert('Дүгнэлтийн төрөл сонгоно уу')
-    return false;
-   }else if(data.TRAIN_DIRECTION_NAME === 999){
-    alert('Сургалтын чиглэл сонгоно уу')
-    return false;
-   }
-   else if(data.TRAIN_NAME === '' || data.TRAIN_NAME === null ){
-    alert('Сургалтын нэр оруулна уу')
-    return false;
-   }
-   else {
-    return true
-   }
-
-    
+  function requiredField() {
+    if (data.DEPARTMENT_ID === 999) {
+      alert("Төрийн аудитын байгууллага сонгоно уу");
+      return false;
+    } else if (data.SUB_DEPARTMENT_ID === 999) {
+      alert("Зохион байгуулалтын бүтцийн нэгжийн нэр сонгоно уу");
+      return false;
+    } else if (data.TRAIN_ENVIRONMENT_ID === 999) {
+      alert("Сургалтын орчин сонгоно уу");
+      return false;
+    } else if (data.CONCLUSION_FORM_ID === 999) {
+      alert("Дүгнэлтийн хэлбэр сонгоно уу");
+      return false;
+    } else if (data.TRAIN_CATEGORY_ID === 999) {
+      alert("Сургалтын ангилал сонгоно уу");
+      return false;
+    } else if (data.CONCLUSION_TYPE_ID === 999) {
+      alert("Дүгнэлтийн төрөл сонгоно уу");
+      return false;
+    } else if (data.TRAIN_DIRECTION_NAME === 999) {
+      alert("Сургалтын чиглэл сонгоно уу");
+      return false;
+    } else if (data.TRAIN_NAME === "" || data.TRAIN_NAME === null) {
+      alert("Сургалтын нэр оруулна уу");
+      return false;
+    } else {
+      return true;
+    }
   }
 
   function savetoDB() {
-    if(requiredField()){
-    DataRequest({
-      url: Stat_Url + "BM9BIU",
-      method: "POST",
-      data: {
-      ...data
-      },
-    })
-      .then(function (response) {
-        if (response?.data.message === "Хадгаллаа.") {
-          alert("амжилттай хадгаллаа");
-          navigate("/web/Home/Form");
-        }
-        
+    if (requiredField()) {
+      DataRequest({
+        url: Stat_Url + "BM9BIU",
+        method: "POST",
+        data: {
+          ...data,
+        },
       })
-      .catch(function (error) {});
+        .then(function (response) {
+          if (response?.data.message === "Хадгаллаа.") {
+            alert("амжилттай хадгаллаа");
+            navigate("/web/Home/Form");
+          }
+        })
+        .catch(function (error) {});
     }
   }
 
@@ -198,361 +203,359 @@ function Mayagt_13_Create(props: any) {
           backgroundSize: "cover",
         }}
       >
-        <Title title={"З-ТАББМ-8А"} widthS={"5rem"} widthL={"5rem"} />
+        <Title
+          title={
+            "ТӨРИЙН АУДИТЫН БАЙГУУЛЛАГЫН СУРГАЛТ, ХӨГЖЛИЙН ҮЙЛ АЖИЛЛАГААНЫ ХЭРЭГЖИЛТ З-ТАББМ-9Г,Д"
+          }
+          widthS={"5rem"}
+          widthL={"5rem"}
+        />
       </div>
-      <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
-        <div className="space-y-4">
-          <p className="text-white text-center  pt-2">З-ТАББМ-8А</p>
-        </div>
-      </div>
 
-    
-        {tsonkh !== 0 ? (
-          <Organization
-            setTsonkh={setTsonkh}
-            data={data}
-            loadData={loadData}
-            tsonkh={tsonkh}
-          />
-        ) : null}
+      {tsonkh !== 0 ? (
+        <Organization
+          setTsonkh={setTsonkh}
+          data={data}
+          loadData={loadData}
+          tsonkh={tsonkh}
+        />
+      ) : null}
 
-        <div
-          style={{
-            display: "flex row text-base",
-            padding: "3rem 0rem 0rem 0rem",
-          }}
-        >
-          <div className="flex  md:justify-center sm:justify-end">
-              <div className="grid grid-rows-4  lg:grid-flow-col  sm:grid-flow-row ">
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Төрийн аудитын байгууллага:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.DEPARTMENT_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.DEPARTMENT_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop1.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.DEPARTMENT_NAME}
-                          value={nation.DEPARTMENT_ID}
-                        >
-                          {nation.DEPARTMENT_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Зохион байгуулалтын бүтцийн нэгжийн нэр:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.SUB_DEPARTMENT_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.SUB_DEPARTMENT_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop6.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.SUB_DEPARTMENT_NAME}
-                          value={nation.SUB_DEPARTMENT_ID}
-                        >
-                          {nation.SUB_DEPARTMENT_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-          
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалтын орчин:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                     
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_ENVIRONMENT_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.TRAIN_ENVIRONMENT_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop2.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.TRAIN_ENVIRONMENT_NAME}
-                          value={nation.TRAIN_ENVIRONMENT_ID}
-                        >
-                          {nation.TRAIN_ENVIRONMENT_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-             
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалтын ангилал:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                     
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_CATEGORY_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.TRAIN_CATEGORY_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop3.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.TRAIN_CATEGORY_NAME}
-                          value={nation.TRAIN_CATEGORY_ID}
-                        >
-                          {nation.TRAIN_CATEGORY_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-             
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалтын чиглэл:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                     
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_DIRECTION_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.TRAIN_DIRECTION_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop4.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.TRAIN_DIRECTION_NAME}
-                          value={nation.TRAIN_DIRECTION_ID}
-                        >
-                          {nation.TRAIN_DIRECTION_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалтын нэр:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_NAME}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.TRAIN_NAME = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалт эхэлсэн огноо:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="date"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_START_DATE === null
-                        ? ""
-                        : dateFormat(data.TRAIN_START_DATE, "yyyy-mm-dd")}
-                     
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.TRAIN_START_DATE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалт дууссан огноо:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="date"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_END_DATE === null
-                        ? ""
-                        : dateFormat(data.TRAIN_END_DATE, "yyyy-mm-dd")}
-                     
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.TRAIN_END_DATE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Сургалтын нийц цаг /минут/:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="number"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_MINUTE}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.TRAIN_MINUTE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Хамрагдсан албан хаагчийн тоо:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="number"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.TRAIN_PERSON_COUNT}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.TRAIN_PERSON_COUNT = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-               
+      <div
+        style={{
+          display: "flex row text-base",
+          padding: "3rem 0rem 0rem 0rem",
+        }}
+      >
+        <div className="flex  md:justify-center sm:justify-end">
+          <div className="grid grid-rows-4  lg:grid-flow-col  sm:grid-flow-row ">
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Төрийн аудитын байгууллага:</span>
+                </label>
               </div>
-            
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.DEPARTMENT_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.DEPARTMENT_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop1.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.DEPARTMENT_NAME}
+                      value={nation.DEPARTMENT_ID}
+                    >
+                      {nation.DEPARTMENT_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Зохион байгуулалтын бүтцийн нэгжийн нэр:
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.SUB_DEPARTMENT_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.SUB_DEPARTMENT_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop6.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.SUB_DEPARTMENT_NAME}
+                      value={nation.SUB_DEPARTMENT_ID}
+                    >
+                      {nation.SUB_DEPARTMENT_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалтын орчин:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_ENVIRONMENT_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.TRAIN_ENVIRONMENT_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop2.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.TRAIN_ENVIRONMENT_NAME}
+                      value={nation.TRAIN_ENVIRONMENT_ID}
+                    >
+                      {nation.TRAIN_ENVIRONMENT_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалтын ангилал:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_CATEGORY_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.TRAIN_CATEGORY_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop3.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.TRAIN_CATEGORY_NAME}
+                      value={nation.TRAIN_CATEGORY_ID}
+                    >
+                      {nation.TRAIN_CATEGORY_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалтын чиглэл:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_DIRECTION_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.TRAIN_DIRECTION_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop4.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.TRAIN_DIRECTION_NAME}
+                      value={nation.TRAIN_DIRECTION_ID}
+                    >
+                      {nation.TRAIN_DIRECTION_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалтын нэр:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_NAME}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.TRAIN_NAME = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалт эхэлсэн огноо:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="date"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={
+                    data.TRAIN_START_DATE === null
+                      ? ""
+                      : dateFormat(data.TRAIN_START_DATE, "yyyy-mm-dd")
+                  }
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.TRAIN_START_DATE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалт дууссан огноо:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="date"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={
+                    data.TRAIN_END_DATE === null
+                      ? ""
+                      : dateFormat(data.TRAIN_END_DATE, "yyyy-mm-dd")
+                  }
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.TRAIN_END_DATE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Сургалтын нийц цаг /минут/:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="number"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_MINUTE}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.TRAIN_MINUTE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Хамрагдсан албан хаагчийн тоо:
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="number"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.TRAIN_PERSON_COUNT}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.TRAIN_PERSON_COUNT = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" ,width:'100%'}}>
-          <button className="md:items-end rounded mr-8 mt-10">
-            <SaveButton saveToDB={() => savetoDB()} />
-          </button>
-        </div>
-     
+      </div>
+      <div style={{ display: "flex", justifyContent: "end", width: "100%" }}>
+        <button className="md:items-end rounded mr-8 mt-10">
+          <SaveButton saveToDB={() => savetoDB()} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -637,9 +640,6 @@ function Organization(props: any) {
         header: "Регистрийн дугаар",
         cell: (info) => info.getValue(),
       },
-
-      
-
     ],
     []
   );
@@ -1003,13 +1003,12 @@ function IndeterminateCheckbox({
     }
   }, [ref, indeterminate]);
   function saveToDB(value) {
-    
     if (tsonkh !== 1) {
       let temp = data;
-     temp.ENT_ID = row.original.ENT_ID;
-     temp.ENT_NAME = row.original.ENT_NAME;
-     temp.ORG_REGISTER_NO = row.original.ORG_REGISTER_NO;
-     loadData(temp);
+      temp.ENT_ID = row.original.ENT_ID;
+      temp.ENT_NAME = row.original.ENT_NAME;
+      temp.ORG_REGISTER_NO = row.original.ORG_REGISTER_NO;
+      loadData(temp);
       setTsonkh(0);
     }
 
