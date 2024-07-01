@@ -462,7 +462,7 @@ function Mayagt_9(props: any) {
       },
     })
       .then(function (response) {
-        if (response.data !== undefined && response.data.data.length > 0) {
+        if (response.data !== undefined) {
           loadData(response.data.data);
           if (response?.data.role.length > 0)
             setStatus({
@@ -524,7 +524,7 @@ function Mayagt_9(props: any) {
             />
             <button
               onClick={() => {
-                getExportFileBlob(columns, data, "З-ТАББМ-1");
+                getExportFileBlob(columns, data, "З-ТАББМ-9");
               }}
               className="inline-flex items-center rounded ml-2 py-1 h-7"
               style={{

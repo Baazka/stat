@@ -1,5 +1,5 @@
 import React, { useEffect, useState, HTMLAttributes, HTMLProps } from "react";
-import { useNavigate, useLocation ,redirect } from "react-router-dom";
+import { useNavigate, useLocation, redirect } from "react-router-dom";
 import Title from "../Title";
 import { saveIcon, deleteIcon } from "../../assets/zurag";
 import imagebackground from "../../assets/zurag/background.png";
@@ -31,7 +31,6 @@ import Stat_Url from "../../Stat_URL";
 import axios from "axios";
 import dateFormat, { masks } from "dateformat";
 
-
 declare module "@tanstack/table-core" {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
@@ -60,31 +59,31 @@ function Mayagt_9_Create(props: any) {
   let navigate = useNavigate();
   const { state } = useLocation();
   const [data, loadData] = useState({
-      ID:null,
-      PERIOD_ID:999,
-      AUDIT_TYPE_ID:999,
-      AUDIT_NAME:"",
-      AUDIT_CODE:"" ,   
-      DELIVERED_DATE:new Date(),
-      EXECUTION_DATE:new Date(),
-      IS_ERROR_CONFLICT:999,
-      SHORT_DESC:"",
-      AMOUNT:0,
-      SOLUTION:999,
-      ENT_ID:null,
-      VIOLATION_FULLNAME:"",
-      VIOLATION_POSITION:"",
-      REALIZATION_AMOUNT:0,
-      UNEXERCISED_AMOUNT:0,
-      UNEXERCISED_DESC:"",
-      CREATED_BY: userDetails.USER_ID,
+    ID: null,
+    PERIOD_ID: 999,
+    AUDIT_TYPE_ID: 999,
+    AUDIT_NAME: "",
+    AUDIT_CODE: "",
+    DELIVERED_DATE: new Date(),
+    EXECUTION_DATE: new Date(),
+    IS_ERROR_CONFLICT: 999,
+    SHORT_DESC: "",
+    AMOUNT: 0,
+    SOLUTION: 999,
+    ENT_ID: null,
+    VIOLATION_FULLNAME: "",
+    VIOLATION_POSITION: "",
+    REALIZATION_AMOUNT: 0,
+    UNEXERCISED_AMOUNT: 0,
+    UNEXERCISED_DESC: "",
+    CREATED_BY: userDetails.USER_ID,
   });
 
   const [drop, setDrop] = useState({
     drop1: [],
     drop2: [],
     drop3: [],
-    drop4: []
+    drop4: [],
   });
 
   useEffect(() => {
@@ -92,15 +91,18 @@ function Mayagt_9_Create(props: any) {
   }, []);
 
   async function fetchData() {
-    
-     if (localStorage.getItem('stat_bm9') !== undefined && localStorage.getItem('stat_bm9') !== null) {
-      
-      loadData({...JSON.parse(localStorage.getItem('stat_bm9'))})
-   
+    if (
+      localStorage.getItem("stat_bm9") !== undefined &&
+      localStorage.getItem("stat_bm9") !== null
+    ) {
+      loadData({ ...JSON.parse(localStorage.getItem("stat_bm9")) });
     }
 
     let refErrorConflict = await axios(Stat_Url + "refErrorConflict");
-    if (refErrorConflict.data !== undefined && refErrorConflict.data.length > 0) {
+    if (
+      refErrorConflict.data !== undefined &&
+      refErrorConflict.data.length > 0
+    ) {
       let temp = drop;
       temp.drop1 = refErrorConflict.data;
       setDrop({ ...temp });
@@ -124,66 +126,67 @@ function Mayagt_9_Create(props: any) {
       setDrop({ ...temp });
     }
   }
-  function requiredField(){
-   if(data.PERIOD_ID === 999){
-    alert('Аудит он сонгоно уу')
-    return false;
-   }
-   else if(data.AUDIT_TYPE_ID === 999){
-    alert('Аудитын төрөл сонгоно уу')
-    return false;
-   }else if(data.IS_ERROR_CONFLICT === 999){
-    alert('Тухайн үр дүнг алдаа зөрчилд тооцох эсэх сонгоно уу')
-    return false;
-   }else if(data.SOLUTION === 999){
-    alert('Гаргасан шийдэл сонгоно уу')
-    return false;
-   }else if(data.ENT_ID === null){
-    alert('Шалгагдагч байгууллага сонгоно уу')
-    return false;
-   }  else if(data.AUDIT_NAME === '' || data.AUDIT_NAME === null ){
-    alert('Аудитын нэр, сэдэв оруулна уу')
-    return false;
-   }else if(data.AUDIT_CODE === '' || data.AUDIT_CODE === null ){
-    alert('Аудитын код оруулна уу')
-    return false;
-   }else if(data.SHORT_DESC === '' || data.SHORT_DESC === null ){
-    alert('Зөрчилийн товч утга оруулна уу')
-    return false;
-   }else if(data.VIOLATION_FULLNAME === '' || data.VIOLATION_FULLNAME === null ){
-    alert('Зөрчил гаргасан албан тушаалтны овог,нэр оруулна уу')
-    return false;
-   }else if(data.VIOLATION_POSITION === '' || data.VIOLATION_POSITION === null ){
-    alert('Зөрчил гаргасан хүний албан тушаал оруулна уу')
-    return false;
-   }else if(data.UNEXERCISED_DESC === '' || data.UNEXERCISED_DESC === null ) {
-    alert('Хэрэгжээгүй тайлбар (шалтгаан, нөхцөл) оруулна уу')
-    return false;
-   }
-   else {
-    return true
-   }
-
-    
+  function requiredField() {
+    if (data.PERIOD_ID === 999) {
+      alert("Аудит он сонгоно уу");
+      return false;
+    } else if (data.AUDIT_TYPE_ID === 999) {
+      alert("Аудитын төрөл сонгоно уу");
+      return false;
+    } else if (data.IS_ERROR_CONFLICT === 999) {
+      alert("Тухайн үр дүнг алдаа зөрчилд тооцох эсэх сонгоно уу");
+      return false;
+    } else if (data.SOLUTION === 999) {
+      alert("Гаргасан шийдэл сонгоно уу");
+      return false;
+    } else if (data.ENT_ID === null) {
+      alert("Шалгагдагч байгууллага сонгоно уу");
+      return false;
+    } else if (data.AUDIT_NAME === "" || data.AUDIT_NAME === null) {
+      alert("Аудитын нэр, сэдэв оруулна уу");
+      return false;
+    } else if (data.AUDIT_CODE === "" || data.AUDIT_CODE === null) {
+      alert("Аудитын код оруулна уу");
+      return false;
+    } else if (data.SHORT_DESC === "" || data.SHORT_DESC === null) {
+      alert("Зөрчилийн товч утга оруулна уу");
+      return false;
+    } else if (
+      data.VIOLATION_FULLNAME === "" ||
+      data.VIOLATION_FULLNAME === null
+    ) {
+      alert("Зөрчил гаргасан албан тушаалтны овог,нэр оруулна уу");
+      return false;
+    } else if (
+      data.VIOLATION_POSITION === "" ||
+      data.VIOLATION_POSITION === null
+    ) {
+      alert("Зөрчил гаргасан хүний албан тушаал оруулна уу");
+      return false;
+    } else if (data.UNEXERCISED_DESC === "" || data.UNEXERCISED_DESC === null) {
+      alert("Хэрэгжээгүй тайлбар (шалтгаан, нөхцөл) оруулна уу");
+      return false;
+    } else {
+      return true;
+    }
   }
 
   function savetoDB() {
-    if(requiredField()){
-    DataRequest({
-      url: Stat_Url + "BM9IU",
-      method: "POST",
-      data: {
-      ...data
-      },
-    })
-      .then(function (response) {
-        if (response?.data.message === "Хадгаллаа.") {
-          alert("амжилттай хадгаллаа");
-          navigate("/web/Home/Form");
-        }
-        
+    if (requiredField()) {
+      DataRequest({
+        url: Stat_Url + "BM9IU",
+        method: "POST",
+        data: {
+          ...data,
+        },
       })
-      .catch(function (error) {});
+        .then(function (response) {
+          if (response?.data.message === "Хадгаллаа.") {
+            alert("амжилттай хадгаллаа");
+            navigate("/web/Home/Form");
+          }
+        })
+        .catch(function (error) {});
     }
   }
 
@@ -203,543 +206,544 @@ function Mayagt_9_Create(props: any) {
           backgroundSize: "cover",
         }}
       >
-        <Title title={"З-ТАББМ-9"} widthS={"5rem"} widthL={"5rem"} />
+        <Title
+          title={
+            "ТӨРИЙН АЛБАН ТУШААЛТНЫ ТӨРД УЧРУУЛСАН ХОХИРЛЫГ ТӨЛҮҮЛЭХ ҮҮРГИЙН ХЭРЭГЖИЛТИЙН БҮРТГЭЛ З-ТАББМ-9"
+          }
+          widthS={"5rem"}
+          widthL={"5rem"}
+        />
       </div>
-      <div className="ml-20 bg-blue-500 w-48 h-10 rounded-lg mt-6">
-        <div className="space-y-4">
-          <p className="text-white text-center  pt-2">З-ТАББМ-9</p>
-        </div>
-      </div>
 
-    
-        {tsonkh !== 0 ? (
-          <Organization
-            setTsonkh={setTsonkh}
-            data={data}
-            loadData={loadData}
-            tsonkh={tsonkh}
-          />
-        ) : null}
+      {tsonkh !== 0 ? (
+        <Organization
+          setTsonkh={setTsonkh}
+          data={data}
+          loadData={loadData}
+          tsonkh={tsonkh}
+        />
+      ) : null}
 
-        <div
-          style={{
-            display: "flex row text-base",
-            padding: "3rem 0rem 0rem 0rem",
-          }}
-        >
-          <div className="flex  md:justify-center sm:justify-end">
-              <div className="grid grid-rows-4  lg:grid-flow-col  sm:grid-flow-row ">
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Аудит он:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      disabled ={data.ID !== null?true:false}
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.PERIOD_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.PERIOD_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop2.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.YEAR_LABEL}
-                          value={nation.PERIOD_ID}
-                        >
-                          {nation.YEAR_LABEL}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Аудитын төрөл:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      disabled ={data.ID !== null?true:false}
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.AUDIT_TYPE_ID}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.AUDIT_TYPE_ID = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop3.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.AUDIT_TYPE_NAME}
-                          value={nation.AUDIT_TYPE_ID}
-                        >
-                          {nation.AUDIT_TYPE_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Аудитын нэр, сэдэв:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.AUDIT_NAME}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.AUDIT_NAME = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Аудитын код:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.AUDIT_CODE}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.AUDIT_CODE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-1 pr-6">
-                      <span className="text-md">Хүргүүлсэн огноо:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12">
-                    <input
-                      type="date"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={dateFormat(
-                        data.DELIVERED_DATE === null ||
-                          data.DELIVERED_DATE === undefined
-                          ? ""
-                          : data.DELIVERED_DATE,
-                        "yyyy-mm-dd"
-                      )}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.DELIVERED_DATE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-1 pr-6">
-                      <span className="text-md">Биелэлтийг тооцох огноо:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12">
-                    <input
-                      type="date"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={dateFormat(
-                        data.EXECUTION_DATE === null ||
-                          data.EXECUTION_DATE === undefined
-                          ? ""
-                          : data.EXECUTION_DATE,
-                        "yyyy-mm-dd"
-                      )}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.EXECUTION_DATE = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Тухайн үр дүнг алдаа зөрчилд тооцох эсэх:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      disabled ={data.ID !== null?true:false}
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.IS_ERROR_CONFLICT}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.IS_ERROR_CONFLICT = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop1.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.ERROR_CONFLICT_NAME}
-                          value={nation.ERROR_CONFLICT_ID}
-                        >
-                          {nation.ERROR_CONFLICT_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Зөрчилийн товч утга:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <textarea
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.SHORT_DESC}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.SHORT_DESC = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Шийдвэрлэлтийн дүн(төгрөг):</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <CurrencyInput
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                        textAlign:'right',
-                        backgroundColor:'transparent'
-                      }}
-                      value={data.AMOUNT}
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      onValueChange={(value, name) => {
-                        let temp = data;
-                        temp.AMOUNT = value
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Гаргасан шийдэл:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                    <select
-                      className="rounded text-sm focus:outline-none"
-                      disabled ={data.ID !== null?true:false}
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.SOLUTION}
-                      onChange={(value) => {
-                        let temp = data;
-                        temp.SOLUTION = value.target.value;
-                        loadData({ ...temp });
-                      }}
-                    >
-                      <option value={999}>Бүгд</option>
-                      {drop.drop4.map((nation, index) => (
-                        <option
-                          className="font-semibold"
-                          key={nation.SOLUTION_NAME}
-                          value={nation.SOLUTION_ID}
-                        >
-                          {nation.SOLUTION_NAME}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>      
-
-                <div className="flex  space-x-4 space-x-reverse h-10 my-1">
-                
-                    <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Шалгагдагч байгууллага:</span>
-                    </label>
-                     
-                    </div>
-                    <div className="w-6/12" style={{ display: "flex" }}>
-                      <div
-                        className="rounded-md text-sm overflow-scroll"
-                        style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                        }}
-                      >
-                        {data.ENT_ID !== null  ? (
-                            <div className="flex flex-row ">
-                              <span>
-                                {data.ENT_NAME}
-                              </span>
-                             
-                            </div>
-                          ) : null
-                        }
-                      </div>
-                      <div>
-                        <button type="button" onClick={() => setTsonkh(2)}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 mt-4 ml-0"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1" >
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Зөрчил гаргасан албан тушаалтны овог,нэр:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.VIOLATION_FULLNAME}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.VIOLATION_FULLNAME = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Зөрчил гаргасан хүний албан тушаал:</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <input
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.VIOLATION_POSITION}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.VIOLATION_POSITION = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-xs">Хэрэгжсэн биелэлтийн дүн(төгрөг):</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <CurrencyInput
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                        textAlign:'right',
-                        backgroundColor:'transparent'                        
-                      }}
-                      value={data.REALIZATION_AMOUNT}
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      onValueChange={(value, name) =>{
-                        let temp = data;
-                        temp.REALIZATION_AMOUNT = value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-xs">Хэрэгжээгүй биелэлтийн дүн(төгрөг):</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <CurrencyInput
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                        textAlign:'right',
-                        backgroundColor:'transparent'
-                      }}
-                      value={data.UNEXERCISED_AMOUNT}
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      onValueChange={(value, name) =>{
-                        let temp = data;
-                        temp.UNEXERCISED_AMOUNT = value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 space-x-reverse h-10 my-1">
-                  <div className="w-6/12">
-                    <label className="block md:text-right md:mb-10  pr-6">
-                      <span className="text-md">Хэрэгжээгүй тайлбар (шалтгаан, нөхцөл):</span>
-                    </label>
-                  </div>
-                  <div className="w-6/12 ">
-                  <textarea
-                      type="text"
-                      className="inputRoundedMetting"
-                      style={{
-                        height: '100%',
-                        width:'100%',
-                        border: "1px solid gray",
-                      }}
-                      value={data.UNEXERCISED_DESC}
-                      onChange={(e) => {
-                        let temp = data;
-                        temp.UNEXERCISED_DESC = e.target.value;
-                        loadData({
-                          ...temp,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-               
+      <div
+        style={{
+          display: "flex row text-base",
+          padding: "3rem 0rem 0rem 0rem",
+        }}
+      >
+        <div className="flex  md:justify-center sm:justify-end">
+          <div className="grid grid-rows-4  lg:grid-flow-col  sm:grid-flow-row ">
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Аудит он:</span>
+                </label>
               </div>
-            
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  disabled={data.ID !== null ? true : false}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.PERIOD_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.PERIOD_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop2.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.YEAR_LABEL}
+                      value={nation.PERIOD_ID}
+                    >
+                      {nation.YEAR_LABEL}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Аудитын төрөл:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  disabled={data.ID !== null ? true : false}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.AUDIT_TYPE_ID}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.AUDIT_TYPE_ID = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop3.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.AUDIT_TYPE_NAME}
+                      value={nation.AUDIT_TYPE_ID}
+                    >
+                      {nation.AUDIT_TYPE_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Аудитын нэр, сэдэв:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.AUDIT_NAME}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.AUDIT_NAME = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Аудитын код:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.AUDIT_CODE}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.AUDIT_CODE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-1 pr-6">
+                  <span className="text-md">Хүргүүлсэн огноо:</span>
+                </label>
+              </div>
+              <div className="w-6/12">
+                <input
+                  type="date"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={dateFormat(
+                    data.DELIVERED_DATE === null ||
+                      data.DELIVERED_DATE === undefined
+                      ? ""
+                      : data.DELIVERED_DATE,
+                    "yyyy-mm-dd"
+                  )}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.DELIVERED_DATE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-1 pr-6">
+                  <span className="text-md">Биелэлтийг тооцох огноо:</span>
+                </label>
+              </div>
+              <div className="w-6/12">
+                <input
+                  type="date"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={dateFormat(
+                    data.EXECUTION_DATE === null ||
+                      data.EXECUTION_DATE === undefined
+                      ? ""
+                      : data.EXECUTION_DATE,
+                    "yyyy-mm-dd"
+                  )}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.EXECUTION_DATE = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Тухайн үр дүнг алдаа зөрчилд тооцох эсэх:
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  disabled={data.ID !== null ? true : false}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.IS_ERROR_CONFLICT}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.IS_ERROR_CONFLICT = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop1.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.ERROR_CONFLICT_NAME}
+                      value={nation.ERROR_CONFLICT_ID}
+                    >
+                      {nation.ERROR_CONFLICT_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Зөрчилийн товч утга:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <textarea
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.SHORT_DESC}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.SHORT_DESC = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Шийдвэрлэлтийн дүн(төгрөг):</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <CurrencyInput
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                    textAlign: "right",
+                    backgroundColor: "transparent",
+                  }}
+                  value={data.AMOUNT}
+                  decimalsLimit={2}
+                  decimalScale={2}
+                  onValueChange={(value, name) => {
+                    let temp = data;
+                    temp.AMOUNT = value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Гаргасан шийдэл:</span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <select
+                  className="rounded text-sm focus:outline-none"
+                  disabled={data.ID !== null ? true : false}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.SOLUTION}
+                  onChange={(value) => {
+                    let temp = data;
+                    temp.SOLUTION = value.target.value;
+                    loadData({ ...temp });
+                  }}
+                >
+                  <option value={999}>Бүгд</option>
+                  {drop.drop4.map((nation, index) => (
+                    <option
+                      className="font-semibold"
+                      key={nation.SOLUTION_NAME}
+                      value={nation.SOLUTION_ID}
+                    >
+                      {nation.SOLUTION_NAME}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex  space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">Шалгагдагч байгууллага:</span>
+                </label>
+              </div>
+              <div className="w-6/12" style={{ display: "flex" }}>
+                <div
+                  className="rounded-md text-sm overflow-scroll"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                >
+                  {data.ENT_ID !== null ? (
+                    <div className="flex flex-row ">
+                      <span>{data.ENT_NAME}</span>
+                    </div>
+                  ) : null}
+                </div>
+                <div>
+                  <button type="button" onClick={() => setTsonkh(2)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 mt-4 ml-0"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Зөрчил гаргасан албан тушаалтны овог,нэр:
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.VIOLATION_FULLNAME}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.VIOLATION_FULLNAME = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Зөрчил гаргасан хүний албан тушаал:
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <input
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.VIOLATION_POSITION}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.VIOLATION_POSITION = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-xs">
+                    Хэрэгжсэн биелэлтийн дүн(төгрөг):
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <CurrencyInput
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                    textAlign: "right",
+                    backgroundColor: "transparent",
+                  }}
+                  value={data.REALIZATION_AMOUNT}
+                  decimalsLimit={2}
+                  decimalScale={2}
+                  onValueChange={(value, name) => {
+                    let temp = data;
+                    temp.REALIZATION_AMOUNT = value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-xs">
+                    Хэрэгжээгүй биелэлтийн дүн(төгрөг):
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <CurrencyInput
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                    textAlign: "right",
+                    backgroundColor: "transparent",
+                  }}
+                  value={data.UNEXERCISED_AMOUNT}
+                  decimalsLimit={2}
+                  decimalScale={2}
+                  onValueChange={(value, name) => {
+                    let temp = data;
+                    temp.UNEXERCISED_AMOUNT = value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-4 space-x-reverse h-10 my-1">
+              <div className="w-6/12">
+                <label className="block md:text-right md:mb-10  pr-6">
+                  <span className="text-md">
+                    Хэрэгжээгүй тайлбар (шалтгаан, нөхцөл):
+                  </span>
+                </label>
+              </div>
+              <div className="w-6/12 ">
+                <textarea
+                  type="text"
+                  className="inputRoundedMetting"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    border: "1px solid gray",
+                  }}
+                  value={data.UNEXERCISED_DESC}
+                  onChange={(e) => {
+                    let temp = data;
+                    temp.UNEXERCISED_DESC = e.target.value;
+                    loadData({
+                      ...temp,
+                    });
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" ,width:'100%'}}>
-          <button className="md:items-end rounded mr-8 mt-10">
-            <SaveButton saveToDB={() => savetoDB()} />
-          </button>
-        </div>
-     
+      </div>
+      <div style={{ display: "flex", justifyContent: "end", width: "100%" }}>
+        <button className="md:items-end rounded mr-8 mt-10">
+          <SaveButton saveToDB={() => savetoDB()} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -824,9 +828,6 @@ function Organization(props: any) {
         header: "Регистрийн дугаар",
         cell: (info) => info.getValue(),
       },
-
-      
-
     ],
     []
   );
@@ -1193,10 +1194,10 @@ function IndeterminateCheckbox({
     console.log(row.original);
     if (tsonkh !== 1) {
       let temp = data;
-     temp.ENT_ID = row.original.ENT_ID;
-     temp.ENT_NAME = row.original.ENT_NAME;
-     temp.ORG_REGISTER_NO = row.original.ORG_REGISTER_NO;
-     loadData(temp);
+      temp.ENT_ID = row.original.ENT_ID;
+      temp.ENT_NAME = row.original.ENT_NAME;
+      temp.ORG_REGISTER_NO = row.original.ORG_REGISTER_NO;
+      loadData(temp);
       setTsonkh(0);
     }
 
