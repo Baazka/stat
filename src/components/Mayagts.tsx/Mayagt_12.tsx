@@ -373,6 +373,7 @@ function Mayagt_9A(props: any) {
             border: "1px solid",
             borderRadius: "4px",
             color: "gray",
+            textAlign: "end",
           }}
           onChange={(e) => setValue(e.target.value)}
           onBlur={onBlur}
@@ -568,7 +569,7 @@ function Mayagt_9A(props: any) {
       url: Stat_Url + "BM9AIU",
       method: "POST",
       data: {
-        // STAT_ID : mayagtData.ID,
+        STAT_AUDIT_ID: mayagtData.ID,
         data: data.filter((a) => a.EDITED !== undefined && a.EDITED === true),
         CREATED_BY: userDetails.USER_ID,
       },
