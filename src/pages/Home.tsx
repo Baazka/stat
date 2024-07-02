@@ -511,10 +511,7 @@ function Home(props: any) {
               onChange={(value) => setGlobalFilter(String(value))}
               className="p-1.5 font-lg shadow border border-block rounded py-1 h-7"
             />
-            <div
-              style={{ height: 30, marginLeft: "10px" }}
-              className="cursor-pointer "
-            >
+            <div style={{ height: 30 }} className="cursor-pointer ">
               <div
                 style={{ height: 28 }}
                 className="flex flex-row  cursor-pointer"

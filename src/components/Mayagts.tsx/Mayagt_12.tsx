@@ -193,19 +193,22 @@ function Mayagt_9A(props: any) {
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: "TORIIN_AUDIT_BAI_A_J",
+        accessorKey: "TAB_YEAR",
         header: "Төрийн аудитын байгууллагад ажилласан жил",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue, row, column: { id }, table }) =>
+          CustomCell({ getValue, row, column: { id }, table, drop }),
       },
       {
-        accessorKey: "EDUCATION_TYPE_SHORT_NAME",
+        accessorKey: "EDUCATION_TYPE_ID",
         header: "Боловсролын түвшин",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue, row, column: { id }, table }) =>
+          CustomCell({ getValue, row, column: { id }, table, drop }),
       },
       {
-        accessorKey: "PROFESSION_NAME",
+        accessorKey: "PROFESSION_TYPE_ID",
         header: "Мэргэжил /Үндсэн мэргэжил/",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue, row, column: { id }, table }) =>
+          CustomCell({ getValue, row, column: { id }, table, drop }),
       },
       {
         accessorKey: "MOVEMENT_TYPE_ID",
@@ -215,7 +218,7 @@ function Mayagt_9A(props: any) {
       },
       {
         accessorKey: "MOVEMENT_SUB_TYPE_ID",
-        header: "шилжилт хөдөлгөөний шалтгаан",
+        header: "Шилжилт хөдөлгөөний шалтгаан",
         cell: ({ getValue, row, column: { id }, table }) =>
           CustomCell({ getValue, row, column: { id }, table, drop }),
       },
@@ -242,6 +245,8 @@ function Mayagt_9A(props: any) {
   const [drop, setDrop] = useState({
     drop1: [],
     drop2: [],
+    drop3: [],
+    drop4: [],
   });
   function CustomCell({
     getValue,
@@ -251,6 +256,8 @@ function Mayagt_9A(props: any) {
     drop: {
       drop1: [],
       drop2: [],
+      drop3: [],
+      drop4: [],
     },
   }) {
     const initialValue = getValue();
@@ -311,26 +318,51 @@ function Mayagt_9A(props: any) {
           ))}
         </select>
       );
-    } else if (
-      id === "EXPERT_NAME" ||
-      id === "EXPERT_REASON_NAME" ||
-      id === "INVOLVED_DIRECTION"
-    ) {
+    } else if (id === "EDUCATION_TYPE_ID") {
       return (
-        <textarea
+        <select
+          className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
           value={value}
-          className="bg-transparent"
-          style={{
-            minHeight: "33px",
-            border: "1px solid",
-            borderRadius: "4px",
-            color: "gray",
-          }}
           onChange={(e) => setValue(e.target.value)}
           onBlur={onBlur}
-        />
+        >
+          <option className="font-semibold" value={999}>
+            Сонгоно уу
+          </option>
+          {drop.drop3.map((nation, index) => (
+            <option
+              className="font-semibold"
+              key={nation.EDUCATION_TYPE_SHORT_NAME}
+              value={nation.EDUCATION_TYPE_ID}
+            >
+              {nation.EDUCATION_TYPE_SHORT_NAME}
+            </option>
+          ))}
+        </select>
       );
-    } else if (id === "WORK_MOUNT") {
+    } else if (id === "PROFESSION_TYPE_ID") {
+      return (
+        <select
+          className="border rounded text-sm focus:outline-none py-1 h-8 mr-1 inputRoundedMetting pl-2"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onBlur}
+        >
+          <option className="font-semibold" value={999}>
+            Сонгоно уу
+          </option>
+          {drop.drop4.map((nation, index) => (
+            <option
+              className="font-semibold"
+              key={nation.PROFESSION_TYPE_NAME}
+              value={nation.PROFESSION_TYPE_ID}
+            >
+              {nation.PROFESSION_TYPE_NAME}
+            </option>
+          ))}
+        </select>
+      );
+    } else if (id === "TAB_YEAR") {
       return (
         <input
           value={value}
@@ -343,23 +375,6 @@ function Mayagt_9A(props: any) {
             color: "gray",
           }}
           onChange={(e) => setValue(e.target.value)}
-          onBlur={onBlur}
-        />
-      );
-    } else if (id === "EXPERT_AMOUNT" || id === "AUDIT_AMOUNT") {
-      return (
-        <CurrencyInput
-          className="bg-transparent text-end p-1"
-          style={{
-            minHeight: "33px",
-            border: "1px solid",
-            borderRadius: "4px",
-            color: "gray",
-          }}
-          value={value}
-          decimalsLimit={2}
-          decimalScale={2}
-          onValueChange={(value, name) => setValue(value)}
           onBlur={onBlur}
         />
       );
@@ -489,7 +504,40 @@ function Mayagt_9A(props: any) {
       .catch(function (error) {
         console.log(error, "error");
       });
-
+    DataRequest({
+      url: Stat_Url + "refEducationType",
+      method: "GET",
+      data: {},
+    })
+      .then(function (refEducationType) {
+        if (
+          refEducationType.data !== undefined &&
+          refEducationType?.data.length > 0
+        ) {
+          let temp = drop;
+          temp.drop3 = refEducationType.data;
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+      });
+    DataRequest({
+      url: Stat_Url + "refProfessionType",
+      method: "GET",
+      data: {},
+    })
+      .then(function (refProfessionType) {
+        if (
+          refProfessionType.data !== undefined &&
+          refProfessionType?.data.length > 0
+        ) {
+          let temp = drop;
+          temp.drop4 = refProfessionType.data;
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "error");
+      });
     // DataRequest({
     //   url:
     //     fasUrl +
